@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Ajouter Client</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="assets/img/favicon.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+
+    <!-- stylesheets -->
+    <link href="{{asset('bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href=" {{asset('css/style.css')}}" rel="stylesheet">
+    <link href=" {{asset('bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
+
+</head>
+
+<body>
+    @include('partials._header');
+    @include('partials._sideBare');
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1>Ajouoter un client</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
+                    <li class="breadcrumb-item active">Gestion des clients</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+
+        <form>
+            <p >Informations Personnelles :</p>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="lastName" class="form-label">Nom</label>
+                    <input type="text" class="form-control" id="lastName">
+                </div>
+                <div class="col-md-6">
+                    <label for="name" class="form-label">Prenom</label>
+                    <input type="text" class="form-control" id="name">
+                </div>
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email">
+                </div>
+                <div class="col-md-6">
+                    <label for="phone" class="form-label">Numéro de téléphone</label>
+                    <input type="tel" class="form-control" id="phone">
+                </div>
+            </div>
+            <hr>
+            <p >Informations Professionnelles :</p>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="sName" class="form-label">Nom de l'entreprise</label>
+                    <input type="text" class="form-control" id="sName">
+                </div>
+                <div class="col-md-6">
+                    <label for="job" class="form-label">Job title</label>
+                    <input type="text" class="form-control" id="job">
+                </div>
+                <div class="col-md-6">
+                    <label for="industry" class="form-label">Secteur d'activité</label>
+                    <input type="text" class="form-control" id="industry">
+                </div>
+            </div>
+            <hr>
+            <p >Informations supplémentaires :</p>
+            <div class="row g-3">
+                <div class="col-12">
+                    <label for="inputAddress" class="form-label">Adresse</label>
+                    <input type="text" class="form-control" id="inputAddress">
+                </div>
+                <label  class="form-label">Profils sur les réseaux sociaux</label>
+                <div class="col-md-3">
+                    <input type="text" placeholder="Facboook" class="form-control" >
+                </div>
+                <div class="col-md-3">
+                    <input type="text" placeholder="LinkedIn" class="form-control" >
+                </div>
+                <div class="col-md-3">
+                    <input type="text" placeholder="X" class="form-control" >
+                </div>
+                <div class="col-md-3">
+                    <input type="text" placeholder="Autre" class="form-control" >
+                </div>
+            </div>
+            <hr>
+            <p >Détails supplémentaires :</p>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="leads" class="form-label">Lead source</label>
+                    <input type="text" class="form-control" id="leads">
+                </div>
+                <div class="col-md-12">
+                    <label for="notes" class="col-sm-2 col-form-label">Notes</label>
+                    <div class="col-sm-10">
+                        <textarea id="notes" class="form-control" style="height: 100px"></textarea>
+                    </div>
+                    <div class="text-center mt-3">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="reset" class="btn btn-secondary">Reset</button>
+                    </div>
+                </div>
+        </form>
+    </main><!-- End #main -->
+
+
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+
+    <!-- Template Main JS File -->
+    <script src="{{asset('js/script.js')}}"></script>
+    <script src="{{asset('bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+
+</body>
+
+</html>

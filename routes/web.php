@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+//--------   User routes  --------//
 //show the login form 
 Route::get('/login', [UserController::class,'showLoginForm'])->name('login');
 
@@ -29,12 +32,21 @@ Route::post('/register', [UserController::class,'register']);
 //logout a user 
 Route::post('/logout', [UserController::class,'logout'])->name('logout');
 
+
+//--------   Client routes  --------//
+//show the login form 
+Route::get('/add-client', [ClientController::class,'create'])->name('addClient');
+
+
+
 // show home page
 Route::get('/dashboard',function () {
     return view('index');
 })->name('dashboard')->middleware('auth');
-Route::get('/',function () {
-    return view('index');
-})->name('dashboard')->middleware('auth');
 
+
+// Catch-all route to redirect to the home page
+Route::get('/{any}', function () {
+    return redirect('/dashboard');
+})->where('any', '.*');
 
