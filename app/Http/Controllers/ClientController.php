@@ -13,7 +13,9 @@ class ClientController extends Controller
      */
     public function index()
     {
-        //
+        return view('Client.index', [
+            'clients' => Client::all()
+        ]);
     }
 
     /**
@@ -21,7 +23,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        return view('Client.addClient');
+        return view('Client.create');
     }
 
     /**
@@ -42,7 +44,7 @@ class ClientController extends Controller
             'facebook' => 'nullable|string',
             'linkedin' => 'nullable|string',
             'x' => 'nullable|string',
-            'author' => 'nullable|string',
+            'other' => 'nullable|string',
             'lead' => 'nullable|string',
             'notes' => 'nullable|string',
         ]);

@@ -96,7 +96,7 @@
                     <input name="x" type="text" placeholder="X" class="form-control" >
                 </div>
                 <div class="col-md-3">
-                    <input name="author" type="text" placeholder="Autre" class="form-control" >
+                    <input name="other" type="text" placeholder="Other" class="form-control" >
                 </div>
             </div>
             <hr>

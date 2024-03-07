@@ -37,7 +37,11 @@ Route::post('/logout', [UserController::class,'logout'])->name('logout');
 //show the login form 
 Route::get('/add-client', [ClientController::class,'create'])->name('clients.create');
 
+//create a client
 Route::post('/add-client', [ClientController::class,'store'])->name('clients.store');
+
+//all clients
+Route::get('/clients', [ClientController::class, 'index'])->name('clients.index');
 
 
 //------- author routes ----------//

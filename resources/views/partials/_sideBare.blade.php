@@ -61,7 +61,7 @@
           </a>
         </li>
         <li>
-          <a href="tables-data.html">
+          <a href="{{route('clients.index')}}">
             <i class="bi bi-circle"></i><span>Afficher les clients</span>
           </a>
         </li>
