@@ -40,24 +40,26 @@
             </nav>
         </div><!-- End Page Title -->
 
-        <form>
+        <!-- add client form -->
+        <form id="clientForm" action="{{ route('clients.store') }}" method="POST">
+            @csrf
             <p >Informations Personnelles :</p>
             <div class="row g-3">
                 <div class="col-md-6">
                     <label for="lastName" class="form-label">Nom</label>
-                    <input type="text" class="form-control" id="lastName">
+                    <input name="lastName" type="text" class="form-control" id="lastName">
                 </div>
                 <div class="col-md-6">
                     <label for="name" class="form-label">Prenom</label>
-                    <input type="text" class="form-control" id="name">
+                    <input name="name" type="text" class="form-control" id="name">
                 </div>
                 <div class="col-md-6">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email">
+                    <input name="email" type="email" class="form-control" id="email">
                 </div>
                 <div class="col-md-6">
                     <label for="phone" class="form-label">Numéro de téléphone</label>
-                    <input type="tel" class="form-control" id="phone">
+                    <input name="phone" type="tel" class="form-control" id="phone">
                 </div>
             </div>
             <hr>
@@ -65,15 +67,15 @@
             <div class="row g-3">
                 <div class="col-md-6">
                     <label for="sName" class="form-label">Nom de l'entreprise</label>
-                    <input type="text" class="form-control" id="sName">
+                    <input name="company" type="text" class="form-control" id="sName">
                 </div>
                 <div class="col-md-6">
                     <label for="job" class="form-label">Job title</label>
-                    <input type="text" class="form-control" id="job">
+                    <input name="job" type="text" class="form-control" id="job">
                 </div>
                 <div class="col-md-6">
                     <label for="industry" class="form-label">Secteur d'activité</label>
-                    <input type="text" class="form-control" id="industry">
+                    <input name="industry" type="text" class="form-control" id="industry">
                 </div>
             </div>
             <hr>
@@ -81,20 +83,20 @@
             <div class="row g-3">
                 <div class="col-12">
                     <label for="inputAddress" class="form-label">Adresse</label>
-                    <input type="text" class="form-control" id="inputAddress">
+                    <input name="address" type="text" class="form-control" id="inputAddress">
                 </div>
                 <label  class="form-label">Profils sur les réseaux sociaux</label>
                 <div class="col-md-3">
-                    <input type="text" placeholder="Facboook" class="form-control" >
+                    <input name="facebook" type="text" placeholder="facebook" class="form-control" >
                 </div>
                 <div class="col-md-3">
-                    <input type="text" placeholder="LinkedIn" class="form-control" >
+                    <input name="linkedin" type="text" placeholder="LinkedIn" class="form-control" >
                 </div>
                 <div class="col-md-3">
-                    <input type="text" placeholder="X" class="form-control" >
+                    <input name="x" type="text" placeholder="X" class="form-control" >
                 </div>
                 <div class="col-md-3">
-                    <input type="text" placeholder="Autre" class="form-control" >
+                    <input name="author" type="text" placeholder="Autre" class="form-control" >
                 </div>
             </div>
             <hr>
@@ -102,12 +104,12 @@
             <div class="row g-3">
                 <div class="col-md-6">
                     <label for="leads" class="form-label">Lead source</label>
-                    <input type="text" class="form-control" id="leads">
+                    <input name="lead" type="text" class="form-control" id="leads">
                 </div>
                 <div class="col-md-12">
                     <label for="notes" class="col-sm-2 col-form-label">Notes</label>
                     <div class="col-sm-10">
-                        <textarea id="notes" class="form-control" style="height: 100px"></textarea>
+                        <textarea name="notes" id="notes" class="form-control" style="height: 100px"></textarea>
                     </div>
                     <div class="text-center mt-3">
                         <button type="submit" class="btn btn-primary">Submit</button>
@@ -115,6 +117,7 @@
                     </div>
                 </div>
         </form>
+        <!-- end form -->
     </main><!-- End #main -->
 
 
@@ -124,6 +127,15 @@
     <!-- Template Main JS File -->
     <script src="{{asset('js/script.js')}}"></script>
     <script src="{{asset('bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <script>
+        document.getElementById('clientForm').addEventListener('keydown', function(event) {
+            // Check if the pressed key is Enter
+            if (event.key === 'Enter') {
+                // Prevent the default form submission
+                event.preventDefault();
+            }
+        });
+    </script>
 
 </body>
 

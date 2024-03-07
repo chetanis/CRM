@@ -56,7 +56,7 @@
       </a>
       <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
-          <a href="{{route('addClient')}}">
+          <a href="{{route('clients.create')}}">
             <i class="bi bi-circle"></i><span>Ajouter un client</span>
           </a>
         </li>

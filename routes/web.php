@@ -35,10 +35,12 @@ Route::post('/logout', [UserController::class,'logout'])->name('logout');
 
 //--------   Client routes  --------//
 //show the login form 
-Route::get('/add-client', [ClientController::class,'create'])->name('addClient');
+Route::get('/add-client', [ClientController::class,'create'])->name('clients.create');
+
+Route::post('/add-client', [ClientController::class,'store'])->name('clients.store');
 
 
-
+//------- author routes ----------//
 // show home page
 Route::get('/dashboard',function () {
     return view('index');
