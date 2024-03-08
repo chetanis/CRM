@@ -59,7 +59,7 @@
                 <td>{{$client->email}}</td>
                 <td>{{$client->created_at->format('d/m/Y')}}</td>
                 <td>
-                    <button type="button" class="btn btn-outline-primary btn-sm">Consulter</button>
+                    <button onclick="window.location.href='/clients/{{$client->id}}'" type="button" class="btn btn-outline-primary btn-sm">Consulter</button>
                 </td>
               </tr>
             @endforeach

@@ -65,7 +65,7 @@ class ClientController extends Controller
             'facebook' => $request->input('facebook'),
             'linkedin' => $request->input('linkedin'),
             'x' => $request->input('x'),
-            'author' => $request->input('author'),
+            'other' => $request->input('other'),
         ];
         $client->lead_source = $request->input('lead');
         $client->notes = $request->input('notes');
@@ -83,7 +83,10 @@ class ClientController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $client = Client::findOrFail($id);
+        return view('Client.show', [
+            'client' => $client
+        ]);
     }
 
     /**
