@@ -76,7 +76,6 @@
                           <div class="col-lg-3 col-md-4 label">Email</div>
                           <div class="col-lg-9 col-md-8">{{$client->email}}</div>
                         </div>
-                        {{-- ///dkfns'lkn'wirnhg'iwehf'dwanf;lkadsnfljkwdhfg;oiwehgjwerbgo'iweh'vglkwrb'goi2be --}}
                         <div class="row">
                           <div class="col-lg-3 col-md-4 label">Numéro de téléphone</div>
                           <div class="col-lg-9 col-md-8">{{$client->phone_number}}</div>
@@ -103,28 +102,28 @@
                         </div>
                         <div class="row">
                           <div class="col-lg-3 col-md-4 label">Facebook</div>
-                          <div class="col-lg-9 col-md-8">{{empty($client->social_media_profiles['facebook']) ? 'pas de lien' : $client->social_media_profiles['facebook']}}</div>
+                          <div class="col-lg-9 col-md-8">{{empty($client->social_media_profiles['facebook']) ? '...' : $client->social_media_profiles['facebook']}}</div>
                         </div>
                         <div class="row">
                           <div class="col-lg-3 col-md-4 label">Linkedin</div>
-                          <div class="col-lg-9 col-md-8">{{ empty($client->social_media_profiles['linkedin']) ? 'pas de lien' : $client->social_media_profiles['linkedin'] }}
+                          <div class="col-lg-9 col-md-8">{{ empty($client->social_media_profiles['linkedin']) ? '...' : $client->social_media_profiles['linkedin'] }}
                           </div>
                         </div>
                         <div class="row">
                           <div class="col-lg-3 col-md-4 label">X</div>
-                          <div class="col-lg-9 col-md-8">{{empty($client->social_media_profiles['x']) ? 'pas de lien' : $client->social_media_profiles['x']}}</div>
+                          <div class="col-lg-9 col-md-8">{{empty($client->social_media_profiles['x']) ? '...' : $client->social_media_profiles['x']}}</div>
                         </div>
                         <div class="row">
                           <div class="col-lg-3 col-md-4 label">Autre</div>
-                          <div class="col-lg-9 col-md-8">{{empty($client->social_media_profiles['other']) ? 'pas de lien' : $client->social_media_profiles['other']}}</div>
+                          <div class="col-lg-9 col-md-8">{{empty($client->social_media_profiles['other']) ? '...' : $client->social_media_profiles['other']}}</div>
                         </div>
                         <div class="row">
                           <div class="col-lg-3 col-md-4 label">Lead source</div>
                           <div class="col-lg-9 col-md-8">{{$client->lead_source}}</div>
                         </div>
                         <div class="row">
-                          <div class="col-lg-3 col-md-4 label">Notes</div>
-                          <div class="col-lg-9 col-md-8">{{$client->notes}}</div>
+                          <div class="col-lg-3 col-md-4 label">Client depuis</div>
+                          <div class="col-lg-9 col-md-8">{{$client->created_at->format('d-m-Y')}}</div>
                         </div>
       
                       </div>
