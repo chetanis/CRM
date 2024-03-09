@@ -46,6 +46,7 @@ Route::get('/clients', [ClientController::class, 'index'])->name('clients.index'
 //single client
 Route::get('/clients/{client}', [ClientController::class, 'show']);
 
+Route::put('/clients/{client}', [ClientController::class, 'update']);
 
 //------- author routes ----------//
 // show home page

@@ -101,9 +101,52 @@ class ClientController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        //
-    }
+{
+    $client = Client::findOrFail($id);
+
+    $request->validate([
+        'lastName' => 'required|string',
+        'name' => 'required|string',
+        'email' => 'required|email',
+        'phone' => 'nullable|string',
+        'company' => 'nullable|string',
+        'job' => 'nullable|string',
+        'industry' => 'nullable|string',
+        'address' => 'nullable|string',
+        'facebook' => 'nullable|string',
+        'linkedin' => 'nullable|string',
+        'x' => 'nullable|string',
+        'other' => 'nullable|string',
+        'lead' => 'nullable|string',
+        'notes' => 'nullable|string',
+    ]);
+
+    // Update basic attributes
+    $social_media_profiles = [
+        'facebook' => $request->input('facebook'),
+        'linkedin' => $request->input('linkedin'),
+        'x' => $request->input('x'),
+        'other' => $request->input('other'),
+    ];
+    $client->update([
+        'last_name' => $request->input('lastName'),
+        'first_name' => $request->input('name'),
+        'email' => $request->input('email'),
+        'phone_number' => $request->input('phone'),
+        'company_name' => $request->input('company'),
+        'job_title' => $request->input('job'),
+        'industry' => $request->input('industry'),
+        'address' => $request->input('address'),
+        'lead_source' => $request->input('lead'),
+        'notes' => $request->input('notes'),
+        'social_media_profiles' => $social_media_profiles,
+    ]);
+
+    
+    $client->update([]);
+
+    return redirect()->back()->with('success', 'Client modifié!');
+}
 
     /**
      * Remove the specified resource from storage.
