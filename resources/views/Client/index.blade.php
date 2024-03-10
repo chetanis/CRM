@@ -44,8 +44,8 @@
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Nom</th>
-                <th scope="col">Entreprise</th>
                 <th scope="col">Email</th>
+                <th scope="col">Telephone</th>
                 <th scope="col">Start Date</th>
                 <th scope="col">Détails</th>
               </tr>
@@ -55,8 +55,8 @@
               <tr>
                 <th scope="row">{{$client->id}}</th>
                 <td>{{$client->last_name}} {{$client->first_name}}</td>
-                <td>{{$client->company_name}}</td>
                 <td>{{$client->email}}</td>
+                <td>{{$client->phone_number}}</td>
                 <td>{{$client->created_at->format('d/m/Y')}}</td>
                 <td>
                     <button onclick="window.location.href='/clients/{{$client->id}}'" type="button" class="btn btn-outline-primary btn-sm">Consulter</button>
