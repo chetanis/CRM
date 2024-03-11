@@ -77,27 +77,31 @@
                         </div>
                         <div class="row">
                           <div class="col-lg-3 col-md-4 label">Numéro de téléphone</div>
-                          <div class="col-lg-9 col-md-8">{{$client->phone_number}}</div>
+                          <div class="col-lg-9 col-md-8">{{empty($client->phone_number) ? '...' : $client->phone_number}}</div>
                         </div>
       
                         <div class="row">
                           <div class="col-lg-3 col-md-4 label">Nom de l'entreprise</div>
-                          <div class="col-lg-9 col-md-8">{{$client->company_name}}</div>
+                          <div class="col-lg-9 col-md-8">{{empty($client->company_name) ? '...' : $client->company_name
+                          }}</div>
                         </div>
       
                         <div class="row">
                           <div class="col-lg-3 col-md-4 label">Job title</div>
-                          <div class="col-lg-9 col-md-8">{{$client->job_title}}</div>
+                          <div class="col-lg-9 col-md-8">{{empty($client->job_title) ? '...' : $client->job_title
+                          }}</div>
                         </div>
       
                         <div class="row">
                           <div class="col-lg-3 col-md-4 label">Secteur d'activité</div>
-                          <div class="col-lg-9 col-md-8">{{$client->industry}}</div>
+                          <div class="col-lg-9 col-md-8">{{empty($client->industry) ? '...' : $client->industry
+                          }}</div>
                         </div>
       
                         <div class="row">
                           <div class="col-lg-3 col-md-4 label">Address</div>
-                          <div class="col-lg-9 col-md-8">{{$client->address}}</div>
+                          <div class="col-lg-9 col-md-8">{{empty($client->address) ? '...' : $client->address
+                          }}</div>
                         </div>
                         <div class="row">
                           <div class="col-lg-3 col-md-4 label">Facebook</div>
@@ -118,11 +122,18 @@
                         </div>
                         <div class="row">
                           <div class="col-lg-3 col-md-4 label">Lead source</div>
-                          <div class="col-lg-9 col-md-8">{{$client->lead_source}}</div>
+                          <div class="col-lg-9 col-md-8">{{empty($client->lead_source) ? '...' : $client->lead_source
+                          }}</div>
                         </div>
                         <div class="row">
                           <div class="col-lg-3 col-md-4 label">Client depuis</div>
                           <div class="col-lg-9 col-md-8">{{$client->created_at->format('d-m-Y')}}</div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-3 col-md-4 label">Notes</div>
+                          <div class="col-md-8 col-lg-9">
+                            <textarea name="notes" id="notes"  class="form-control" style="height: 100px"readonly>{{$client->notes}}</textarea>
+                          </div>
                         </div>
       
                       </div>
