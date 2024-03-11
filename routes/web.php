@@ -54,7 +54,7 @@ Route::get('/search-client', [ClientController::class, 'search'])->name('search-
 
 
 
-//------- author routes ----------//
+//------- other routes ----------//
 // show home page
 Route::get('/dashboard',function () {
     return view('index');
