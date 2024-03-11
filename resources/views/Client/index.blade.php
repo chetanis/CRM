@@ -30,15 +30,30 @@
     @include('partials._sideBare');
     <main id="main" class="main">
 
-        <div class="pagetitle">
-            <h1>Liste des clients</h1>
-            <nav>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="pagetitle">
+              <h1>Liste des clients</h1>
+              <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
-                    <li class="breadcrumb-item active">Gestion des clients</li>
+                  <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
+                  <li class="breadcrumb-item active">Gestion des clients</li>
                 </ol>
-            </nav>
-        </div><!-- End Page Title -->
+              </nav>
+            </div><!-- End Page Title -->
+          </div>
+          <div class="col-md-6">
+            <div class="search-bar">
+              <form class="d-flex align-items-center" action="{{ route('search-client') }}" method="GET">
+                <input type="text" name="search" class="form-control me-1" placeholder="Chercher client">
+                <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i></button>
+              </form>
+            </div><!-- End Search Bar -->
+          </div>
+        </div>
+      </div>
+      
         <table class="table">
             <thead>
               <tr>

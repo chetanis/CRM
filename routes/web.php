@@ -43,10 +43,16 @@ Route::post('/add-client', [ClientController::class,'store'])->name('clients.sto
 //all clients
 Route::get('/clients', [ClientController::class, 'index'])->name('clients.index');
 
-//single client
+//show client
 Route::get('/clients/{client}', [ClientController::class, 'show']);
 
+//update a client
 Route::put('/clients/{client}', [ClientController::class, 'update']);
+
+//search for a client
+Route::get('/search-client', [ClientController::class, 'search'])->name('search-client');
+
+
 
 //------- author routes ----------//
 // show home page
