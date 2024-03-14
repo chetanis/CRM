@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\ClientController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,7 +35,7 @@ Route::post('/logout', [UserController::class,'logout'])->name('logout');
 
 
 //--------   Client routes  --------//
-//show the login form 
+//show the create form 
 Route::get('/add-client', [ClientController::class,'create'])->name('clients.create');
 
 //create a client
@@ -52,7 +53,9 @@ Route::put('/clients/{client}', [ClientController::class, 'update']);
 //search for a client
 Route::get('/search-client', [ClientController::class, 'search'])->name('search-client');
 
-
+//--------   Products routes  --------//
+//show the create prudoct form
+Route::get('/add-product', [ProductController::class,'create'])->name('products.create');
 
 //------- other routes ----------//
 // show home page
