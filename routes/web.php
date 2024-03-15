@@ -57,6 +57,9 @@ Route::get('/search-client', [ClientController::class, 'search'])->name('search-
 //show the create prudoct form
 Route::get('/add-product', [ProductController::class,'create'])->name('products.create');
 
+//create a product
+Route::post('/add-product', [ProductController::class,'store'])->name('products.store');
+
 //------- other routes ----------//
 // show home page
 Route::get('/dashboard',function () {
