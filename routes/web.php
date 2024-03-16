@@ -60,6 +60,9 @@ Route::get('/add-product', [ProductController::class,'create'])->name('products.
 //create a product
 Route::post('/add-product', [ProductController::class,'store'])->name('products.store');
 
+//all products
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+
 //------- other routes ----------//
 // show home page
 Route::get('/dashboard',function () {

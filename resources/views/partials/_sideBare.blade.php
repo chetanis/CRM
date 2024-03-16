@@ -42,7 +42,7 @@
           </a>
         </li>
         <li>
-          <a href="forms-layouts.html">
+          <a href="{{route('products.index')}}">
             <i class="bi bi-circle"></i><span>Afficher les produits</span>
           </a>
         </li>
