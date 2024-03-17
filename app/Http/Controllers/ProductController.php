@@ -118,4 +118,15 @@ class ProductController extends Controller
         $product->addStock($request->input('quantity'));
         return redirect()->back()->with('success', 'Stock ajouté avec succès !');
     }
+
+    //search for a product
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+
+        $products = Product::where('name', 'like', "%{$search}%")->
+        orWhere('category', 'like', "%{$search}%")->paginate(10);
+
+        return view('Products.index', ['products' => $products]);
+    }
 }

@@ -70,7 +70,10 @@ Route::get('/products/{product}', [ProductController::class, 'show']);
 Route::put('/products/{product}', [ProductController::class, 'update']);
 
 //add stock to a product
-Route::post('/products/{product}/add-stock', [ProductController::class, 'addStock'])->name('manage-stock');;
+Route::post('/products/{product}/add-stock', [ProductController::class, 'addStock'])->name('manage-stock');
+
+//search for a product
+Route::get('/search-product', [ProductController::class, 'search'])->name('search-product');
 
 
 //------- other routes ----------//
