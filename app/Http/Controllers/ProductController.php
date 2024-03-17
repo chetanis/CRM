@@ -62,7 +62,8 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+        return view('Products.show', ['product' => $product]);
     }
 
     /**
@@ -77,9 +78,26 @@ class ProductController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        //
+{
+    $product = Product::findOrFail($id);
+
+    $request->validate([
+        'name' => 'required|string',
+        'price' => 'nullable|numeric|regex:/^\d+(\.\d{1,2})?$/',
+        'description' => 'nullable|string',
+        'current_stock' => 'nullable|numeric',
+        'minimum_stock' => 'nullable|numeric',
+        'category' => 'nullable|string'
+    ]);
+
+    try {
+        $product->update($request->all());
+        return redirect()->back()->with('success', 'Produit mis à jour avec succès !');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Failed to update product. Please try again.');
     }
+}
+
 
     /**
      * Remove the specified resource from storage.

@@ -78,7 +78,7 @@
                                 type="button" class="btn btn-outline-primary btn-sm">ajouter au stock</button>
                         </td>
                         <td>
-                            <button {{-- onclick="window.location.href='/products/{{$product->id}}'" --}} type="button"
+                            <button onclick="window.location.href='/products/{{$product->id}}'" type="button"
                                 class="btn btn-outline-primary btn-sm">Consulter</button>
                         </td>
                     </tr>

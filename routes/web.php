@@ -63,6 +63,12 @@ Route::post('/add-product', [ProductController::class,'store'])->name('products.
 //all products
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 
+//show product
+Route::get('/products/{product}', [ProductController::class, 'show']);
+
+//update a product
+Route::put('/products/{product}', [ProductController::class, 'update']);
+
 //------- other routes ----------//
 // show home page
 Route::get('/dashboard',function () {
