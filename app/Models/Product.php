@@ -16,4 +16,19 @@ class Product extends Model
         'minimum_stock',
         'price',
     ];
+
+    public function addStock(int $quantity)
+    {
+        $this->current_stock += $quantity;
+        $this->save();
+    }
+
+    public function subtractStock(int $quantity)
+    {
+        $this->current_stock -= $quantity;
+        if ($this->current_stock < 0) {
+            $this->current_stock = 0;
+        }
+        $this->save();
+    }
 }

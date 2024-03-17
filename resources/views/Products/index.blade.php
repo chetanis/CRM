@@ -93,7 +93,7 @@
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="{{-- route('manage-stock', ['id' => $product->id]) --}}" method="POST">
+                                    <form action="{{ route('manage-stock', $product->id) }}" method="POST">
                                         @csrf
                                         <div class="mb-3">
                                             <label for="quantity" class="form-label">Quantité à ajouter:</label>

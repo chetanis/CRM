@@ -106,4 +106,16 @@ class ProductController extends Controller
     {
         //
     }
+
+    //add stock to a product
+    public function addStock(Request $request, string $id)
+    {
+        $product = Product::findOrFail($id);
+        $request->validate([
+            'quantity' => 'required|numeric|min:1'
+        ]);
+
+        $product->addStock($request->input('quantity'));
+        return redirect()->back()->with('success', 'Stock ajouté avec succès !');
+    }
 }

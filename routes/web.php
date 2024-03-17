@@ -69,6 +69,10 @@ Route::get('/products/{product}', [ProductController::class, 'show']);
 //update a product
 Route::put('/products/{product}', [ProductController::class, 'update']);
 
+//add stock to a product
+Route::post('/products/{product}/add-stock', [ProductController::class, 'addStock'])->name('manage-stock');;
+
+
 //------- other routes ----------//
 // show home page
 Route::get('/dashboard',function () {
