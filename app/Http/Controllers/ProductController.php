@@ -99,7 +99,7 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $product->delete();
-        return $this->index();
+        return redirect()->route('products.index')->with('success', 'Produit supprimé avec succès !');
     }
 
     //add stock to a product
