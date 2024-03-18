@@ -53,6 +53,9 @@ Route::put('/clients/{client}', [ClientController::class, 'update']);
 //search for a client
 Route::get('/search-client', [ClientController::class, 'search'])->name('search-client');
 
+//delete a client
+Route::delete('/clients/{client}', [ClientController::class, 'destroy']);
+
 //--------   Products routes  --------//
 //show the create prudoct form
 Route::get('/add-product', [ProductController::class,'create'])->name('products.create');

@@ -135,6 +135,13 @@
                             <textarea name="notes" id="notes"  class="form-control" style="height: 100px"readonly>{{$client->notes}}</textarea>
                           </div>
                         </div>
+                        <div class="col-lg-9 mt-5 col-md-8 d-flex justify-content-center">
+                          <form method="POST" action="/clients/{{ $client->id }}">
+                              @csrf
+                              @method('DELETE')
+                              <button type="submit" class="btn btn-danger">Supprimer le client</button>
+                          </form>
+                        </div>
       
                       </div>
                       {{-- client details ends --}}
