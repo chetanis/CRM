@@ -75,6 +75,9 @@ Route::post('/products/{product}/add-stock', [ProductController::class, 'addStoc
 //search for a product
 Route::get('/search-product', [ProductController::class, 'search'])->name('search-product');
 
+//delete a product
+Route::delete('/products/{product}', [ProductController::class, 'destroy']);
+
 
 //------- other routes ----------//
 // show home page
