@@ -74,7 +74,7 @@
       </a>
       <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
-          <a href="charts-chartjs.html">
+          <a href="{{route('commands.create')}}">
             <i class="bi bi-circle"></i><span>Ajouter commande</span>
           </a>
         </li>

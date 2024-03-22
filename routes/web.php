@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\CommandController;
 use App\Http\Controllers\ProductController;
 
 /*
@@ -57,6 +58,7 @@ Route::get('/search-client', [ClientController::class, 'search'])->name('search-
 Route::delete('/clients/{client}', [ClientController::class, 'destroy']);
 
 //--------   Products routes  --------//
+
 //show the create prudoct form
 Route::get('/add-product', [ProductController::class,'create'])->name('products.create');
 
@@ -80,6 +82,10 @@ Route::get('/search-product', [ProductController::class, 'search'])->name('searc
 
 //delete a product
 Route::delete('/products/{product}', [ProductController::class, 'destroy']);
+
+//--------   Products commands  --------//
+//show the create command form
+Route::get('/add-command', [CommandController::class,'create'])->name('commands.create');
 
 
 //------- other routes ----------//
