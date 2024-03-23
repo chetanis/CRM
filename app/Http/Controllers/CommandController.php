@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Client;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -22,7 +23,8 @@ class CommandController extends Controller
     {
         //sending the products to the view
         $products = Product::all();
-        return view('commands.create', compact('products'));
+        $clients = Client::all();
+        return view('commands.create', compact('products', 'clients'));
     }
 
     /**

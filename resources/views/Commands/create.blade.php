@@ -41,18 +41,35 @@
             </nav>
         </div><!-- End Page Title -->
 
-        <!-- Product Selection -->
         <div>
-            <!-- Dropdown list of products (or search results) -->
-            <h5>Ajouter des produits</h5>
+            {{-- client --}}
+            <h5>Client</h5>
+            <div class="row align-items-center">
+                <!-- client search input -->
+                <div class="col-md-4">
+                    <input list="clients" type="text" class="form-control" id="client-search"
+                        placeholder="Chercher un client">
+                    <!-- Dropdown list of clients (or search results) -->
+                    <datalist id="clients">
+                        @foreach ($clients as $client)
+                            <option value="{{ $client->phone_number }}">{{ $client->last_name }}
+                                {{ $client->first_name }}</option>
+                        @endforeach
+                    </datalist>
+                </div>
+            </div>
+
+            {{-- products --}}
+            <h5 class="mt-3">Ajouter des produits</h5>
             <div class="row align-items-center">
                 <!-- Product search input -->
                 <div class="col-md-4">
                     <input list="products" type="text" class="form-control" id="product-search"
                         placeholder="Chercher un produit">
+                    <!-- Dropdown list of products (or search results) -->
                     <datalist id="products">
                         @foreach ($products as $product)
-                            <option value="{{ $product->id }}"></option>
+                            <option value="{{ $product->name }}">Stock actuel: {{ $product->current_stock }}</option>
                         @endforeach
                     </datalist>
                 </div>
@@ -70,7 +87,7 @@
 
         <!-- Selected Products List -->
         <div>
-            <h2>Selected Products</h2>
+            <h5 class="mt-3">Produits selectionnes</h5>
             <ul id="selected-products-list">
                 <!-- Selected products will be displayed here -->
             </ul>
@@ -97,7 +114,7 @@
                 const quantity = parseInt(quantityInput.value);
 
                 if (!productName || quantity <= 0) {
-                    alert('Please select a product and enter a valid quantity.');
+                    alert('Veuillez sélectionner un produit et entrer une quantité valide.');
                     return;
                 }
 
@@ -108,26 +125,46 @@
                     const existingQuantity = parseInt(existingProduct.dataset.quantity);
                     existingProduct.dataset.quantity = existingQuantity + quantity;
                     existingProduct.textContent =
-                        `${productName} - Quantity: ${existingProduct.dataset.quantity}`;
+                        `${productName} - Quantité: ${existingProduct.dataset.quantity}`;
+                    // Create delete button
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Supprimer';
+                    deleteButton.classList.add('btn', 'btn-danger','btn-sm', 'mx-5',);
+                    deleteButton.addEventListener('click', function() {
+                        existingProduct.remove();
+                    });
+
+                    // Append delete button to list item
+                    existingProduct.appendChild(deleteButton);
+
+                    // Append list item to selected products list
+                    // selectedProductsList.appendChild(listItem);
+                    
+                        
                 } else {
                     const listItem = document.createElement('li');
                     listItem.dataset.name = productName;
                     listItem.dataset.quantity = quantity;
-                    listItem.textContent = `${productName} - Quantity: ${quantity}`;
+                    listItem.textContent = `${productName} - Quantité: ${quantity}`;
+                    selectedProductsList.appendChild(listItem);
+                    // Create delete button
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Supprimer';
+                    deleteButton.classList.add('btn', 'btn-danger','btn-sm', 'mx-5',);
+                    deleteButton.addEventListener('click', function() {
+                        listItem.remove();
+                    });
+
+                    // Append delete button to list item
+                    listItem.appendChild(deleteButton);
+
+                    // Append list item to selected products list
                     selectedProductsList.appendChild(listItem);
                 }
 
                 // Reset fields
                 productSearchInput.value = '';
                 quantityInput.value = '';
-            });
-
-            document.getElementById('clientForm').addEventListener('keydown', function(event) {
-                // Check if the pressed key is Enter
-                if (event.key === 'Enter') {
-                    // Prevent the default form submission
-                    event.preventDefault();
-                }
             });
         });
     </script>
