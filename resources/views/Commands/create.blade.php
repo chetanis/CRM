@@ -23,6 +23,7 @@
     <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href=" {{ asset('css/style.css') }}" rel="stylesheet">
     <link href=" {{ asset('bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
 </head>
 
@@ -30,7 +31,12 @@
     @include('partials._header');
     @include('partials._sideBare');
     <main id="main" class="main">
-
+        @if (Session::has('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ Session::get('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <div class="pagetitle">
             <h1>Ajouoter une Commande</h1>
             <nav>
@@ -52,7 +58,8 @@
                     <!-- Dropdown list of clients (or search results) -->
                     <datalist id="clients">
                         @foreach ($clients as $client)
-                            <option value="{{ $client->phone_number }}">{{ $client->last_name }}
+                            <option value="{{ $client->phone_number }}" data-id="{{ $client->id }}">
+                                {{ $client->last_name }}
                                 {{ $client->first_name }}</option>
                         @endforeach
                     </datalist>
@@ -69,7 +76,8 @@
                     <!-- Dropdown list of products (or search results) -->
                     <datalist id="products">
                         @foreach ($products as $product)
-                            <option value="{{ $product->name }}">Stock actuel: {{ $product->current_stock }}</option>
+                            <option value="{{ $product->name }}" data-price="{{ $product->price }}">Stock actuel:
+                                {{ $product->current_stock }}, Prix: {{ $product->price }}DA</option>
                         @endforeach
                     </datalist>
                 </div>
@@ -87,10 +95,18 @@
 
         <!-- Selected Products List -->
         <div>
-            <h5 class="mt-3">Produits selectionnes</h5>
+            <h5 class="mt-3">Produits sélectionnés :</h5>
             <ul id="selected-products-list">
                 <!-- Selected products will be displayed here -->
             </ul>
+        </div>
+        <!-- Total price -->
+        <div>
+            <h5 id="total-price" class="mt-3">Prix total : 0 DA</h5>
+        </div>
+
+        <div class=" mt-3">
+            <button id="submit-btn" class="btn btn-primary me-2">Créer la commande.</button>
         </div>
     </main><!-- End #main -->
 
@@ -102,72 +118,7 @@
     <!-- Template Main JS File -->
     <script src="{{ asset('js/script.js') }}"></script>
     <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const productSearchInput = document.getElementById('product-search');
-            const quantityInput = document.getElementById('quantity-input');
-            const addProductBtn = document.getElementById('add-product-btn');
-            const selectedProductsList = document.getElementById('selected-products-list');
-
-            addProductBtn.addEventListener('click', function() {
-                const productName = productSearchInput.value.trim();
-                const quantity = parseInt(quantityInput.value);
-
-                if (!productName || quantity <= 0) {
-                    alert('Veuillez sélectionner un produit et entrer une quantité valide.');
-                    return;
-                }
-
-                // Check if the product is already selected
-                const existingProduct = document.querySelector(
-                    `#selected-products-list li[data-name="${productName}"]`);
-                if (existingProduct) {
-                    const existingQuantity = parseInt(existingProduct.dataset.quantity);
-                    existingProduct.dataset.quantity = existingQuantity + quantity;
-                    existingProduct.textContent =
-                        `${productName} - Quantité: ${existingProduct.dataset.quantity}`;
-                    // Create delete button
-                    const deleteButton = document.createElement('button');
-                    deleteButton.textContent = 'Supprimer';
-                    deleteButton.classList.add('btn', 'btn-danger','btn-sm', 'mx-5',);
-                    deleteButton.addEventListener('click', function() {
-                        existingProduct.remove();
-                    });
-
-                    // Append delete button to list item
-                    existingProduct.appendChild(deleteButton);
-
-                    // Append list item to selected products list
-                    // selectedProductsList.appendChild(listItem);
-                    
-                        
-                } else {
-                    const listItem = document.createElement('li');
-                    listItem.dataset.name = productName;
-                    listItem.dataset.quantity = quantity;
-                    listItem.textContent = `${productName} - Quantité: ${quantity}`;
-                    selectedProductsList.appendChild(listItem);
-                    // Create delete button
-                    const deleteButton = document.createElement('button');
-                    deleteButton.textContent = 'Supprimer';
-                    deleteButton.classList.add('btn', 'btn-danger','btn-sm', 'mx-5',);
-                    deleteButton.addEventListener('click', function() {
-                        listItem.remove();
-                    });
-
-                    // Append delete button to list item
-                    listItem.appendChild(deleteButton);
-
-                    // Append list item to selected products list
-                    selectedProductsList.appendChild(listItem);
-                }
-
-                // Reset fields
-                productSearchInput.value = '';
-                quantityInput.value = '';
-            });
-        });
-    </script>
+    <script src="{{ asset('js/command.js') }}"></script>
 
 </body>
 

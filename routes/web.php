@@ -87,6 +87,9 @@ Route::delete('/products/{product}', [ProductController::class, 'destroy']);
 //show the create command form
 Route::get('/add-command', [CommandController::class,'create'])->name('commands.create');
 
+//create a command
+Route::post('/add-command', [CommandController::class,'store'])->name('commands.store');
+
 
 //------- other routes ----------//
 // show home page
