@@ -15,6 +15,7 @@ class Product extends Model
         'current_stock',
         'minimum_stock',
         'price',
+        'sold',
     ];
 
     public function addStock(int $quantity)
