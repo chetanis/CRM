@@ -312,6 +312,21 @@
                                     @if ($commands->count() == 0)
                                         <h2>Pas de commande pour le moment</h2>
                                     @else
+                                    <div class="row">
+                                      <div class="col">
+                                          <p>N° des commandes: <span class="text-primary">{{$commands->count()}}</span></p>
+                                      </div>
+                                      <div class="col">
+                                          <p>en attente: <span class="text-warning">{{$countPending}}</span></p>
+                                      </div>
+                                      <div class="col">
+                                          <p>annulées: <span class="text-danger">{{$countCancelled}}</span></p>
+                                      </div>
+                                      <div class="col">
+                                          <p>confirmées: <span class="text-success">{{$countConfirmed}}</span></p>
+                                      </div>
+                                  </div>
+                                  
                                         <table class="table table-striped">
                                             <thead>
                                                 <tr>

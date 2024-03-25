@@ -86,10 +86,19 @@ class ClientController extends Controller
     public function show(string $id)
     {
         $client = Client::findOrFail($id);
-        $command = Command::where('client_id', $id)->get();
+        $commands = Command::where('client_id', $id)->get();
+        $countPending = $commands->where('type', 'pending')->count();
+        $countConfirmed = $commands->where('type', 'confirmed')->count();
+        $countCancelled = $commands->where('type', 'cancelled')->count();
+
+
+
         return view('Client.show', [
             'client' => $client,
-            'commands' => $command
+            'commands' => $commands,
+            'countPending' => $countPending,
+            'countConfirmed' => $countConfirmed,
+            'countCancelled' => $countCancelled,
         ]);
     }
 
@@ -163,9 +172,9 @@ class ClientController extends Controller
             ->orWhere('phone_number', 'LIKE', "%{$search}%")
             ->paginate(10);
 
-            return view('Client.index', [
-                'clients' => $clients
-            ]);
+        return view('Client.index', [
+            'clients' => $clients
+        ]);
     }
 
     /**
