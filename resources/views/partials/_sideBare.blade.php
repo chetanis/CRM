@@ -79,7 +79,7 @@
           </a>
         </li>
         <li>
-          <a href="charts-apexcharts.html">
+          <a href="{{route('commands.index')}}">
             <i class="bi bi-circle"></i><span>Afficher les commandes</span>
           </a>
         </li>

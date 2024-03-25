@@ -15,7 +15,9 @@ class CommandController extends Controller
      */
     public function index()
     {
-        //
+        //getting all the commands
+        $commands = Command::latest()->paginate(10);
+        return view('commands.index', compact('commands'));
     }
 
     /**

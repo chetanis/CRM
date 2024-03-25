@@ -90,6 +90,8 @@ Route::get('/add-command', [CommandController::class,'create'])->name('commands.
 //create a command
 Route::post('/add-command', [CommandController::class,'store'])->name('commands.store');
 
+//all commands
+Route::get('/commands', [CommandController::class, 'index'])->name('commands.index');
 
 //------- other routes ----------//
 // show home page
