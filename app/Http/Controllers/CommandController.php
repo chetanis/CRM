@@ -63,6 +63,9 @@ class CommandController extends Controller
 
             // Reduce the stock of the product
             $product->current_stock -= $quantity;
+
+            //adding to the sold products
+            $product->sold += $quantity;
             $product->save();
 
             // Add the product to the products array for the command
