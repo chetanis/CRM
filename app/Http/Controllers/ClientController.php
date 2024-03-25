@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\Command;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -85,8 +86,10 @@ class ClientController extends Controller
     public function show(string $id)
     {
         $client = Client::findOrFail($id);
+        $command = Command::where('client_id', $id)->get();
         return view('Client.show', [
-            'client' => $client
+            'client' => $client,
+            'commands' => $command
         ]);
     }
 
