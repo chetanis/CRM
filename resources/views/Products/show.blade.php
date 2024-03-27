@@ -36,7 +36,7 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
                     <li class="breadcrumb-item">Gestion des Produits</li>
-                    <li class="breadcrumb-item active">Produit</li>
+                    <li class="breadcrumb-item active">Produit {{$product->id}}</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
