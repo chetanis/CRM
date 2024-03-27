@@ -16,9 +16,16 @@ class CommandController extends Controller
      */
     public function index()
     {
-        //getting all the commands
-        $commands = Command::latest()->paginate(10);
-        return view('commands.index', compact('commands'));
+        //if the user is an admin or superuser, show all commands
+        if (auth()->user()->privilege === 'admin' || auth()->user()->privilege === 'superuser') {
+
+            $commands = Command::latest()->paginate(10);
+            return view('commands.index', compact('commands'));
+        }else{
+            //if the user is a regular user, show only the commands assigned to them
+            $commands = Command::where('user_id', Auth::id())->latest()->paginate(10);
+            return view('commands.index', compact('commands'));
+        }
     }
 
     /**
@@ -43,30 +50,30 @@ class CommandController extends Controller
             'products.*.name' => 'required|string',
             'products.*.quantity' => 'required|integer|min:1',
         ]);
-        
+
         $totalPrice = 0;
         $productsArray = [];
         $products = $request->input('products');
         foreach ($products as $productData) {
             $quantity = $productData['quantity'];
-            
+
             //getting the product 
             $productName = $productData['name'];
             $product = Product::where('name', $productName)->first();
-            
+
             //checking if the product is available in stock
             if ($product->current_stock < $quantity) {
                 return response()->json(['error' => "La quantité de " . $productName . " n'est pas disponible en stock"]);
             }
             $totalPrice += $quantity * $product->price;
-            
+
             // Reduce the stock of the product
             $product->current_stock -= $quantity;
-            
+
             //adding to the sold products
             $product->sold += $quantity;
             $product->save();
-            
+
             // Add the product to the products array for the command
             $productsArray[] = [
                 'id' => $product->id,
@@ -114,7 +121,7 @@ class CommandController extends Controller
                 ];
             }
         }
-        return view('commands.show', compact('command','productsWithQuantities'));
+        return view('commands.show', compact('command', 'productsWithQuantities'));
     }
 
     /**
