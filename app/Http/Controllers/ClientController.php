@@ -14,10 +14,20 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $clients = Client::latest()->paginate(10);
-        return view('Client.index', [
-            'clients' => $clients
-        ]);
+        //if the user is an admin or superuser, show all clients
+        if (auth()->user()->privilege === 'admin' || auth()->user()->privilege === 'superuser') {
+            $clients = Client::latest()->paginate(10);
+            return view('Client.index', [
+                'clients' => $clients
+            ]);
+        } else {
+            //if the user is a regular user, show only the clients assigned to them
+            $clients = Client::where('assigned_to', Auth::id())->latest()->paginate(10);
+
+            return view('Client.index', [
+                'clients' => $clients
+            ]);
+        }
     }
 
     /**
