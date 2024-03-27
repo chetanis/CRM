@@ -93,6 +93,9 @@ Route::post('/add-command', [CommandController::class,'store'])->name('commands.
 //all commands
 Route::get('/commands', [CommandController::class, 'index'])->name('commands.index');
 
+//show command
+Route::get('/commands/{command}', [CommandController::class, 'show']);
+
 //------- other routes ----------//
 // show home page
 Route::get('/dashboard',function () {

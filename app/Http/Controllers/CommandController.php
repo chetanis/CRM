@@ -43,7 +43,7 @@ class CommandController extends Controller
             'products.*.quantity' => 'required|integer|min:1',
         ]);
         $command = new Command();
-        
+
         $client = Client::find($request->client);
         $command->client()->associate($client);
 
@@ -58,8 +58,8 @@ class CommandController extends Controller
             $product = Product::where('name', $productName)->first();
 
             //checking if the product is available in stock
-            if($product->current_stock < $quantity){
-                return response()->json(['error' => "La quantité de ".$productName." n'est pas disponible en stock"]);
+            if ($product->current_stock < $quantity) {
+                return response()->json(['error' => "La quantité de " . $productName . " n'est pas disponible en stock"]);
             }
             $totalPrice += $quantity * $product->price;
 
@@ -80,10 +80,9 @@ class CommandController extends Controller
         $command->type = 'pending';
         $command->products = $productsArray;
         $command->save();
-        
+
         Session::flash('success', 'Commande ajoutée avec succès');
         return response()->json(['success' => true]);
-
     }
 
     /**
@@ -91,7 +90,29 @@ class CommandController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // getting the command
+        $command = Command::find($id);
+
+        //getting the products
+        $productsData = $command->products;
+        // Get the product IDs from the productsData array
+        $productIds = array_column($productsData, 'id');
+
+        // Fetch the products from the database based on the product IDs
+        $products = Product::whereIn('id', $productIds)->get();
+        $productsWithQuantities = [];
+        foreach ($productsData as $productData) {
+            $productId = $productData['id'];
+            $quantity = $productData['quantity'];
+            $product = $products->where('id', $productId)->first();
+            if ($product) {
+                $productsWithQuantities[] = [
+                    'product' => $product,
+                    'quantity' => $quantity
+                ];
+            }
+        }
+        return view('commands.show', compact('command','productsWithQuantities'));
     }
 
     /**

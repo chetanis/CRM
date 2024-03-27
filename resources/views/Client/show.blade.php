@@ -51,7 +51,7 @@
                             <ul class="nav nav-tabs nav-tabs-bordered">
 
                                 <li class="nav-item">
-                                    <button class="nav-link " data-bs-toggle="tab"
+                                    <button class="nav-link active" data-bs-toggle="tab"
                                         data-bs-target="#profile-overview">Overview</button>
                                 </li>
 
@@ -61,14 +61,14 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <button class="nav-link active" data-bs-toggle="tab"
+                                    <button class="nav-link " data-bs-toggle="tab"
                                         data-bs-target="#profile-historique">Historique</button>
                                 </li>
 
                             </ul>
                             <div class="tab-content pt-2">
                                 {{-- Show client details --}}
-                                <div class="tab-pane fade  profile-overview" id="profile-overview">
+                                <div class="tab-pane fade show active profile-overview" id="profile-overview">
                                     <h5 class="card-title">Profile Details</h5>
 
                                     <div class="row">
@@ -306,7 +306,7 @@
 
                                 </div>
 
-                                <div class="tab-pane fade show active profile-historique pt-3"
+                                <div class="tab-pane fade profile-historique pt-3"
                                     id="profile-historique">
                                     {{-- check if the there are commands or no --}}
                                     @if ($commands->count() == 0)
@@ -350,7 +350,7 @@
                                                         @else
                                                             <td><span class="badge bg-danger">Annulé</span></td>
                                                         @endif
-                                                        <td><button {{--onclick="window.location.href='/clients/{{$client->id}}'"--}} type="button" class="btn btn-outline-primary btn-sm">Consulter</button></td>
+                                                        <td><button onclick="window.location.href='/commands/{{ $command->id }}'" type="button" class="btn btn-outline-primary btn-sm">Consulter</button></td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
