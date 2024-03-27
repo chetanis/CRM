@@ -6,6 +6,7 @@ use App\Models\Client;
 use App\Models\Command;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class CommandController extends Controller
@@ -42,40 +43,41 @@ class CommandController extends Controller
             'products.*.name' => 'required|string',
             'products.*.quantity' => 'required|integer|min:1',
         ]);
-        $command = new Command();
-
-        $client = Client::find($request->client);
-        $command->client()->associate($client);
-
+        
         $totalPrice = 0;
         $productsArray = [];
         $products = $request->input('products');
         foreach ($products as $productData) {
             $quantity = $productData['quantity'];
-
+            
             //getting the product 
             $productName = $productData['name'];
             $product = Product::where('name', $productName)->first();
-
+            
             //checking if the product is available in stock
             if ($product->current_stock < $quantity) {
                 return response()->json(['error' => "La quantité de " . $productName . " n'est pas disponible en stock"]);
             }
             $totalPrice += $quantity * $product->price;
-
+            
             // Reduce the stock of the product
             $product->current_stock -= $quantity;
-
+            
             //adding to the sold products
             $product->sold += $quantity;
             $product->save();
-
+            
             // Add the product to the products array for the command
             $productsArray[] = [
                 'id' => $product->id,
                 'quantity' => $quantity,
             ];
         }
+        $command = new Command();
+
+        $client = Client::find($request->client);
+        $command->client()->associate($client);
+        $command->user_id = Auth::id();
         $command->total_price = $totalPrice;
         $command->type = 'pending';
         $command->products = $productsArray;

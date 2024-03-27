@@ -11,6 +11,7 @@ class Command extends Model
 
     protected $fillable = [
         'client_id',
+        'user_id',
         'products',
         'total_price',
         'type',
@@ -24,5 +25,9 @@ class Command extends Model
     public function client()
     {
         return $this->belongsTo(Client::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
