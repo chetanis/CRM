@@ -96,6 +96,11 @@ Route::get('/commands', [CommandController::class, 'index'])->name('commands.ind
 //show command
 Route::get('/commands/{command}', [CommandController::class, 'show']);
 
+//confirm the command
+Route::put('/commands/{command}/confirm', [CommandController::class, 'confirm'])->name('commands.confirm');
+
+//cancel the command
+Route::put('/commands/{command}/cancel', [CommandController::class, 'cancel'])->name('commands.cancel');
 //------- other routes ----------//
 // show home page
 Route::get('/dashboard',function () {

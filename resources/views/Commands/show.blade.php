@@ -62,46 +62,70 @@
                 <div class="col-md-6">
                     <h4>Details du client</h4>
                     <hr>
-                    <p>Nom comple : {{ $command->client->last_name }} {{$command->client->first_name}} </p>
+                    <p>Nom comple : {{ $command->client->last_name }} {{ $command->client->first_name }} </p>
                     <p>Email : {{ $command->client->email }}</p>
-                    <p>Téléphone : {{$command->client->phone_number}}</p>
-                    <p>Adresse : {{$command->client->address}}</p>
+                    <p>Téléphone : {{ $command->client->phone_number }}</p>
+                    <p>Adresse : {{ $command->client->address }}</p>
                 </div>
             </div>
             {{-- product list --}}
-                <div class="row mt-3">
-                    <div class="col-md-12">
-                        <h4>Liste des produits</h4>
-                        <hr>
-                        <table class="table">
-                            <thead>
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <h4>Liste des produits</h4>
+                    <hr>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Nom</th>
+                                <th scope="col">Prix unitaire</th>
+                                <th scope="col">Quantité</th>
+                                <th scope="col">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($productsWithQuantities as $productWithQuantity)
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Nom</th>
-                                    <th scope="col">Prix unitaire</th>
-                                    <th scope="col">Quantité</th>
-                                    <th scope="col">Total</th>
+                                    <th scope="row">{{ $loop->iteration }}</th>
+                                    <td>{{ $productWithQuantity['product']->name }}</td>
+                                    <td>{{ $productWithQuantity['product']->price }} DA</td>
+                                    <td>{{ $productWithQuantity['quantity'] }}</td>
+                                    <td>{{ $productWithQuantity['product']->price * $productWithQuantity['quantity'] }}
+                                        DA</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($productsWithQuantities as $productWithQuantity)
-                                    <tr>
-                                        <th scope="row">{{ $loop->iteration }}</th>
-                                        <td>{{ $productWithQuantity['product']->name }}</td>
-                                        <td>{{ $productWithQuantity['product']->price }} DA</td>
-                                        <td>{{ $productWithQuantity['quantity'] }}</td>
-                                        <td>{{ $productWithQuantity['product']->price * $productWithQuantity['quantity'] }} DA</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        <div class="row">
-                            <div class="col-md-6 ms-2 mt-3">
-                                <p class><b>Prix total :</b> {{ $command->total_price }} DA</p>
-                            </div>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    <div class="row">
+                        <div class="col-md-6 ms-2 mt-3">
+                            <p class><b>Prix total :</b> {{ $command->total_price }} DA</p>
                         </div>
                     </div>
-                </div>  
+                    @if ($command->type == 'pending')
+                        <div class="row">
+                            <div class="col-3">
+                                <form action="/commands/{{$command->id}}/confirm" method="POST">
+                                    @csrf
+                                    @method('put')
+                                    <button type="submit" class="btn btn-primary">Confirmer la commande</button>
+                                </form>
+                            </div>
+                            <div class="col-3">
+                                <form action="/commands/{{$command->id}}/cancel" method="POST">
+                                    @csrf
+                                    @method('put')
+                                    <button type="submit" class="btn btn-danger">Annuler la commande</button>
+                                </form>
+                            </div>
+                            <div class="col text-end"> <!-- Align the form to the right -->
+                                <form action="">
+                                    <!-- Another form content here -->
+                                </form>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
         </section>
 
     </main><!-- End #main -->

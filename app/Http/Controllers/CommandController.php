@@ -147,4 +147,22 @@ class CommandController extends Controller
     {
         //
     }
+
+    /**
+     * Confirm the command
+     */
+    public function confirm(Request $request, Command $command){
+        $command->update(['type' => 'done']);
+        Session::flash('success', 'Commande confirmée avec succès');
+        return redirect()->back();
+    }
+
+    /**
+     * Cancel the command
+     */
+    public function cancel(Request $request, Command $command){
+        $command->update(['type' => 'cancelled']);
+        Session::flash('success', 'Commande annulée avec succès');
+        return redirect()->back();
+    }
 }
