@@ -107,25 +107,9 @@ class CommandController extends Controller
         // getting the command
         $command = Command::find($id);
 
-        //getting the products
-        $productsData = $command->products;
-        // Get the product IDs from the productsData array
-        $productIds = array_column($productsData, 'id');
-
-        // Fetch the products from the database based on the product IDs
-        $products = Product::whereIn('id', $productIds)->get();
-        $productsWithQuantities = [];
-        foreach ($productsData as $productData) {
-            $productId = $productData['id'];
-            $quantity = $productData['quantity'];
-            $product = $products->where('id', $productId)->first();
-            if ($product) {
-                $productsWithQuantities[] = [
-                    'product' => $product,
-                    'quantity' => $quantity
-                ];
-            }
-        }
+        // getting the products with quantities
+        $productsWithQuantities = $command->productsAndQuantities;
+        
         if ($command->type === 'done'){
             $sale = Sale::where('command_id', $command->id)->first();
             return view('commands.show', compact('command', 'productsWithQuantities', 'sale'));

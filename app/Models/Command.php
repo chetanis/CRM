@@ -30,4 +30,30 @@ class Command extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    // Define a method to retrieve products with quantities
+    public function getProductsAndQuantitiesAttribute()
+    {
+        $productsData = $this->products;
+        $productIds = array_column($productsData, 'id');
+
+        // Fetch the products from the database based on the product IDs
+        $products = Product::whereIn('id', $productIds)->get();
+        $productsWithQuantities = [];
+
+        foreach ($productsData as $productData) {
+            $productId = $productData['id'];
+            $quantity = $productData['quantity'];
+            $product = $products->where('id', $productId)->first();
+
+            if ($product) {
+                $productsWithQuantities[] = [
+                    'product' => $product,
+                    'quantity' => $quantity
+                ];
+            }
+        }
+
+        return $productsWithQuantities;
+    }
 }
