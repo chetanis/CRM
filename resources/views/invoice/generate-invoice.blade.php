@@ -166,7 +166,7 @@
             </tr>
             <tr>
                 <td>Méthode de paiement:</td>
-                <td>Cash on Delivery</td>
+                <td>Paiement à la livraison</td>
 
                 <td>Téléphone:</td>
                 <td>{{ $client->phone_number }}</td>
@@ -201,12 +201,16 @@
                 <tr>
                     <td width="10%">{{ $loop->iteration }}</td>
                     <td>{{ $productWithQuantity['product']->name }}</td>
-                    <td width="15%">${{ $productWithQuantity['product']->price }}</td>
+                    <td width="15%">{{ $productWithQuantity['product']->price }}</td>
                     <td width="20%">{{ $productWithQuantity['quantity'] }}</td>
                     <td width="20%" class="fw-bold">
-                        ${{ $productWithQuantity['product']->price * $productWithQuantity['quantity'] }}</td>
+                        {{ $productWithQuantity['product']->price * $productWithQuantity['quantity'] }}</td>
                 </tr>
             @endforeach
+            <tr style="height: 20px;">
+                <td colspan="3" class="w-left-bor w-bot-bor w-right-bor"></td>
+                <td colspan="2" class="w-right-bor"></td>
+            </tr>
             <tr>
                 <td colspan="3" class="w-top-bor w-bot-bor w-left-bor "></td>
                 <td colspan="1">DZD HT:</td>
