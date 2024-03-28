@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Sale;
 use App\Models\Client;
 use App\Models\Command;
 use App\Models\Product;
@@ -121,6 +122,10 @@ class CommandController extends Controller
                 ];
             }
         }
+        if ($command->type === 'done'){
+            $sale = Sale::where('command_id', $command->id)->first();
+            return view('commands.show', compact('command', 'productsWithQuantities', 'sale'));
+        }
         return view('commands.show', compact('command', 'productsWithQuantities'));
     }
 
@@ -153,6 +158,10 @@ class CommandController extends Controller
      */
     public function confirm(Request $request, Command $command){
         $command->update(['type' => 'done']);
+        $sale = new Sale();
+        $sale->command()->associate($command);
+        $sale->user_id = Auth::id();
+        $sale->save();
         Session::flash('success', 'Commande confirmée avec succès');
         return redirect()->back();
     }

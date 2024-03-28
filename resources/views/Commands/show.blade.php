@@ -68,6 +68,18 @@
                     <p>Adresse : {{ $command->client->address }}</p>
                 </div>
             </div>
+            {{-- invoice div --}}
+            @if ($command->type == 'done')
+            <div class="row">
+                <div class="col-md-6">
+                    <p>Date de confirmation: {{ $sale->created_at->format('d/m/Y \à H:i') }}</p>
+                </div>
+                <div class="col-md-6">
+                    <a target="_blank" class="btn btn-warning me-2">Afficher la facture</a>
+                    <a class="btn btn-primary">Télécharger la facture</a>
+                </div>
+            </div>
+            @endif
             {{-- product list --}}
             <div class="row mt-3">
                 <div class="col-md-12">
