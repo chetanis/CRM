@@ -75,8 +75,8 @@
                     <p>Date de confirmation: {{ $sale->created_at->format('d/m/Y \à H:i') }}</p>
                 </div>
                 <div class="col-md-6">
-                    <a target="_blank" class="btn btn-warning me-2">Afficher la facture</a>
-                    <a class="btn btn-primary">Télécharger la facture</a>
+                    <a href="/sales/{{$sale->id}}" target="_blank" class="btn btn-warning me-2">Afficher la facture</a>
+                    <a href="/sales/{{$sale->id}}/facture" class="btn btn-primary">Télécharger la facture</a>
                 </div>
             </div>
             @endif

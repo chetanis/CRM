@@ -101,6 +101,13 @@ Route::put('/commands/{command}/confirm', [CommandController::class, 'confirm'])
 
 //cancel the command
 Route::put('/commands/{command}/cancel', [CommandController::class, 'cancel'])->name('commands.cancel');
+
+//show invoice
+Route::get('/sales/{sale}/', [CommandController::class, 'viewInvoice']);
+
+//download invoice
+Route::get('/sales/{sale}/facture', [CommandController::class, 'downloadInvoice']);
+
 //------- other routes ----------//
 // show home page
 Route::get('/dashboard',function () {

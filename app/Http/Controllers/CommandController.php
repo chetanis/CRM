@@ -7,8 +7,12 @@ use App\Models\Client;
 use App\Models\Command;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Session;
+
 
 class CommandController extends Controller
 {
@@ -173,5 +177,20 @@ class CommandController extends Controller
         $command->update(['type' => 'cancelled']);
         Session::flash('success', 'Commande annulée avec succès');
         return redirect()->back();
+    }
+
+    //view invoice
+    public function viewInvoice(Request $request, Sale $sale){
+        $pdf = App::make('dompdf.wrapper');
+        $html = View::make('invoice.generate-invoice', ['sale' => $sale])->render();
+        $pdf->loadHTML($html);
+        return $pdf->stream();
+    }
+
+    //download invoice
+    public function downloadInvoice(Request $request, Sale $sale){
+        $data = ['sale'=>$sale];
+        $pdf = Pdf::loadView('invoice.generate-invoice', $data);
+    return $pdf->download('facture N° '.$sale->id.'-'.$sale->created_at->format('Y').'.pdf');
     }
 }
