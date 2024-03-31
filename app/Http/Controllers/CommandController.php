@@ -24,13 +24,13 @@ class CommandController extends Controller
         //if the user is an admin or superuser, show all commands
         if (auth()->user()->privilege === 'admin' || auth()->user()->privilege === 'superuser') {
 
-            $commands = Command::latest()->paginate(10);
-            return view('commands.index', compact('commands'));
+            $commands = Command::latest()->filter(request(['type']))->paginate(10);
         } else {
             //if the user is a regular user, show only the commands assigned to them
-            $commands = Command::where('user_id', Auth::id())->latest()->paginate(10);
-            return view('commands.index', compact('commands'));
+            $commands = Command::where('user_id', Auth::id())->latest()->filter(request(['type']))->paginate(10);
         }
+        $filter = request(['type'][0]);
+        return view('commands.index', compact('commands', 'filter'));
     }
 
     /**

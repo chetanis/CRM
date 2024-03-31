@@ -46,7 +46,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="search-bar">
-                        <form class="d-flex align-items-center" {{--action="{{ route('search-client') }}"--}} method="GET">
+                        <form class="d-flex align-items-center" {{-- action="{{ route('search-client') }}" --}} method="GET">
                             <input type="text" name="search" class="form-control me-1"
                                 placeholder="Chercher une commande">
                             <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i></button>
@@ -55,7 +55,13 @@
                 </div>
             </div>
         </div>
+        <div class="col mb-3 ms-2">
 
+            @if (!$filter) <a href="/commands" class="btn btn-primary btn-sm">Tous</a> @else <a href="/commands" class="btn btn-outline-primary btn-sm">Tous</a> @endif
+            @if ($filter=='done') <a href="/commands?type=done" class="btn btn-success btn-sm">Confirmé</a> @else <a href="/commands?type=done" class="btn btn-outline-success btn-sm">Confirmé</a> @endif
+            @if ($filter=='cancelled') <a href="/commands?type=cancelled" class="btn btn-danger btn-sm">Annulé</a> @else <a href="/commands?type=cancelled" class="btn btn-outline-danger btn-sm">Annulé</a> @endif
+            @if ($filter=='pending') <a href="/commands?type=pending" class="btn btn-warning btn-sm">En attente</a> @else <a href="/commands?type=pending" class="btn btn-outline-warning btn-sm">En attente</a> @endif
+        </div>
         <table class="table">
             <thead>
                 <tr>

@@ -56,4 +56,11 @@ class Command extends Model
 
         return $productsWithQuantities;
     }
+
+    public function scopeFilter($query, array $filters)
+    {
+        if($filters['type'] ?? false){
+            $query->where('type', $filters['type']);
+        }
+    }
 }
