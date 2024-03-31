@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Facades\Auth;
 class Client extends Model
 {
     use HasFactory;
@@ -31,5 +31,16 @@ class Client extends Model
     public function assignedTo()
     {
         return $this->belongsTo(User::class, 'assigned_to');
+    }
+
+    public static function getAccessibleClients()
+    {
+        // If the user is an admin or superuser, show all clients
+        if (Auth::user()->privilege === 'admin' || Auth::user()->privilege === 'superuser') {
+            return self::latest();
+        } else {
+            // If the user is a regular user, show only the clients assigned to them
+            return self::where('assigned_to', Auth::id())->latest();
+        }
     }
 }

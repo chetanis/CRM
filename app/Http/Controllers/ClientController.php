@@ -13,15 +13,10 @@ class ClientController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        //if the user is an admin or superuser, show all clients
-        if (auth()->user()->privilege === 'admin' || auth()->user()->privilege === 'superuser') {
-            $clients = Client::latest()->paginate(10);
-        } else {
-            //if the user is a regular user, show only the clients assigned to them
-            $clients = Client::where('assigned_to', Auth::id())->latest()->paginate(10);
-
-        }
+    {   
+        //get the clients that the user can access
+        $clients = Client::getAccessibleClients()->paginate(10);
+        
         return view('Client.index', [
             'clients' => $clients
         ]);
@@ -172,13 +167,8 @@ class ClientController extends Controller
     {
         $search = $request->input('search');
 
-        // If the user is an admin or superuser, show all clients
-    if (auth()->user()->privilege === 'admin' || auth()->user()->privilege === 'superuser') {
-        $clients = Client::latest();
-    } else {
-        // If the user is a regular user, show only the clients assigned to them
-        $clients = Client::where('assigned_to', Auth::id())->latest();
-    }
+        //get the clients that the user can access
+        $clients = Client::getAccessibleClients();
 
         // Search by name, email, or phone number
         $clients->where(function ($query) use ($search) {

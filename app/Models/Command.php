@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Command extends Model
 {
@@ -57,10 +58,23 @@ class Command extends Model
         return $productsWithQuantities;
     }
 
+    // Define a scope to filter commands by type
     public function scopeFilter($query, array $filters)
     {
         if($filters['type'] ?? false){
             $query->where('type', $filters['type']);
         }
     }
+
+    public static function getAccessibleCommands()
+    {
+        // If the user is an admin or superuser, show all commands
+        if (Auth::user()->privilege === 'admin' || Auth::user()->privilege === 'superuser') {
+            return self::latest();
+        } else {
+            // If the user is a regular user, show only the commands created by them
+            return self::where('user_id', Auth::id())->latest();
+        }
+    }
+
 }
