@@ -98,7 +98,7 @@ class ClientController extends Controller
         $client = Client::findOrFail($id);
         $commands = Command::where('client_id', $id)->get();
         $countPending = $commands->where('type', 'pending')->count();
-        $countConfirmed = $commands->where('type', 'confirmed')->count();
+        $countConfirmed = $commands->where('type', 'done')->count();
         $countCancelled = $commands->where('type', 'cancelled')->count();
 
 

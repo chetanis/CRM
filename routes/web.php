@@ -102,6 +102,9 @@ Route::put('/commands/{command}/confirm', [CommandController::class, 'confirm'])
 //cancel the command
 Route::put('/commands/{command}/cancel', [CommandController::class, 'cancel'])->name('commands.cancel');
 
+//delete a command
+Route::delete('/commands/{command}', [CommandController::class, 'destroy']);
+
 //show invoice
 Route::get('/sales/{sale}/', [CommandController::class, 'viewInvoice']);
 

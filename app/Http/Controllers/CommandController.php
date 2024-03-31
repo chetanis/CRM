@@ -26,7 +26,7 @@ class CommandController extends Controller
 
             $commands = Command::latest()->paginate(10);
             return view('commands.index', compact('commands'));
-        }else{
+        } else {
             //if the user is a regular user, show only the commands assigned to them
             $commands = Command::where('user_id', Auth::id())->latest()->paginate(10);
             return view('commands.index', compact('commands'));
@@ -106,11 +106,13 @@ class CommandController extends Controller
     {
         // getting the command
         $command = Command::find($id);
+        // Store the previous URL in the session
+        session()->put('previous_url', url()->previous());
 
         // getting the products with quantities
         $productsWithQuantities = $command->productsAndQuantities;
-        
-        if ($command->type === 'done'){
+
+        if ($command->type === 'done') {
             $sale = Sale::where('command_id', $command->id)->first();
             return view('commands.show', compact('command', 'productsWithQuantities', 'sale'));
         }
@@ -134,17 +136,22 @@ class CommandController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * delete the command 
      */
     public function destroy(string $id)
     {
-        //
+
+        $command = Command::find($id);
+        $command->delete();
+        Session::flash('success', "Commande supprimée avec succès.");
+        return redirect()->intended(session()->pull('previous_url', '/'));
     }
 
     /**
      * Confirm the command
      */
-    public function confirm(Request $request, Command $command){
+    public function confirm(Request $request, Command $command)
+    {
         $command->update(['type' => 'done']);
         $sale = new Sale();
         $sale->command()->associate($command);
@@ -157,14 +164,16 @@ class CommandController extends Controller
     /**
      * Cancel the command
      */
-    public function cancel(Request $request, Command $command){
+    public function cancel(Request $request, Command $command)
+    {
         $command->update(['type' => 'cancelled']);
         Session::flash('success', 'Commande annulée avec succès');
         return redirect()->back();
     }
 
     //view invoice
-    public function viewInvoice(Request $request, Sale $sale){
+    public function viewInvoice(Request $request, Sale $sale)
+    {
         $pdf = App::make('dompdf.wrapper');
         $html = View::make('invoice.generate-invoice', ['sale' => $sale])->render();
         $pdf->loadHTML($html);
@@ -172,9 +181,10 @@ class CommandController extends Controller
     }
 
     //download invoice
-    public function downloadInvoice(Request $request, Sale $sale){
-        $data = ['sale'=>$sale];
+    public function downloadInvoice(Request $request, Sale $sale)
+    {
+        $data = ['sale' => $sale];
         $pdf = Pdf::loadView('invoice.generate-invoice', $data);
-    return $pdf->download('facture N° '.$sale->id.'-'.$sale->created_at->format('Y').'.pdf');
+        return $pdf->download('facture N° ' . $sale->id . '-' . $sale->created_at->format('Y') . '.pdf');
     }
 }

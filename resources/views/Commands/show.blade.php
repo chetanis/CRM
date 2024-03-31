@@ -130,8 +130,10 @@
                                 </form>
                             </div>
                             <div class="col text-end"> <!-- Align the form to the right -->
-                                <form action="">
-                                    <!-- Another form content here -->
+                                <form action="/commands/{{$command->id}}" method="POST">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
                                 </form>
                             </div>
                         </div>
