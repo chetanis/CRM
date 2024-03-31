@@ -17,17 +17,14 @@ class ClientController extends Controller
         //if the user is an admin or superuser, show all clients
         if (auth()->user()->privilege === 'admin' || auth()->user()->privilege === 'superuser') {
             $clients = Client::latest()->paginate(10);
-            return view('Client.index', [
-                'clients' => $clients
-            ]);
         } else {
             //if the user is a regular user, show only the clients assigned to them
             $clients = Client::where('assigned_to', Auth::id())->latest()->paginate(10);
 
-            return view('Client.index', [
-                'clients' => $clients
-            ]);
         }
+        return view('Client.index', [
+            'clients' => $clients
+        ]);
     }
 
     /**
@@ -175,13 +172,22 @@ class ClientController extends Controller
     {
         $search = $request->input('search');
 
-        // Search by name, email, or phone number
-        $clients = Client::where('first_name', 'LIKE', "%{$search}%")
-            ->orWhere('last_name', 'LIKE', "%{$search}%")
-            ->orWhere('email', 'LIKE', "%{$search}%")
-            ->orWhere('phone_number', 'LIKE', "%{$search}%")
-            ->paginate(10);
+        // If the user is an admin or superuser, show all clients
+    if (auth()->user()->privilege === 'admin' || auth()->user()->privilege === 'superuser') {
+        $clients = Client::latest();
+    } else {
+        // If the user is a regular user, show only the clients assigned to them
+        $clients = Client::where('assigned_to', Auth::id())->latest();
+    }
 
+        // Search by name, email, or phone number
+        $clients->where(function ($query) use ($search) {
+            $query->where('first_name', 'LIKE', "%{$search}%")
+                ->orWhere('last_name', 'LIKE', "%{$search}%")
+                ->orWhere('email', 'LIKE', "%{$search}%")
+                ->orWhere('phone_number', 'LIKE', "%{$search}%");
+        });
+        $clients = $clients->paginate(10);
         return view('Client.index', [
             'clients' => $clients
         ]);
