@@ -126,7 +126,7 @@
     $client = $command->client;
     $productsWithQuantities = $command->productsAndQuantities;
     $tva = round(0.19 * $command->total_price, 2);
-    $timbre = round(0.01 * $command->total_price, 2);
+    $timbre = round(0.01 * ($command->total_price + $tva), 2);
     $total = $command->total_price + $tva + $timbre;
     ?>
 
