@@ -75,7 +75,8 @@
         .text-start {
             text-align: left;
         }
-        .company{
+
+        .company {
             text-align: left;
             margin-left: 10px;
         }
@@ -105,17 +106,34 @@
             color: #fff;
         }
 
-        .w-top-bor{
-            border-top: 1px solid white ;
+        .w-top-bor {
+            border-top: 1px solid white;
         }
-        .w-left-bor{
-            border-left: 1px solid white ;
+
+        .w-left-bor {
+            border-left: 1px solid white;
         }
-        .w-bot-bor{
-            border-bottom: 1px solid white ;
+
+        .w-bot-bor {
+            border-bottom: 1px solid white;
         }
-        .w-right-bor{
-            border-right: 1px solid white ;
+
+        .w-right-bor {
+            border-right: 1px solid white;
+        }
+
+        .main_logo {
+            width: 70px;
+            height: 70px;
+            margin-left: 20px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .center2 {
+            display: inline-block;
+            vertical-align: middle;
+            text-align: left;
+            margin-left: 10px;
         }
     </style>
 </head>
@@ -133,8 +151,9 @@
     <table class="order-details">
         <thead>
             <tr>
-                <th width="50%" colspan="2">
-                    <h2 class="text-start company">Nom société</h2>
+                <th style="margin-top: 10px;" width="50%" colspan="2">
+                        <img class="main_logo" src="imgs/icons/djezzy.png" alt="Logo">
+                        <h2  class="text-start company center2">Nom société</h2>
                 </th>
                 <th width="50%" colspan="2" class="text-end company-data">
                     <span>Facture N° {{ $sale->id }}</span> <br>
@@ -237,7 +256,7 @@
     </table>
 
     <br>
-    <p >Mode de règlement: espèce</p>
+    <p>Mode de règlement: espèce</p>
 
 </body>
 
