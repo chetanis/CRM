@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CommandController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\ProductController;
 
 /*
@@ -113,9 +114,7 @@ Route::get('/sales/{sale}/facture', [CommandController::class, 'downloadInvoice'
 
 //------- other routes ----------//
 // show home page
-Route::get('/dashboard',function () {
-    return view('index');
-})->name('dashboard')->middleware('auth');
+Route::get('/dashboard',[Controller::class,'dashboard'])->name('dashboard')->middleware('auth');
 
 
 // Catch-all route to redirect to the home page
