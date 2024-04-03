@@ -105,6 +105,10 @@
                     <label for="leads" class="form-label">Lead source</label>
                     <input name="lead" type="text" class="form-control" id="leads">
                 </div>
+                <div class="col-md-6">
+                    <label for="code_fiscal" class="form-label">Code fiscal</label>
+                    <input name="code_fiscal" type="text" class="form-control" id="code_fiscal">
+                </div>
                 <div class="col-md-12">
                     <label for="notes" class="col-sm-2 col-form-label">Notes</label>
                     <div class="col-sm-10">

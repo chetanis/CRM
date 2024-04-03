@@ -51,6 +51,7 @@ class ClientController extends Controller
             'other' => 'nullable|string',
             'lead' => 'nullable|string',
             'notes' => 'nullable|string',
+            'code_fiscal' => 'nullable|string',
         ]);
 
         // Create a new client instance
@@ -73,6 +74,7 @@ class ClientController extends Controller
         ];
         $client->lead_source = $request->input('lead');
         $client->notes = $request->input('notes');
+        $client->code_fiscal = $request->input('code_fiscal');
         $client->assigned_to = Auth::id();
 
         // Save the client to the database

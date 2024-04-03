@@ -135,6 +135,11 @@
                                         </div>
                                     </div>
                                     <div class="row">
+                                        <div class="col-lg-3 col-md-4 label">Code fiscal</div>
+                                        <div class="col-lg-9 col-md-8">
+                                            {{ empty($client->code_fiscal) ? '...' : $client->code_fiscal }}</div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-lg-3 col-md-4 label">Lead source</div>
                                         <div class="col-lg-9 col-md-8">
                                             {{ empty($client->lead_source) ? '...' : $client->lead_source }}</div>

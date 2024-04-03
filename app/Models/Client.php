@@ -20,6 +20,7 @@ class Client extends Model
         'lead_source',
         'notes',
         'social_media_profiles',
+        'code_fiscal',
         'assigned_to',
     ];
 
