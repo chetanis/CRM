@@ -49,6 +49,7 @@ class CommandController extends Controller
             'products' => 'required|array',
             'products.*.name' => 'required|string',
             'products.*.quantity' => 'required|integer|min:1',
+            'payment_method' => 'required|string',
         ]);
 
         $totalPrice = 0;
@@ -88,6 +89,7 @@ class CommandController extends Controller
         $command->total_price = $totalPrice;
         $command->type = 'pending';
         $command->products = $productsArray;
+        $command->payment_method = $request->payment_method;
         $command->save();
 
         Session::flash('success', 'Commande ajoutée avec succès');

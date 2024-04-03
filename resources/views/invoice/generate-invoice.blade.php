@@ -129,6 +129,7 @@
             display: inline-block;
             vertical-align: middle;
         }
+
         .center2 {
             display: inline-block;
             vertical-align: middle;
@@ -144,16 +145,19 @@
     $client = $command->client;
     $productsWithQuantities = $command->productsAndQuantities;
     $tva = round(0.19 * $command->total_price, 2);
-    $timbre = round(0.01 * ($command->total_price + $tva), 2);
-    $total = $command->total_price + $tva + $timbre;
+    $total = $command->total_price + $tva;
+    if ($command->payment_method == 'Espèce') {
+        $timbre = round(0.01 * $total, 2);
+        $total += $timbre;
+    }
     ?>
 
     <table class="order-details">
         <thead>
             <tr>
                 <th style="margin-top: 10px;" width="50%" colspan="2">
-                        <img class="main_logo" src="imgs/icons/djezzy.png" alt="Logo">
-                        <h2  class="text-start company center2">Nom société</h2>
+                    <img class="main_logo" src="imgs/icons/djezzy.png" alt="Logo">
+                    <h2 class="text-start company center2">Nom société</h2>
                 </th>
                 <th width="50%" colspan="2" class="text-end company-data">
                     <span>Facture N° {{ $sale->id }}</span> <br>
@@ -185,7 +189,7 @@
             </tr>
             <tr>
                 <td>Méthode de paiement:</td>
-                <td>Paiement à la livraison</td>
+                <td>{{ $command->payment_method }}</td>
 
                 <td>Téléphone:</td>
                 <td>{{ $client->phone_number }}</td>
@@ -200,7 +204,7 @@
             <tr>
                 <td colspan="2" class="w-left-bor w-bot-bor"></td>
                 <td>Code fiscal</td>
-                <td>{{empty($client->code_fiscal) ? '...' : $client->code_fiscal}}</td>
+                <td>{{ empty($client->code_fiscal) ? '...' : $client->code_fiscal }}</td>
             </tr>
         </tbody>
     </table>
@@ -245,23 +249,23 @@
                 <td colspan="1">TVA 19%:</td>
                 <td colspan="1">{{ $tva }}</td>
             </tr>
-            <tr>
-                <td colspan="2" class="w-top-bor w-bot-bor w-left-bor w-right-bor"></td>
-                <td colspan="1" class="w-left-bor "></td>
-                <td colspan="1">Droit de timbre 1%:</td>
-                <td colspan="1">{{ $timbre }}</td>
-            </tr>
-            <tr>
-                <td colspan="2" class="w-top-bor w-bot-bor w-left-bor"></td>
-                <td colspan="1" class="total-heading">TOTAL DZD</td>
-                <td colspan="1" class="total-heading">TTC</td>
-                <td colspan="1" class="total-heading">{{ $total }}</td>
-            </tr>
+            @if ($command->payment_method == 'Espèce')
+                <tr>
+                    <td colspan="2" class="w-top-bor w-bot-bor w-left-bor w-right-bor"></td>
+                    <td colspan="1" class="w-left-bor "></td>
+                    <td colspan="1">Droit de timbre 1%:</td>
+                    <td colspan="1">{{ $timbre }}</td>
+                </tr>
+            @endif
+                <tr>
+                    <td colspan="2" class="w-top-bor w-bot-bor w-left-bor"></td>
+                    <td colspan="1" class="total-heading">TOTAL DZD</td>
+                    <td colspan="1" class="total-heading">TTC</td>
+                    <td colspan="1" class="total-heading">{{ $total }}</td>
+                </tr>
         </tbody>
     </table>
 
-    <br>
-    <p>Mode de règlement: espèce</p>
 
 </body>
 

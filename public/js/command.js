@@ -3,6 +3,10 @@ document.addEventListener("DOMContentLoaded", function() {
     const quantityInput = document.getElementById('quantity-input');
     const addProductBtn = document.getElementById('add-product-btn');
     const selectedProductsList = document.getElementById('selected-products-list');
+    const payment_method = document.getElementById('payment_method');
+    payment_method.addEventListener('change', function() {
+        calculateTotalPrice();
+    });
 
     addProductBtn.addEventListener('click', function() {
         const productName = productSearchInput.value.trim();
@@ -73,8 +77,17 @@ document.addEventListener("DOMContentLoaded", function() {
                 const price = parseFloat(product.dataset.price);
                 totalPrice += quantity * price;
             });
+            let totalPriceTTC = totalPrice;
+            let tva = totalPrice * 0.19;
+            totalPriceTTC += tva;
+            const payment_method = document.getElementById('payment_method').value;
+            if (payment_method === 'Espèce') {
+                totalPriceTTC = totalPriceTTC*1.01;
+            }
             document.getElementById('total-price').textContent =
-                `Prix total : ${totalPrice.toFixed(2)} DA`;
+                `Prix HT : ${totalPrice.toFixed(2)} DA`;
+            document.getElementById('total-price-ttc').textContent =
+                `Prix TTC : ${totalPriceTTC.toFixed(2)} DA`;
     }
     const submitBtn = document.getElementById('submit-btn');
     submitBtn.addEventListener('click', function() {
@@ -103,6 +116,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const data = {
             client,
             products: products,
+            payment_method: payment_method.value,
         };
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         fetch('/add-command', {

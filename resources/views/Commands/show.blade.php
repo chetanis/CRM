@@ -49,7 +49,7 @@
                     <hr>
                     <p>N° commande : {{ $command->id }}</p>
                     <p>Date de commande : {{ $command->created_at->format('d/m/Y \à H:i') }}</p>
-                    <p>Méthode de paiement : </p>
+                    <p>Méthode de paiement : {{$command->payment_method}} </p>
                     @if ($command->type == 'pending')
                         <p>Etat de la commande : <span class="text-warning">En attente</span></p>
                     @elseif($command->type == 'done')

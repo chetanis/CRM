@@ -16,6 +16,7 @@ class Command extends Model
         'products',
         'total_price',
         'type',
+        'payment_method',
     ];
 
     protected $casts = [

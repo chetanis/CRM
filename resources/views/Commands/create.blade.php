@@ -49,20 +49,33 @@
 
         <div>
             {{-- client --}}
-            <h5>Client</h5>
-            <div class="row align-items-center">
-                <!-- client search input -->
-                <div class="col-md-4">
-                    <input list="clients" type="text" class="form-control" id="client-search"
-                        placeholder="Chercher un client">
-                    <!-- Dropdown list of clients (or search results) -->
-                    <datalist id="clients">
-                        @foreach ($clients as $client)
-                            <option value="{{ $client->phone_number }}" data-id="{{ $client->id }}">
-                                {{ $client->last_name }}
-                                {{ $client->first_name }}</option>
-                        @endforeach
-                    </datalist>
+            <div class="row">
+
+                <div class="col align-items-center">
+                    <h5>Client</h5>
+                    <!-- client search input -->
+                    <div>
+                        <input list="clients" type="text" class="form-control" id="client-search"
+                            placeholder="Chercher un client">
+                        <!-- Dropdown list of clients (or search results) -->
+                        <datalist id="clients">
+                            @foreach ($clients as $client)
+                                <option value="{{ $client->phone_number }}" data-id="{{ $client->id }}">
+                                    {{ $client->last_name }}
+                                    {{ $client->first_name }}</option>
+                            @endforeach
+                        </datalist>
+                    </div>
+                </div>
+                <div class="form-group col">
+                    <h5 for="payment_method">Méthode de paiement</h5>
+                    <!-- Dropdown list of payment methodes -->
+                    <select class="form-control" id="payment_method" name="payment_method">
+                        <option value="Chèque">Chèque</option>
+                        <option value="Virement Bancaire">Virement Bancaire</option>
+                        <option value="Espèce">Espèce</option>
+                        <option value="En ligne">En ligne</option>
+                    </select>
                 </div>
             </div>
 
@@ -101,8 +114,13 @@
             </ul>
         </div>
         <!-- Total price -->
-        <div>
-            <h5 id="total-price" class="mt-3">Prix total : 0 DA</h5>
+        <div class="row">
+            <div class="col">
+                <h5 id="total-price" class="mt-3">Prix HT : 0.00 DA</h5>
+            </div>
+            <div class="col">
+                <h5 id="total-price-ttc" class="mt-3">Prix TTC : 0.00 DA</h5>
+            </div>
         </div>
 
         <div class=" mt-3">
