@@ -32,11 +32,12 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
-            'price' => 'nullable|numeric|regex:/^\d+(\.\d{1,2})?$/',
+            'price' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
             'description' => 'nullable|string',
-            'current_stock' => 'nullable|numeric',
-            'minimum_stock' => 'nullable|numeric',
-            'category' => 'nullable|string'
+            'current_stock' => 'required|numeric',
+            'minimum_stock' => 'required|numeric',
+            'category' => 'required|string',
+            'purchase_price' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/'
         ]);
 
         // Create a new product instance
@@ -76,11 +77,12 @@ class ProductController extends Controller
 
     $request->validate([
         'name' => 'required|string',
-        'price' => 'nullable|numeric|regex:/^\d+(\.\d{1,2})?$/',
+        'price' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
         'description' => 'nullable|string',
-        'current_stock' => 'nullable|numeric',
-        'minimum_stock' => 'nullable|numeric',
-        'category' => 'nullable|string'
+        'current_stock' => 'required|numeric',
+        'minimum_stock' => 'required|numeric',
+        'category' => 'required|string',
+        'purchase_price' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/'
     ]);
 
     try {

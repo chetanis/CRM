@@ -79,6 +79,10 @@
                                         <div class="col-lg-3 col-md-4 label">Prix</div>
                                         <div class="col-lg-9 col-md-8">{{ $product->price }} DA</div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label">Prix d'achat</div>
+                                        <div class="col-lg-9 col-md-8">{{ $product->purchase_price }} DA</div>
+                                    </div>
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">Stock actuel</div>
@@ -133,6 +137,14 @@
                                                 <input name="price" type="number" step="0.01"
                                                     value="{{ $product->price }}" class="form-control"
                                                     id="price">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="purchase_price" class="col-md-4 col-lg-3 col-form-label">Prix d'achat</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input name="purchase_price" type="number" step="0.01"
+                                                    value="{{ $product->purchase_price }}" class="form-control"
+                                                    id="purchase_price">
                                             </div>
                                         </div>
 

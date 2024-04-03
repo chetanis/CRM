@@ -197,6 +197,11 @@
                 <td>Adresse:</td>
                 <td>{{ $client->address }}</td>
             </tr>
+            <tr>
+                <td colspan="2" class="w-left-bor w-bot-bor"></td>
+                <td>Code fiscal</td>
+                <td>{{empty($client->code_fiscal) ? '...' : $client->code_fiscal}}</td>
+            </tr>
         </tbody>
     </table>
 

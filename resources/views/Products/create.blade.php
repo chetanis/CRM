@@ -55,6 +55,12 @@
                 </div>
             </div>
             <div class="row mb-3">
+                <label for="purchase_price" class="col-md-4 col-lg-3 col-form-label">Prix d'achat</label>
+                <div class="col-md-3">
+                    <input name="purchase_price" type="number" step="0.01" min="0" class="form-control" id="purchase_price">
+                </div>
+            </div>
+            <div class="row mb-3">
                 <label for="price" class="col-md-4 col-lg-3 col-form-label">Prix</label>
                 <div class="col-md-3">
                     <input name="price" type="number" step="0.01" min="0" class="form-control" id="price">

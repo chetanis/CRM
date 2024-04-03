@@ -15,6 +15,7 @@ class Product extends Model
         'current_stock',
         'minimum_stock',
         'price',
+        'purchase_price',
         'sold',
     ];
 
