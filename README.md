@@ -111,7 +111,7 @@ Bienvenue dans le projet CRM ! Ce guide vous guidera à travers les étapes néc
 
 Avant de commencer, assurez-vous d'avoir les prérequis suivants installés :
 
-- [PHP](https://www.php.net/) (version 7.4 ou supérieure)
+- [PHP](https://www.php.net/) (version 8.1 ou supérieure)
 - [Composer](https://getcomposer.org/)
 - [MySQL](https://www.mysql.com/) ou [MariaDB](https://mariadb.org/)
 
