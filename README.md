@@ -43,7 +43,7 @@ composer install
     DB_DATABASE=laravel
     DB_USERNAME=root
     DB_PASSWORD=
-```
+  ```
 
 5. **Generate application key:**
 
