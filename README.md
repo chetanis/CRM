@@ -15,7 +15,7 @@ Before you begin, ensure you have the following prerequisites installed:
 
 - [PHP](https://www.php.net/) (version 8.1 or higher)
 - [Composer](https://getcomposer.org/)
-- [MySQL](https://www.mysql.com/) or [MariaDB](https://mariadb.org/)
+- [MySQL](https://www.mysql.com/) (version 5.7 or higher)or [MariaDB](https://mariadb.org/) (version 10.5.7 or higher)
 
 ## Installation Steps
 
@@ -113,7 +113,7 @@ Avant de commencer, assurez-vous d'avoir les prérequis suivants installés :
 
 - [PHP](https://www.php.net/) (version 8.1 ou supérieure)
 - [Composer](https://getcomposer.org/)
-- [MySQL](https://www.mysql.com/) ou [MariaDB](https://mariadb.org/)
+- [MySQL](https://www.mysql.com/) (version 5.7 ou supérieure) ou [MariaDB](https://mariadb.org/) (version 10.5.7 ou supérieure)
 
 ## Étapes d'installation
 
