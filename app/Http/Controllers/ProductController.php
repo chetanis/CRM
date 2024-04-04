@@ -50,7 +50,7 @@ class ProductController extends Controller
         $product->current_stock = $request->input('current_stock');
         $product->minimum_stock = $request->input('minimum_stock');
         $product->category = $request->input('category');
-
+        $product->purchase_price = $request->input('purchase_price');
         // Save the product to the database
         $product->save();
 
