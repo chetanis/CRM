@@ -74,9 +74,21 @@ php artisan serve
 9. **Access the CRM:**
 - Once the server is running, you can access the CRM application in your web browser by navigating to `http://localhost:8000` or the specified URL.
 
-## Additional Configuration
+## User Credentials
 
-If your CRM requires additional configuration steps, such as setting up authentication or configuring middleware, provide those instructions here.
+In this CRM, three types of users are pre-defined: **admin**, **superuser**, and **user**. Below are the default credentials for each user role:
+
+- **Admin User**:
+  - Username: admin
+  - Password: 12345678
+
+- **Superuser User**:
+  - Username: superuser
+  - Password: 12345678
+
+- **Regular User**:
+  - Username: user
+  - Password: 12345678
 
 ## Support
 
