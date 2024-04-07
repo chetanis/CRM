@@ -41,6 +41,9 @@ Route::get('/users', [UserController::class, 'index'])->name('users.index');
 //search for a user
 Route::get('/search-user', [UserController::class, 'search'])->name('search-user');
 
+//show user
+Route::get('/users/{user}', [UserController::class, 'show']);
+
 
 //--------   Client routes  --------//
 //show the create form 

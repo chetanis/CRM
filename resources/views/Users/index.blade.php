@@ -81,7 +81,7 @@
                 <td>{{$user->privilege}}</td>
                 <td>{{$user->created_at->format('d/m/Y')}}</td>
                 <td>
-                    <button {{--onclick="window.location.href='/clients/{{$client->id}}'" --}}type="button" class="btn btn-outline-primary btn-sm">Consulter</button>
+                    <button onclick="window.location.href='/users/{{$user->id}}'" type="button" class="btn btn-outline-primary btn-sm">Consulter</button>
                 </td>
               </tr>
             @endforeach

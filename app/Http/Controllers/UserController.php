@@ -92,4 +92,13 @@ class UserController extends Controller
         $filter=null;
         return view('users.index', compact('users','filter'));
     }
+
+    // show a user
+    public function show(User $user)
+    {
+        $clients = $user->getClients();
+        $commands = $user->getCommands();
+        $nbSales = $commands->where('type','done')->count();
+        return view('users.show', compact('user','clients','commands','nbSales'));
+    }
 }
