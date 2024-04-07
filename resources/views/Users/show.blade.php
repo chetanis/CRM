@@ -70,7 +70,11 @@
                                     <button class="nav-link " data-bs-toggle="tab"
                                         data-bs-target="#Clients-historique">Clients</button>
                                 </li>
-
+                                
+                                <li class="nav-item">
+                                    <button class="nav-link " data-bs-toggle="tab"
+                                        data-bs-target="#Commands-historique">Commandes</button>
+                                </li>
                             </ul>
                             <div class="tab-content pt-2">
                                 {{-- Show client details --}}
@@ -181,9 +185,12 @@
                                         <div class="text-center">
                                             <button type="submit" class="btn btn-primary">Save Changes</button>
                                         </div>
-                                    </form><!-- End Profile Edit Form -->
+                                    </form>
 
                                 </div>
+                                {{-- Edit client ends --}}
+
+                                {{-- Show user's clietns --}}
 
                                 <div class="tab-pane fade profile-historique pt-3"
                                     id="Clients-historique">
@@ -212,6 +219,52 @@
                                                     <td>{{ $client->created_at->format('d/m/Y') }}</td>
                                                     <td>
                                                         <button onclick="window.location.href='/clients/{{ $client->id }}'" type="button"
+                                                            class="btn btn-outline-primary btn-sm">Consulter</button>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                    @endif
+                                </div>
+
+                                {{-- Show user's commands --}}
+
+                                <div class="tab-pane fade profile-historique pt-3"
+                                    id="Commands-historique">
+                                    <!-- check if the there are clients or no -->
+                                    @if ($commands->count() == 0)
+                                        <h4 class="ms-3">Pas de commandes pour le moment</h4>
+                                    @else
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Nom client</th>
+                                                <th scope="col">Tel client</th>
+                                                <th scope="col">Montant</th>
+                                                <th scope="col">Date de commande</th>
+                                                <th scope="col">Statut</th>
+                                                <th scope="col">Détails</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($commands as $command)
+                                                <tr>
+                                                    <th scope="row">{{ $command->id }}</th>
+                                                    <td>{{ $command->client->last_name }} {{ $command->client->first_name }}</td>
+                                                    <td>{{ $command->client->phone_number }}</td>
+                                                    <td>{{ $command->total_price }} DA</td>
+                                                    <td>{{ $command->created_at->format('d/m/Y') }}</td>
+                                                    @if ($command->type == 'pending')
+                                                        <td><span class="badge bg-warning">En attente</span></td>
+                                                    @elseif($command->type == 'done')
+                                                        <td><span class="badge bg-success">Confirmé</span></td>
+                                                    @else
+                                                        <td><span class="badge bg-danger">Annulé</span></td>
+                                                    @endif
+                                                    <td>
+                                                        <button onclick="window.location.href='/commands/{{ $command->id }}'" type="button"
                                                             class="btn btn-outline-primary btn-sm">Consulter</button>
                                                     </td>
                                                 </tr>
