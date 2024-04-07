@@ -38,6 +38,9 @@ Route::post('/logout', [UserController::class,'logout'])->name('logout');
 //all users
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
+//search for a user
+Route::get('/search-user', [UserController::class, 'search'])->name('search-user');
+
 
 //--------   Client routes  --------//
 //show the create form 

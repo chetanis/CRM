@@ -79,4 +79,17 @@ class UserController extends Controller
         $filter = request(['type'][0]);
         return view('users.index', compact('users','filter'));
     }
+
+    // search for a user
+    public function search(Request $request)
+    {   
+        $search = $request->input('search');
+        $users = User::where(function ($query) use ($search) {
+            $query->where('username', 'LIKE', "%{$search}%")
+                ->orWhere('full_name', 'LIKE', "%{$search}%");
+        });
+        $users = $users->paginate(10);
+        $filter=null;
+        return view('users.index', compact('users','filter'));
+    }
 }
