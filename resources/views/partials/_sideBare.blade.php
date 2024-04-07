@@ -22,7 +22,7 @@
           </a>
         </li>
         <li>
-          <a href="components-accordion.html">
+          <a href="{{route('users.index')}}">
             <i class="bi bi-circle"></i><span>Afficher les utilisateurs</span>
           </a>
         </li>

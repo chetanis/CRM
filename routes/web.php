@@ -35,6 +35,9 @@ Route::post('/register', [UserController::class,'register']);
 //logout a user 
 Route::post('/logout', [UserController::class,'logout'])->name('logout');
 
+//all users
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+
 
 //--------   Client routes  --------//
 //show the create form 

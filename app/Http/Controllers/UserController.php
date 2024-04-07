@@ -71,4 +71,11 @@ class UserController extends Controller
         Auth::logout();
         return redirect()->route('login');
     }
+
+    // show all users
+    public function index()
+    {
+        $users = User::all();
+        return view('users.index', ['users' => $users]);
+    }
 }
