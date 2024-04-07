@@ -44,6 +44,9 @@ Route::get('/search-user', [UserController::class, 'search'])->name('search-user
 //show user
 Route::get('/users/{user}', [UserController::class, 'show']);
 
+//update a user
+Route::put('/users/{user}', [UserController::class, 'update']);
+
 
 //--------   Client routes  --------//
 //show the create form 

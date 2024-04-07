@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
@@ -100,5 +101,32 @@ class UserController extends Controller
         $commands = $user->getCommands();
         $nbSales = $commands->where('type','done')->count();
         return view('users.show', compact('user','clients','commands','nbSales'));
+    }
+
+    // update a user
+    public function update(User $user, Request $request)
+    {
+        $validatedData = $request->validate([
+            'full_name' => ['nullable'], 
+            'username' => ['nullable', 'unique:users,username,' . $user->id],
+            'password' => ['nullable', 'min:8','string'],
+            'privilege' => ['nullable', 'in:superuser,user,admin'],
+        ]);
+
+        if($validatedData['full_name']){
+            $user->full_name = $validatedData['full_name'];
+        }
+        if($validatedData['username']){
+            $user->username = $validatedData['username'];
+        }
+        if($validatedData['password']){
+            $user->password = Hash::make($validatedData['password']);
+        }
+        if($validatedData['privilege']){
+            $user->privilege = $validatedData['privilege'];
+        }
+        $user->save();
+        Session::flash('success', 'Utilisateur modifié avec succès');
+        return redirect()->back();
     }
 }
