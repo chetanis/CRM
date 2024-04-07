@@ -36,4 +36,15 @@ class User extends Authenticatable
         }
     }
 
+    //get the clients of the user
+    public function getClients()
+    {
+        return Client::where('assigned_to', $this->id)->get();
+    }
+
+    //get the commands of the user
+    public function getCommands()
+    {
+        return Command::where('user_id', $this->id)->get();
+    }
 }
