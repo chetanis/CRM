@@ -75,7 +75,8 @@ class UserController extends Controller
     // show all users
     public function index()
     {
-        $users = User::all();
-        return view('users.index', ['users' => $users]);
+        $users = User::filter(request(['type']))->paginate(10);;
+        $filter = request(['type'][0]);
+        return view('users.index', compact('users','filter'));
     }
 }

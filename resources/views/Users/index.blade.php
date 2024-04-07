@@ -52,6 +52,14 @@
           </div>
         </div>
       </div>
+
+      <div class="col mb-3 ms-2">
+
+        @if (!$filter) <a href="/users" class="btn btn-primary btn-sm">Tous</a> @else <a href="/users" class="btn btn-outline-primary btn-sm">Tous</a> @endif
+        @if ($filter=='admin') <a href="/users?type=admin" class="btn btn-danger btn-sm">Admin</a> @else <a href="/users?type=admin" class="btn btn-outline-danger btn-sm">Admin</a> @endif
+        @if ($filter=='superuser') <a href="/users?type=superuser" class="btn btn-success btn-sm">Superuser</a> @else <a href="/users?type=superuser" class="btn btn-outline-success btn-sm">Superuser</a> @endif
+        @if ($filter=='user') <a href="/users?type=user" class="btn btn-warning btn-sm">User</a> @else <a href="/users?type=user" class="btn btn-outline-warning btn-sm">User</a> @endif
+    </div>
       
         <table class="table">
             <thead>
@@ -79,7 +87,7 @@
             @endforeach
             </tbody>
           </table>
-          {{-- {{ $clients->links('vendor.pagination.bootstrap-5') }} --}}
+          {{ $users->links('vendor.pagination.bootstrap-5') }}
     </main><!-- End #main -->
 
 

@@ -28,4 +28,12 @@ class User extends Authenticatable
         'password',
     ];
 
+    // Define a scope to filter users by type
+    public function scopeFilter($query, array $filters)
+    {
+        if($filters['type'] ?? false){
+            $query->where('privilege', $filters['type']);
+        }
+    }
+
 }
