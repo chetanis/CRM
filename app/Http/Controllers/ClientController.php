@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Client;
 use App\Models\Command;
 use Illuminate\Http\Request;
@@ -95,7 +96,18 @@ class ClientController extends Controller
         $countConfirmed = $commands->where('type', 'done')->count();
         $countCancelled = $commands->where('type', 'cancelled')->count();
 
-
+        //if the user is admin send the user list
+        if (Auth::user()->privilege == 'admin') {
+            $users = User::all();
+            return view('Client.show', [
+                'client' => $client,
+                'commands' => $commands,
+                'countPending' => $countPending,
+                'countConfirmed' => $countConfirmed,
+                'countCancelled' => $countCancelled,
+                'users' => $users
+            ]);
+        }
 
         return view('Client.show', [
             'client' => $client,
@@ -103,6 +115,7 @@ class ClientController extends Controller
             'countPending' => $countPending,
             'countConfirmed' => $countConfirmed,
             'countCancelled' => $countCancelled,
+            'users' => [],
         ]);
     }
 

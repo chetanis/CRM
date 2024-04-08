@@ -36,7 +36,7 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
                     <li class="breadcrumb-item">Gestion des clients</li>
-                    <li class="breadcrumb-item active">Client {{$client->id}}</li>
+                    <li class="breadcrumb-item active">Client {{ $client->id }}</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
@@ -154,13 +154,61 @@
                                             <textarea name="notes" id="notes" class="form-control" style="height: 100px"readonly>{{ $client->notes }}</textarea>
                                         </div>
                                     </div>
+                                    {{-- if the user is an admin --}}
+                                    @if (Auth::user()->privilege == 'admin')
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-4 label">assigné à</div>
+                                            <div class="col-lg-9 col-md-8">
+                                                {{ $client->assignedTo->id . '. ' . $client->assignedTo->full_name }}
+                                            </div>
+                                        </div>
+                                    @endif
                                     <div class="col-lg-9 mt-5 col-md-8 d-flex justify-content-center">
+                                        @if (Auth::user()->privilege == 'admin')
+                                            <button data-bs-toggle="modal"
+                                                data-bs-target="#changeAssignedUser" type="button"
+                                                class="btn btn-primary me-3">Changer l'utilisateur assigné</button>
+                                        @endif
                                         <form method="POST" action="/clients/{{ $client->id }}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger">Supprimer le client</button>
                                         </form>
                                     </div>
+                                    @if (Auth::user()->privilege == 'admin')
+                                    <!-- change the user assigned to the client -->
+                                    <div class="modal fade" id="changeAssignedUser" tabindex="-1"
+                                        aria-labelledby="changeAssignedUserLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="changeAssignedUserLabel">Changer l'utilisateur assigné à {{ $client->last_name .' '. $client->first_name }}</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="{{-- route('manage-stock', $product->id) --}}" method="POST">
+                                                        @csrf
+                                                        <div class="mb-3">
+                                                            <div>
+                                                                <input list="users" type="text" class="form-control" id="client-search"
+                                                                    placeholder="Chercher un utilisateur">
+                                                                <!-- Dropdown list of users (or search user) -->
+                                                                <datalist id="users">
+                                                                    @foreach ($users as $user)
+                                                                        <option value="{{ $user->username }}" data-id="{{ $user->id }}">
+                                                                            {{ $user->full_name }}</option>
+                                                                    @endforeach
+                                                                </datalist>
+                                                            </div>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endif
 
                                 </div>
                                 {{-- client details ends --}}
@@ -311,27 +359,30 @@
 
                                 </div>
 
-                                <div class="tab-pane fade profile-historique pt-3"
-                                    id="profile-historique">
+                                <div class="tab-pane fade profile-historique pt-3" id="profile-historique">
                                     {{-- check if the there are commands or no --}}
                                     @if ($commands->count() == 0)
                                         <h2>Pas de commande pour le moment</h2>
                                     @else
-                                    <div class="row">
-                                      <div class="col">
-                                          <p>N° des commandes: <span class="text-primary">{{$commands->count()}}</span></p>
-                                      </div>
-                                      <div class="col">
-                                          <p>en attente: <span class="text-warning">{{$countPending}}</span></p>
-                                      </div>
-                                      <div class="col">
-                                          <p>annulées: <span class="text-danger">{{$countCancelled}}</span></p>
-                                      </div>
-                                      <div class="col">
-                                          <p>confirmées: <span class="text-success">{{$countConfirmed}}</span></p>
-                                      </div>
-                                  </div>
-                                  
+                                        <div class="row">
+                                            <div class="col">
+                                                <p>N° des commandes: <span
+                                                        class="text-primary">{{ $commands->count() }}</span></p>
+                                            </div>
+                                            <div class="col">
+                                                <p>en attente: <span class="text-warning">{{ $countPending }}</span>
+                                                </p>
+                                            </div>
+                                            <div class="col">
+                                                <p>annulées: <span class="text-danger">{{ $countCancelled }}</span>
+                                                </p>
+                                            </div>
+                                            <div class="col">
+                                                <p>confirmées: <span class="text-success">{{ $countConfirmed }}</span>
+                                                </p>
+                                            </div>
+                                        </div>
+
                                         <table class="table table-striped">
                                             <thead>
                                                 <tr>
@@ -355,7 +406,11 @@
                                                         @else
                                                             <td><span class="badge bg-danger">Annulé</span></td>
                                                         @endif
-                                                        <td><button onclick="window.location.href='/commands/{{ $command->id }}'" type="button" class="btn btn-outline-primary btn-sm">Consulter</button></td>
+                                                        <td><button
+                                                                onclick="window.location.href='/commands/{{ $command->id }}'"
+                                                                type="button"
+                                                                class="btn btn-outline-primary btn-sm">Consulter</button>
+                                                        </td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
