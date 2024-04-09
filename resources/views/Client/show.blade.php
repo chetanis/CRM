@@ -30,6 +30,12 @@
     @include('partials._header');
     @include('partials._sideBare');
     <main id="main" class="main">
+        @if (Session::has('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ Session::get('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <div class="pagetitle">
             <h1>Profile</h1>
             <nav>
@@ -187,17 +193,18 @@
                                                         aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form action="{{-- route('manage-stock', $product->id) --}}" method="POST">
+                                                    <form action="/clients/{{$client->id}}/change-user" method="POST">
                                                         @csrf
+                                                        @method('PUT')
                                                         <div class="mb-3">
                                                             <div>
-                                                                <input list="users" type="text" class="form-control" id="client-search"
-                                                                    placeholder="Chercher un utilisateur">
+                                                                <input list="users" type="text" required class="form-control"
+                                                                    placeholder="Chercher un utilisateur" name="assigned_to">
                                                                 <!-- Dropdown list of users (or search user) -->
                                                                 <datalist id="users">
                                                                     @foreach ($users as $user)
-                                                                        <option value="{{ $user->username }}" data-id="{{ $user->id }}">
-                                                                            {{ $user->full_name }}</option>
+                                                                        <option value="{{ $user->id }}">
+                                                                            {{ $user->username.': '.$user->full_name }}</option>
                                                                     @endforeach
                                                                 </datalist>
                                                             </div>

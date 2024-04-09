@@ -207,4 +207,18 @@ class ClientController extends Controller
         $client->delete();
         return redirect()->route('clients.index')->with('success', 'Client supprimé avec succès !');
     }
+
+    //change the user assigned to
+    public function changeUser(Request $request, int $client)
+    {
+        $request->validate([
+            'assigned_to' => 'required|exists:users,id'
+        ]);
+        $client = Client::findOrFail($client);
+        $client->assigned_to = $request->input('assigned_to');
+        $client->save();
+
+        session()->flash('success', 'user modifié avec succès');
+        return redirect()->back();
+    }
 }

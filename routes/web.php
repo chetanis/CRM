@@ -70,6 +70,9 @@ Route::get('/search-client', [ClientController::class, 'search'])->name('search-
 //delete a client
 Route::delete('/clients/{client}', [ClientController::class, 'destroy']);
 
+//change the user assigned to
+Route::put('/clients/{client}/change-user', [ClientController::class, 'changeUser'])->name('change-user');
+
 //--------   Products routes  --------//
 
 //show the create prudoct form
