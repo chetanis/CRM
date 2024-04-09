@@ -33,6 +33,12 @@ class Client extends Model
     {
         return $this->belongsTo(User::class, 'assigned_to');
     }
+    // Define the relationship with the Appointment model
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
+    }
+
     //get the clients that are accessible to the user
     public static function getAccessibleClients()
     {

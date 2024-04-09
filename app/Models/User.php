@@ -35,6 +35,11 @@ class User extends Authenticatable
             $query->where('privilege', $filters['type']);
         }
     }
+    // Define the relationship with the Client model
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
+    }
 
     //get the clients of the user
     public function getClients()
