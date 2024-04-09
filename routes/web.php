@@ -1,11 +1,12 @@
 <?php
 
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CommandController;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\AppointmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -99,7 +100,7 @@ Route::get('/search-product', [ProductController::class, 'search'])->name('searc
 //delete a product
 Route::delete('/products/{product}', [ProductController::class, 'destroy']);
 
-//--------   Products commands  --------//
+//--------   commands routes  --------//
 //show the create command form
 Route::get('/add-command', [CommandController::class,'create'])->name('commands.create');
 
@@ -126,6 +127,11 @@ Route::get('/sales/{sale}/', [CommandController::class, 'viewInvoice']);
 
 //download invoice
 Route::get('/sales/{sale}/facture', [CommandController::class, 'downloadInvoice']);
+
+
+// ------------ appointment routes --------------//
+//show the create appointment form
+Route::get('/add-appointment', [AppointmentController::class,'create'])->name('appointments.create');
 
 //------- other routes ----------//
 // show home page

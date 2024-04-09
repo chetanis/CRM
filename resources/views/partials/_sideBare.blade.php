@@ -12,10 +12,10 @@
     @auth
     @if(auth()->user()->privilege === 'admin')
     <li class="nav-item">
-      <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+      <a class="nav-link collapsed" data-bs-target="#users-nav" data-bs-toggle="collapse" href="#">
         <i class="bi bi-person"></i><span>Gestion d'utilisateur</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
-      <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+      <ul id="users-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
           <a href="{{route('register')}}">
             <i class="bi bi-circle"></i><span>Ajouter utilisateur</span>
@@ -32,10 +32,10 @@
 
     @if(auth()->user()->privilege === 'admin' || auth()->user()->privilege === 'superuser')
     <li class="nav-item">
-      <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+      <a class="nav-link collapsed" data-bs-target="#products-nav" data-bs-toggle="collapse" href="#">
         <i class="bi bi-bag"></i><span>Gestion des poduits</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
-      <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+      <ul id="products-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
           <a href="{{route('products.create')}}">
             <i class="bi bi-circle"></i><span>Ajouter produit</span>
@@ -51,10 +51,10 @@
     @endif
     @endauth
     <li class="nav-item">
-      <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+      <a class="nav-link collapsed" data-bs-target="#clients-nav" data-bs-toggle="collapse" href="#">
         <i class="bi bi-layout-text-window-reverse"></i><span>Gestion des clients</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
-      <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+      <ul id="clients-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
           <a href="{{route('clients.create')}}">
             <i class="bi bi-circle"></i><span>Ajouter un client</span>
@@ -69,10 +69,10 @@
     </li><!-- End Clients Nav -->
 
     <li class="nav-item">
-      <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
+      <a class="nav-link collapsed" data-bs-target="#commands-nav" data-bs-toggle="collapse" href="#">
         <i class="bi bi-bar-chart"></i><span>Gestion des commandes</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
-      <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+      <ul id="commands-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
           <a href="{{route('commands.create')}}">
             <i class="bi bi-circle"></i><span>Ajouter commande</span>
@@ -85,6 +85,24 @@
         </li>
       </ul>
     </li><!-- End Commandes Nav -->
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#appointments-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-calendar-week"></i><span>Gestion des rendez-vous</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="appointments-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+          <a href="{{route('appointments.create')}}">
+            <i class="bi bi-circle"></i><span>Ajouter rendez-vous</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{route('commands.index')}}">
+            <i class="bi bi-circle"></i><span>Afficher les rendez-vous</span>
+          </a>
+        </li>
+      </ul>
+    </li><!-- End Appointments Nav -->
 
     <li class="nav-item">
       <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
