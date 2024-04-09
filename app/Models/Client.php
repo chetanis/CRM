@@ -33,7 +33,7 @@ class Client extends Model
     {
         return $this->belongsTo(User::class, 'assigned_to');
     }
-
+    //get the clients that are accessible to the user
     public static function getAccessibleClients()
     {
         // If the user is an admin or superuser, show all clients
@@ -44,4 +44,12 @@ class Client extends Model
             return self::where('assigned_to', Auth::id())->latest();
         }
     }
+
+    //change the user that is assigned to the client
+    public function changeAssignedTo(int $userId)
+    {
+        $this->assigned_to = $userId;
+        $this->save();
+    }
+
 }

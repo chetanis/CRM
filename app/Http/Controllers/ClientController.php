@@ -209,14 +209,12 @@ class ClientController extends Controller
     }
 
     //change the user assigned to
-    public function changeUser(Request $request, int $client)
+    public function changeUser(Request $request, Client $client)
     {
         $request->validate([
             'assigned_to' => 'required|exists:users,id'
         ]);
-        $client = Client::findOrFail($client);
-        $client->assigned_to = $request->input('assigned_to');
-        $client->save();
+        $client->changeAssignedTo($request->input('assigned_to'));
 
         session()->flash('success', 'user modifié avec succès');
         return redirect()->back();
