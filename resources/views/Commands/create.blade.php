@@ -38,7 +38,7 @@
             </div>
         @endif
         <div class="pagetitle">
-            <h1>Ajouoter une Commande</h1>
+            <h1>Ajouter une Commande</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
