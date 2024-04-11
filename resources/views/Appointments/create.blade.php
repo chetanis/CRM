@@ -23,7 +23,7 @@
     <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href=" {{ asset('css/style.css') }}" rel="stylesheet">
     <link href=" {{ asset('bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body>
@@ -74,7 +74,7 @@
             <div class="mt-3">
                 <h5 for="notes" >Détails du rendez-vous :</h5>
                 <div class="col-sm-10">
-                    <textarea name="notes" id="notes" class="form-control" style="height: 100px"></textarea>
+                    <textarea name="details" id="details" class="form-control" style="height: 100px"></textarea>
                 </div>
             </div>
         </div>
@@ -94,6 +94,7 @@
     <!-- Template Main JS File -->
     <script src="{{ asset('js/script.js') }}"></script>
     <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('js/appointment.js') }}"></script>
 
 </body>
 

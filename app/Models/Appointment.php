@@ -13,6 +13,7 @@ class Appointment extends Model
         'client_id',
         'date_time',
         'purpose',
+        'status',
     ];
 
     protected $dates = ['date_time'];

@@ -7,6 +7,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CommandController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AppointmentController;
+use App\Models\Appointment;
 
 /*
 |--------------------------------------------------------------------------
@@ -132,6 +133,9 @@ Route::get('/sales/{sale}/facture', [CommandController::class, 'downloadInvoice'
 // ------------ appointment routes --------------//
 //show the create appointment form
 Route::get('/add-appointment', [AppointmentController::class,'create'])->name('appointments.create');
+
+//create a new appointment 
+Route::post('/add-appointment',[AppointmentController::class,'store']);
 
 //------- other routes ----------//
 // show home page
