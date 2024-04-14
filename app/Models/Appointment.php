@@ -11,12 +11,12 @@ class Appointment extends Model
     protected $fillable = [
         'user_id',
         'client_id',
-        'date_time',
+        'date_and_time',
         'purpose',
         'status',
     ];
 
-    protected $dates = ['date_time'];
+    protected $dates = ['date_and_time'];
 
     public function user()
     {
