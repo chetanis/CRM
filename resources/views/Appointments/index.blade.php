@@ -48,7 +48,7 @@
                     <div class="search-bar">
                         <form class="d-flex align-items-center" {{-- action="{{ route('search-client') }}" --}} method="GET">
                             <input type="text" name="search" class="form-control me-1"
-                                placeholder="Chercher une commande">
+                                placeholder="Chercher un rendez-vous">
                             <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i></button>
                         </form>
                     </div><!-- End Search Bar -->

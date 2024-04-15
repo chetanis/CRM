@@ -82,7 +82,7 @@
 
 
         <div class=" mt-3">
-            <button id="submit-btn" class="btn btn-primary me-2">Créer la commande.</button>
+            <button id="submit-btn" class="btn btn-primary me-2">Créer le rendez-vous.</button>
         </div>
     </main><!-- End #main -->
 
