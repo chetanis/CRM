@@ -137,6 +137,9 @@ Route::get('/add-appointment', [AppointmentController::class,'create'])->name('a
 //create a new appointment 
 Route::post('/add-appointment',[AppointmentController::class,'store']);
 
+// all appointments
+Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
+
 //------- other routes ----------//
 // show home page
 Route::get('/dashboard',[Controller::class,'dashboard'])->name('dashboard')->middleware('auth');

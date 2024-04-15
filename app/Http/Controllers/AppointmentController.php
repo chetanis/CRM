@@ -47,4 +47,11 @@ class AppointmentController extends Controller
             return response()->json(['success' => true]);
         }
     }
+
+    public function index()
+    {
+        $appointments = Appointment::getAccessibleAppointments()->paginate(10);
+        
+        return view('Appointments.index', compact('appointments'));
+    }
 }

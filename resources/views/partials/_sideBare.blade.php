@@ -97,7 +97,7 @@
           </a>
         </li>
         <li>
-          <a href="{{route('commands.index')}}">
+          <a href="{{route('appointments.index')}}">
             <i class="bi bi-circle"></i><span>Afficher les rendez-vous</span>
           </a>
         </li>

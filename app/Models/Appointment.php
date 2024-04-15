@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Appointment extends Model
 {
@@ -26,5 +27,15 @@ class Appointment extends Model
     public function client()
     {
         return $this->belongsTo(Client::class);
+    }
+
+    //get the appointments that the user can access
+    public static function getAccessibleAppointments()
+    {
+        if (Auth::user()->privilege === 'admin' || Auth::user()->privilege === 'superuser') {
+            return self::latest();
+        }else{
+            return self::where('user_id', Auth::id())->latest();
+        }
     }
 }
