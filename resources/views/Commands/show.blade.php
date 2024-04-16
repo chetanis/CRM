@@ -62,7 +62,7 @@
                 <div class="col-md-6">
                     <h4>Details du client</h4>
                     <hr>
-                    <p>Nom complet : {{ $command->client->last_name }} {{ $command->client->first_name }} </p>
+                    <p>Nom complet : <a href="/search-client?search={{$command->client->phone_number}}">{{ $command->client->last_name }} {{ $command->client->first_name }} </a></p>
                     <p>Email : {{ $command->client->email }}</p>
                     <p>Téléphone : {{ $command->client->phone_number }}</p>
                     <p>Adresse : {{ $command->client->address }}</p>
