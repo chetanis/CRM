@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+
 class Client extends Model
 {
     use HasFactory;
@@ -56,11 +57,19 @@ class Client extends Model
         }
     }
 
-    //change the user that is assigned to the client
+    //change the user that is assigned to the client + pending commands
     public function changeAssignedTo(int $userId)
     {
+        // Update the assigned user
         $this->assigned_to = $userId;
         $this->save();
-    } 
 
+        // Get all pending commands associated with this client
+        $pendingCommands = $this->commands()->where('type', 'pending')->get();
+
+        // Iterate over each pending command and update the assigned user
+        foreach ($pendingCommands as $command) {
+            $command->changeAssignedTo($userId);
+        }
+    }
 }

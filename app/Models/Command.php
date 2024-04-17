@@ -78,4 +78,11 @@ class Command extends Model
         }
     }
 
+    //change the user that is assigned to the commande
+    public function changeAssignedTo(int $userId)
+    {
+        $this->user_id = $userId;
+        $this->save();
+    }
+
 }
