@@ -38,6 +38,11 @@ class Client extends Model
     {
         return $this->hasMany(Appointment::class);
     }
+    // Define the relationship with the Commands model
+    public function commands()
+    {
+        return $this->hasMany(Command::class);
+    }
 
     //get the clients that are accessible to the user
     public static function getAccessibleClients()
@@ -56,6 +61,6 @@ class Client extends Model
     {
         $this->assigned_to = $userId;
         $this->save();
-    }
+    } 
 
 }
