@@ -21,41 +21,47 @@ use App\Models\Appointment;
 */
 
 
+//-------------- admin routes --------------//
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    //user managment
+    // show the register form
+    Route::get('/register', [UserController::class, 'showRegisterForm'])->name('register');
+    //create a user 
+    Route::post('/register', [UserController::class, 'register']);
+    //all users
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+
+    //search for a user
+    Route::get('/search-user', [UserController::class, 'search'])->name('search-user');
+
+    //show user
+    Route::get('/users/{user}', [UserController::class, 'show']);
+
+    //update a user
+    Route::put('/users/{user}', [UserController::class, 'update']);
+});
+
 //--------   User routes  --------//
 //show the login form 
-Route::get('/login', [UserController::class,'showLoginForm'])->name('login');
+Route::get('/login', [UserController::class, 'showLoginForm'])->name('login');
 
 //login the user
-Route::post('/login', [UserController::class,'login']);
+Route::post('/login', [UserController::class, 'login']);
 
-// show the register form
-Route::get('/register', [UserController::class,'showRegisterForm'])->name('register');
-
-//create a user 
-Route::post('/register', [UserController::class,'register']);
 
 //logout a user 
-Route::post('/logout', [UserController::class,'logout'])->name('logout');
+Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
-//all users
-Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
-//search for a user
-Route::get('/search-user', [UserController::class, 'search'])->name('search-user');
-
-//show user
-Route::get('/users/{user}', [UserController::class, 'show']);
-
-//update a user
-Route::put('/users/{user}', [UserController::class, 'update']);
 
 
 //--------   Client routes  --------//
 //show the create form 
-Route::get('/add-client', [ClientController::class,'create'])->name('clients.create');
+Route::get('/add-client', [ClientController::class, 'create'])->name('clients.create');
 
 //create a client
-Route::post('/add-client', [ClientController::class,'store'])->name('clients.store');
+Route::post('/add-client', [ClientController::class, 'store'])->name('clients.store');
 
 //all clients
 Route::get('/clients', [ClientController::class, 'index'])->name('clients.index');
@@ -78,10 +84,10 @@ Route::put('/clients/{client}/change-user', [ClientController::class, 'changeUse
 //--------   Products routes  --------//
 
 //show the create prudoct form
-Route::get('/add-product', [ProductController::class,'create'])->name('products.create');
+Route::get('/add-product', [ProductController::class, 'create'])->name('products.create');
 
 //create a product
-Route::post('/add-product', [ProductController::class,'store'])->name('products.store');
+Route::post('/add-product', [ProductController::class, 'store'])->name('products.store');
 
 //all products
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
@@ -103,10 +109,10 @@ Route::delete('/products/{product}', [ProductController::class, 'destroy']);
 
 //--------   commands routes  --------//
 //show the create command form
-Route::get('/add-command', [CommandController::class,'create'])->name('commands.create');
+Route::get('/add-command', [CommandController::class, 'create'])->name('commands.create');
 
 //create a command
-Route::post('/add-command', [CommandController::class,'store'])->name('commands.store');
+Route::post('/add-command', [CommandController::class, 'store'])->name('commands.store');
 
 //all commands
 Route::get('/commands', [CommandController::class, 'index'])->name('commands.index');
@@ -132,21 +138,20 @@ Route::get('/sales/{sale}/facture', [CommandController::class, 'downloadInvoice'
 
 // ------------ appointment routes --------------//
 //show the create appointment form
-Route::get('/add-appointment', [AppointmentController::class,'create'])->name('appointments.create');
+Route::get('/add-appointment', [AppointmentController::class, 'create'])->name('appointments.create');
 
 //create a new appointment 
-Route::post('/add-appointment',[AppointmentController::class,'store']);
+Route::post('/add-appointment', [AppointmentController::class, 'store']);
 
 // all appointments
 Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
 
 //------- other routes ----------//
 // show home page
-Route::get('/dashboard',[Controller::class,'dashboard'])->name('dashboard')->middleware('auth');
+Route::get('/dashboard', [Controller::class, 'dashboard'])->name('dashboard')->middleware('auth');
 
 
 // Catch-all route to redirect to the home page
 Route::get('/{any}', function () {
     return redirect('/dashboard');
 })->where('any', '.*');
-
