@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
 use App\Models\Sale;
 use App\Models\Client;
 use App\Models\Command;
@@ -92,6 +93,9 @@ class CommandController extends Controller
         $command->payment_method = $request->payment_method;
         $command->save();
 
+        //create log
+        Log::CreateLog("Creer commande.", "Client concerné: " . $client->first_name . ' ' . $client->last_name . ", commande n°: " . $command->id);
+
         Session::flash('success', 'Commande ajoutée avec succès');
         return response()->json(['success' => true]);
     }
@@ -140,6 +144,9 @@ class CommandController extends Controller
 
         $command = Command::find($id);
         $command->delete();
+        //create log
+        Log::CreateLog("Supprimer commande.", "Commande n°: " . $command->id);
+
         Session::flash('success', "Commande supprimée avec succès.");
         return redirect()->intended(session()->pull('previous_url', '/'));
     }
@@ -154,6 +161,8 @@ class CommandController extends Controller
         $sale->command()->associate($command);
         $sale->user_id = Auth::id();
         $sale->save();
+        //create log
+        Log::CreateLog("Confirmer commande.", "Commande n°: " . $command->id);
         Session::flash('success', 'Commande confirmée avec succès');
         return redirect()->back();
     }
@@ -164,6 +173,8 @@ class CommandController extends Controller
     public function cancel(Request $request, Command $command)
     {
         $command->update(['type' => 'cancelled']);
+        //create log
+        Log::CreateLog("Annuler commande.", "Commande n°: " . $command->id);
         Session::flash('success', 'Commande annulée avec succès');
         return redirect()->back();
     }
@@ -174,6 +185,8 @@ class CommandController extends Controller
         $pdf = App::make('dompdf.wrapper');
         $html = View::make('invoice.generate-invoice', ['sale' => $sale])->render();
         $pdf->loadHTML($html);
+        //create log
+        Log::CreateLog("Voir facture.", "Facture n°: " . $sale->id);
         return $pdf->stream();
     }
 
@@ -182,6 +195,8 @@ class CommandController extends Controller
     {
         $data = ['sale' => $sale];
         $pdf = Pdf::loadView('invoice.generate-invoice', $data);
+        //create log
+        Log::CreateLog("Télécharger facture.", "Facture n°: " . $sale->id);
         return $pdf->download('facture N° ' . $sale->id . '-' . $sale->created_at->format('Y') . '.pdf');
     }
 }
