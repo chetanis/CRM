@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -54,6 +55,9 @@ class ProductController extends Controller
         // Save the product to the database
         $product->save();
 
+        //create log
+        Log::CreateLog('creer produit', 'Produit cree: ' . $product->name );
+
         // Redirect back with a success message
         return redirect()->back()->with('success', 'Produit ajouter!');
     }
@@ -87,6 +91,8 @@ class ProductController extends Controller
 
     try {
         $product->update($request->all());
+        //create log
+        Log::CreateLog('modifier produit', 'Produit modifie: ' . $product->name );
         return redirect()->back()->with('success', 'Produit mis à jour avec succès !');
     } catch (\Exception $e) {
         return redirect()->back()->with('error', 'Failed to update product. Please try again.');
@@ -101,6 +107,8 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $product->delete();
+        //create log
+        Log::CreateLog('supprimer produit', 'Produit supprime: ' . $product->name );
         return redirect()->route('products.index')->with('success', 'Produit supprimé avec succès !');
     }
 
@@ -113,6 +121,9 @@ class ProductController extends Controller
         ]);
 
         $product->addStock($request->input('quantity'));
+
+        //create log
+        Log::CreateLog('ajouter stock', 'Produit: ' . $product->name . ' quantite: ' . $request->input('quantity') );
         return redirect()->back()->with('success', 'Stock ajouté avec succès !');
     }
 

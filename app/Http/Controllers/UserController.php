@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -62,6 +63,7 @@ class UserController extends Controller
         $user->password = Hash::make($validatedData['password']);
         $user->privilege = $validatedData['privilege'];
         $user->save();
+        Log::CreateLog('creer utilisateur', 'utilisateur: ' . $user->username . ' privilege: ' . $user->privilege);
 
         return redirect()->route('dashboard');
     }
@@ -126,6 +128,7 @@ class UserController extends Controller
             $user->privilege = $validatedData['privilege'];
         }
         $user->save();
+        Log::CreateLog('modifer utilisateur', 'utilisateur: ' . $user->username );
         Session::flash('success', 'Utilisateur modifié avec succès');
         return redirect()->back();
     }

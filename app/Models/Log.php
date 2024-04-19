@@ -19,4 +19,17 @@ class Log extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+    public static function CreateLog($action, $details)
+    {
+        // Fetch the authenticated user's ID
+        $userId = auth()->id();
+
+        // Create a new log entry
+        self::create([
+            'user_id' => $userId,
+            'action' => $action,
+            'details' => $details,
+        ]);
+    }
 }
