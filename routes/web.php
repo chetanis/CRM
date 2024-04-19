@@ -150,6 +150,9 @@ Route::middleware(['auth'])->group(function () {
     // all appointments
     Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
 
+    //show appointment
+    Route::get('/appointments/{appointment}', [AppointmentController::class, 'show']);
+
     //------- other routes ----------//
     // show home page
     Route::get('/dashboard', [Controller::class, 'dashboard'])->name('dashboard');

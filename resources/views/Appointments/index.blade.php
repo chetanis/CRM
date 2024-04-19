@@ -88,7 +88,7 @@
                             <td><span class="badge bg-danger">Annulé</span></td>
                         @endif
                         <td>
-                            <button {{--onclick="window.location.href='/commands/{{ $command->id }}'"--}}type="button"
+                            <button onclick="window.location.href='/appointments/{{ $appointment->id }}'"type="button"
                                 class="btn btn-outline-primary btn-sm">Consulter</button>
                         </td>
                     </tr>

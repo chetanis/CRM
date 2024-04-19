@@ -6,6 +6,7 @@ use Exception;
 use Carbon\Carbon;
 use App\Models\Client;
 use App\Models\Appointment;
+use Hamcrest\Type\IsString;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -53,5 +54,10 @@ class AppointmentController extends Controller
         $appointments = Appointment::getAccessibleAppointments()->paginate(10);
         
         return view('Appointments.index', compact('appointments'));
+    }
+
+    public function show(Appointment $appointment){
+        // dd( $appointment->date_and_time);
+        return view('appointments.show', compact('appointment'));
     }
 }
