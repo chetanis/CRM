@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
 use App\Models\User;
 use App\Models\Client;
 use App\Models\Command;
@@ -80,6 +81,9 @@ class ClientController extends Controller
 
         // Save the client to the database
         $client->save();
+
+        //create log
+        Log::CreateLog('creer client', 'Client cree: ' . $client->first_name . ' ' . $client->last_name);
 
         // Redirect back with a success message
         return redirect()->back()->with('success', 'Client ajouter!');
@@ -173,7 +177,8 @@ class ClientController extends Controller
         ]);
 
 
-        $client->update([]);
+        //create log
+        Log::CreateLog('modifier client', 'Client modifie: ' . $client->first_name . ' ' . $client->last_name);
 
         return redirect()->back()->with('success', 'Client modifié!');
     }
@@ -205,6 +210,8 @@ class ClientController extends Controller
     {
         $client = Client::findOrFail($id);
         $client->delete();
+        //create log
+        Log::CreateLog('supprimer client', 'Client supprime: ' . $client->first_name . ' ' . $client->last_name);
         return redirect()->route('clients.index')->with('success', 'Client supprimé avec succès !');
     }
 

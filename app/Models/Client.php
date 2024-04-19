@@ -60,9 +60,12 @@ class Client extends Model
     //change the user that is assigned to the client + pending commands
     public function changeAssignedTo(int $userId)
     {
+        $previousAssignedUser = $this->assigned_to;
         // Update the assigned user
         $this->assigned_to = $userId;
         $this->save();
+        //create log
+        Log::CreateLog("Changer l'utilisateur assigné au client.", "Client concerné: " . $this->first_name . ' ' . $this->last_name.", Utilisateur précédent: " . $previousAssignedUser . ", Nouvel utilisateur: " . $userId);
 
         // Get all pending commands associated with this client
         $pendingCommands = $this->commands()->where('type', 'pending')->get();
