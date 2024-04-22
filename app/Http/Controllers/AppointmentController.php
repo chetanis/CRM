@@ -54,17 +54,19 @@ class AppointmentController extends Controller
     public function index()
     {
         $appointments = Appointment::getAccessibleAppointments()->paginate(10);
-        
+
         return view('Appointments.index', compact('appointments'));
     }
-
-    public function show(Appointment $appointment){
-         // Store the previous URL in the session to redirect the user after the appointment is deleted
-         session()->put('previous_url', url()->previous());
+    
+    public function show(Appointment $appointment)
+    {
+        // Store the previous URL in the session to redirect the user after the appointment is deleted
+        session()->put('previous_url', url()->previous());
         return view('appointments.show', compact('appointment'));
     }
 
-    public function cancel(Appointment $appointment){
+    public function cancel(Appointment $appointment)
+    {
         $appointment->update(['status' => 'cancelled']);
         //create log
         Log::CreateLog("Annuler rendez-vous.", "Rendez-vous n°: " . $appointment->id);
@@ -72,7 +74,8 @@ class AppointmentController extends Controller
         return redirect()->back();
     }
 
-    public function confirm(Appointment $appointment){
+    public function confirm(Appointment $appointment)
+    {
         $appointment->update(['status' => 'done']);
         //create log
         Log::CreateLog("Confirmer rendez-vous.", "Rendez-vous n°: " . $appointment->id);
@@ -80,12 +83,39 @@ class AppointmentController extends Controller
         return redirect()->back();
     }
 
-    public function destroy(Appointment $appointment){
+    public function destroy(Appointment $appointment)
+    {
         $appointment->delete();
         //create log
         Log::CreateLog("Supprimer rendez-vous.", "Rendez-vous n°: " . $appointment->id);
         Session::flash('success', 'Rendez-vous supprimée avec succès');
         //rederect the user to the index page
         return redirect()->intended(session()->pull('previous_url', '/'));
+    }
+
+    public function reschedule(Request $request, Appointment $appointment)
+    {
+        $request->validate([
+            'date_and_time' => 'required|date',
+        ]);
+        $dateAndTime = Carbon::parse($request->input('date_and_time'));
+
+        //check if the new date is not in the past
+        if ($dateAndTime->isPast()) {
+            Session::flash('error', 'Vous ne pouvez pas programmer un rendez-vous dans le passé.');
+            return redirect()->back();
+        }
+        //check if the date didn't change
+        if ($dateAndTime == $appointment->date_and_time) {
+            Session::flash('error', 'Vous n\'avez pas changé la date du rendez-vous.');
+            return redirect()->back();
+        }
+        // update the date and time of the appointment
+        $appointment->update(['date_and_time' => $dateAndTime->toDateTimeString()]);
+        Session::flash('success', 'Rendez-vous reprogrammé avec succès');
+        //create log
+        Log::CreateLog("Reprogrammer rendez-vous.", "Rendez-vous n°: " . $appointment->id);
+
+        return redirect()->back();
     }
 }

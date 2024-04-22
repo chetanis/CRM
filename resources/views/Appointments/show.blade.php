@@ -39,6 +39,12 @@ $date = new DateTime($appointment->date_and_time);
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
+        @if (Session::has('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ Session::get('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <div class="pagetitle">
             <h1>Rendez-vous</h1>
             <nav>
@@ -77,11 +83,8 @@ $date = new DateTime($appointment->date_and_time);
             @if ($appointment->status == 'pending')
                 <div class="row g-0 mt-5">
                     <div class="col-3">
-                        <form action="/appointments/{{ $appointment->id }}/reschedule" method="POST">
-                            @csrf
-                            @method('put')
-                            <button type="submit" class="btn btn-outline-primary">Reporter le rendez-vous</button>
-                        </form>
+                        <button data-bs-toggle="modal" data-bs-target="#rescheduleAppointment{{ $appointment->id }}"
+                            type="button" class="btn btn-outline-primary">Reporter le rendez-vous</button>
                     </div>
                     <div class="col-3">
                         <form action="/appointments/{{ $appointment->id }}/cancel" method="POST">
@@ -103,6 +106,31 @@ $date = new DateTime($appointment->date_and_time);
                             @method('delete')
                             <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
                         </form>
+                    </div>
+                </div>
+                <!-- Reschedule Appointment Modal -->
+                <div class="modal fade" id="rescheduleAppointment{{ $appointment->id }}" tabindex="-1"
+                    aria-labelledby="rescheduleAppointmentLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="rescheduleAppointmentLabel">Reporter le rendez-vous</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="/appointments/{{ $appointment->id }}/reschedule" method="POST">
+                                    @csrf
+                                    @method('put')
+                                    <div class="mb-3">
+                                        <label for="date_and_time">Date et heure :</h5>
+                                        <input type="datetime-local" name="date_and_time" id="date_and_time"
+                                            class="form-control" required value="{{$appointment->date_and_time}}">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Mettre à jour le rendez-vous</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             @endif
