@@ -153,6 +153,18 @@ Route::middleware(['auth'])->group(function () {
     //show appointment
     Route::get('/appointments/{appointment}', [AppointmentController::class, 'show']);
 
+    //reschedule appointment
+    Route::put('/appointments/{appointment}/reschedule', [AppointmentController::class, 'reschedule'])->name('appointments.reschedule');
+
+    //cancel appointment
+    Route::put('/appointments/{appointment}/cancel', [AppointmentController::class, 'cancel'])->name('appointments.cancel');
+
+    //confirm appointment  
+    Route::put('/appointments/{appointment}/confirm', [AppointmentController::class, 'confirm'])->name('appointments.confirm');
+
+    //delete appointment
+    Route::delete('/appointments/{appointment}', [AppointmentController::class, 'destroy']);    
+    
     //------- other routes ----------//
     // show home page
     Route::get('/dashboard', [Controller::class, 'dashboard'])->name('dashboard');

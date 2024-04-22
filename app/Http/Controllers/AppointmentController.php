@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Exception;
 use Carbon\Carbon;
+use App\Models\Log;
 use App\Models\Client;
 use App\Models\Appointment;
 use Hamcrest\Type\IsString;
@@ -40,7 +41,8 @@ class AppointmentController extends Controller
             $appointment->purpose = $request->input('purpose');
 
             $appointment->save();
-
+            //create log
+            Log::CreateLog("Créer rendez-vous.", "Rendez-vous n°: " . $appointment->id);
             Session::flash('success', 'Rendez-vous crée avec succès');
             return response()->json(['success' => true]);
         } catch (Exception $e) {
@@ -57,7 +59,33 @@ class AppointmentController extends Controller
     }
 
     public function show(Appointment $appointment){
-        // dd( $appointment->date_and_time);
+         // Store the previous URL in the session to redirect the user after the appointment is deleted
+         session()->put('previous_url', url()->previous());
         return view('appointments.show', compact('appointment'));
+    }
+
+    public function cancel(Appointment $appointment){
+        $appointment->update(['status' => 'cancelled']);
+        //create log
+        Log::CreateLog("Annuler rendez-vous.", "Rendez-vous n°: " . $appointment->id);
+        Session::flash('success', 'Rendez-vous annulée avec succès');
+        return redirect()->back();
+    }
+
+    public function confirm(Appointment $appointment){
+        $appointment->update(['status' => 'done']);
+        //create log
+        Log::CreateLog("Confirmer rendez-vous.", "Rendez-vous n°: " . $appointment->id);
+        Session::flash('success', 'Rendez-vous confirmée avec succès');
+        return redirect()->back();
+    }
+
+    public function destroy(Appointment $appointment){
+        $appointment->delete();
+        //create log
+        Log::CreateLog("Supprimer rendez-vous.", "Rendez-vous n°: " . $appointment->id);
+        Session::flash('success', 'Rendez-vous supprimée avec succès');
+        //rederect the user to the index page
+        return redirect()->intended(session()->pull('previous_url', '/'));
     }
 }
