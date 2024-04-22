@@ -185,8 +185,6 @@ class CommandController extends Controller
         $pdf = App::make('dompdf.wrapper');
         $html = View::make('invoice.generate-invoice', ['sale' => $sale])->render();
         $pdf->loadHTML($html);
-        //create log
-        Log::CreateLog("Voir facture.", "Facture n°: " . $sale->id);
         return $pdf->stream();
     }
 
@@ -195,8 +193,6 @@ class CommandController extends Controller
     {
         $data = ['sale' => $sale];
         $pdf = Pdf::loadView('invoice.generate-invoice', $data);
-        //create log
-        Log::CreateLog("Télécharger facture.", "Facture n°: " . $sale->id);
         return $pdf->download('facture N° ' . $sale->id . '-' . $sale->created_at->format('Y') . '.pdf');
     }
 }
