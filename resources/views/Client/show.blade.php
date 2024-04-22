@@ -70,6 +70,10 @@
                                     <button class="nav-link " data-bs-toggle="tab"
                                         data-bs-target="#profile-historique">Historique</button>
                                 </li>
+                                <li class="nav-item">
+                                    <button class="nav-link " data-bs-toggle="tab"
+                                        data-bs-target="#profile-rdv">RDVs</button>
+                                </li>
 
                             </ul>
                             <div class="tab-content pt-2">
@@ -415,6 +419,62 @@
                                                         @endif
                                                         <td><button
                                                                 onclick="window.location.href='/commands/{{ $command->id }}'"
+                                                                type="button"
+                                                                class="btn btn-outline-primary btn-sm">Consulter</button>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    @endif
+                                </div>
+                                <div class="tab-pane fade profile-rdv pt-3" id="profile-rdv">
+                                    {{-- check if the there are appointments or no --}}
+                                    @if ($appointments->count() == 0)
+                                        <h2>Pas de rendez-vous pour le moment</h2>
+                                    @else
+                                        <div class="row">
+                                            <div class="col">
+                                                <p>N° des rendez-vous: <span
+                                                        class="text-primary">{{ $appointments->count() }}</span></p>
+                                            </div>
+                                            {{-- <div class="col">
+                                                <p>en attente: <span class="text-warning">{{ $countPending }}</span>
+                                                </p>
+                                            </div>
+                                            <div class="col">
+                                                <p>annulées: <span class="text-danger">{{ $countCancelled }}</span>
+                                                </p>
+                                            </div>
+                                            <div class="col">
+                                                <p>confirmées: <span class="text-success">{{ $countConfirmed }}</span>
+                                                </p>
+                                            </div> --}}
+                                        </div>
+
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">ID</th>
+                                                    <th scope="col">Date de rendez-vous</th>
+                                                    <th scope="col">Statut</th>
+                                                    <th scope="col">Détails</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($appointments as $appointment)
+                                                    <tr>
+                                                        <th scope="row">{{ $appointment->id }}</th>
+                                                        <td>{{ $appointment->date_and_time }}</td>
+                                                        @if ($appointment->status == 'pending')
+                                                            <td><span class="badge bg-warning">En attente</span></td>
+                                                        @elseif($appointment->status == 'done')
+                                                            <td><span class="badge bg-success">Termine</span></td>
+                                                        @else
+                                                            <td><span class="badge bg-danger">Annulé</span></td>
+                                                        @endif
+                                                        <td><button
+                                                                onclick="window.location.href='/appointments/{{ $appointment->id }}'"
                                                                 type="button"
                                                                 class="btn btn-outline-primary btn-sm">Consulter</button>
                                                         </td>

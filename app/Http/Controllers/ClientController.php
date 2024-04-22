@@ -96,6 +96,7 @@ class ClientController extends Controller
     {
         $client = Client::findOrFail($id);
         $commands = $client->commands()->get();
+        $appointments = $client->appointments()->get();
         $countPending = $commands->where('type', 'pending')->count();
         $countConfirmed = $commands->where('type', 'done')->count();
         $countCancelled = $commands->where('type', 'cancelled')->count();
@@ -109,6 +110,7 @@ class ClientController extends Controller
                 'countPending' => $countPending,
                 'countConfirmed' => $countConfirmed,
                 'countCancelled' => $countCancelled,
+                'appointments' => $appointments,
                 'users' => $users
             ]);
         }
@@ -119,6 +121,7 @@ class ClientController extends Controller
             'countPending' => $countPending,
             'countConfirmed' => $countConfirmed,
             'countCancelled' => $countCancelled,
+            'appointments' => $appointments,
             'users' => [],
         ]);
     }
