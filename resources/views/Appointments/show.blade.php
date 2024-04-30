@@ -79,6 +79,14 @@ $date = new DateTime($appointment->date_and_time);
                     <p class="m-0">{{ $appointment->purpose }}</p>
                 </div>
             </div>
+            @if (Auth::user()->privilege == 'admin')
+                <div class="row mt-3">
+                    <div class="col-md-2">assigné à:</div>
+                    <div class="col">
+                        <p class="m-0">{{ $appointment->user->id . '. ' . $appointment->user->full_name }}</p>
+                    </div>
+                </div>
+            @endif
 
             @if ($appointment->status == 'pending')
                 <div class="row g-0 mt-5">
@@ -124,10 +132,12 @@ $date = new DateTime($appointment->date_and_time);
                                     @method('put')
                                     <div class="mb-3">
                                         <label for="date_and_time">Date et heure :</h5>
-                                        <input type="datetime-local" name="date_and_time" id="date_and_time"
-                                            class="form-control" required value="{{$appointment->date_and_time}}">
+                                            <input type="datetime-local" name="date_and_time" id="date_and_time"
+                                                class="form-control" required
+                                                value="{{ $appointment->date_and_time }}">
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Mettre à jour le rendez-vous</button>
+                                    <button type="submit" class="btn btn-primary">Mettre à jour le
+                                        rendez-vous</button>
                                 </form>
                             </div>
                         </div>
