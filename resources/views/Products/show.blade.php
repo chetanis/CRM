@@ -93,11 +93,17 @@
                                         <div class="col-lg-3 col-md-4 label">Stock minimum</div>
                                         <div class="col-lg-9 col-md-8">{{ $product->minimum_stock }}</div>
                                     </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label">Vendu</div>
+                                        <div class="col-lg-9 col-md-8">{{ $product->sold }}</div>
+                                    </div>
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">Description</div>
                                         <div class="col-lg-9 col-md-8">{{ $product->description }}</div>
                                     </div>
+                                    
                                     <div class="col-lg-9 mt-5 col-md-8 d-flex justify-content-center">
                                         <form method="POST" action="/products/{{ $product->id }}">
                                             @csrf
