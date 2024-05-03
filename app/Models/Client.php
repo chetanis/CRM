@@ -70,9 +70,17 @@ class Client extends Model
         // Get all pending commands associated with this client
         $pendingCommands = $this->commands()->where('type', 'pending')->get();
 
+        // get all pending appointments associated with this client
+        $appointments = $this->appointments()->where('status', 'pending')->get();
+
         // Iterate over each pending command and update the assigned user
         foreach ($pendingCommands as $command) {
             $command->changeAssignedTo($userId);
+        }
+
+        // Iterate over each appointment and update the assigned user
+        foreach ($appointments as $appointment) {
+            $appointment->changeAssignedTo($userId);
         }
     }
 }

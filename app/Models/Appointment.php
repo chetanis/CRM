@@ -52,4 +52,11 @@ class Appointment extends Model
         $date = new DateTime($this->date_and_time);
         return $date->format('H:i');
     }
+
+    //change the user that is assigned to the appointment
+    public function changeAssignedTo(int $userId)
+    {
+        $this->user_id = $userId;
+        $this->save();
+    }
 }
