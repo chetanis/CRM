@@ -7,6 +7,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CommandController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\LogController;
 use App\Models\Appointment;
 
 /*
@@ -50,6 +51,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     //update a user
     Route::put('/users/{user}', [UserController::class, 'update']);
+
+    //show Logs
+    Route::get('/logs', [LogController::class, 'index'])->name('logs');
 });
 
 //-------------- superuser and admin routes --------------//
@@ -166,6 +170,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/appointments/{appointment}', [AppointmentController::class, 'destroy']);    
     
     //------- other routes ----------//
+
     // show home page
     Route::get('/dashboard', [Controller::class, 'dashboard'])->name('dashboard');
 });

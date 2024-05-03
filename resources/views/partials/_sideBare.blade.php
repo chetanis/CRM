@@ -26,6 +26,11 @@
             <i class="bi bi-circle"></i><span>Afficher les utilisateurs</span>
           </a>
         </li>
+        <li>
+          <a href="{{route('logs')}}">
+            <i class="bi bi-circle"></i><span>Afficher le journal d'activité</span>
+          </a>
+        </li>
       </ul>
     </li><!-- End Users Nav -->
     @endif
