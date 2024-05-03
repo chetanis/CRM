@@ -1,3 +1,11 @@
+<?php
+$tva = round(0.19 * $command->total_price, 2);
+$total = $command->total_price + $tva;
+if ($command->payment_method == 'Espèce') {
+    $timbre = round(0.01 * $total, 2);
+    $total += $timbre;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,7 +57,7 @@
                     <hr>
                     <p>N° commande : {{ $command->id }}</p>
                     <p>Date de commande : {{ $command->created_at->format('d/m/Y \à H:i') }}</p>
-                    <p>Méthode de paiement : {{$command->payment_method}} </p>
+                    <p>Méthode de paiement : {{ $command->payment_method }} </p>
                     @if ($command->type == 'pending')
                         <p>Etat de la commande : <span class="text-warning">En attente</span></p>
                     @elseif($command->type == 'done')
@@ -62,7 +70,9 @@
                 <div class="col-md-6">
                     <h4>Details du client</h4>
                     <hr>
-                    <p>Nom complet : <a href="/search-client?search={{$command->client->phone_number}}">{{ $command->client->last_name }} {{ $command->client->first_name }} </a></p>
+                    <p>Nom complet : <a
+                            href="/search-client?search={{ $command->client->phone_number }}">{{ $command->client->last_name }}
+                            {{ $command->client->first_name }} </a></p>
                     <p>Email : {{ $command->client->email }}</p>
                     <p>Téléphone : {{ $command->client->phone_number }}</p>
                     <p>Adresse : {{ $command->client->address }}</p>
@@ -70,15 +80,16 @@
             </div>
             {{-- invoice div --}}
             @if ($command->type == 'done')
-            <div class="row">
-                <div class="col-md-6">
-                    <p>Date de confirmation: {{ $sale->created_at->format('d/m/Y \à H:i') }}</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>Date de confirmation: {{ $sale->created_at->format('d/m/Y \à H:i') }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="/sales/{{ $sale->id }}" target="_blank" class="btn btn-warning me-2">Afficher la
+                            facture</a>
+                        <a href="/sales/{{ $sale->id }}/facture" class="btn btn-primary">Télécharger la facture</a>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <a href="/sales/{{$sale->id}}" target="_blank" class="btn btn-warning me-2">Afficher la facture</a>
-                    <a href="/sales/{{$sale->id}}/facture" class="btn btn-primary">Télécharger la facture</a>
-                </div>
-            </div>
             @endif
             {{-- product list --}}
             <div class="row mt-3">
@@ -110,27 +121,28 @@
                     </table>
                     <div class="row">
                         <div class="col-md-6 ms-2 mt-3">
-                            <p class><b>Prix total :</b> {{ $command->total_price }} DA</p>
+                            <p class><b>Prix HT :</b> {{ $command->total_price }} DA</p>
+                            <p class><b>Prix TTC :</b> {{ $total }} DA</p>
                         </div>
                     </div>
                     @if ($command->type == 'pending')
                         <div class="row">
                             <div class="col-3">
-                                <form action="/commands/{{$command->id}}/confirm" method="POST">
+                                <form action="/commands/{{ $command->id }}/confirm" method="POST">
                                     @csrf
                                     @method('put')
                                     <button type="submit" class="btn btn-primary">Confirmer la commande</button>
                                 </form>
                             </div>
                             <div class="col-3">
-                                <form action="/commands/{{$command->id}}/cancel" method="POST">
+                                <form action="/commands/{{ $command->id }}/cancel" method="POST">
                                     @csrf
                                     @method('put')
                                     <button type="submit" class="btn btn-danger">Annuler la commande</button>
                                 </form>
                             </div>
                             <div class="col text-end"> <!-- Align the form to the right -->
-                                <form action="/commands/{{$command->id}}" method="POST">
+                                <form action="/commands/{{ $command->id }}" method="POST">
                                     @csrf
                                     @method('delete')
                                     <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
