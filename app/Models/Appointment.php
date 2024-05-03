@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use DateTime;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -37,5 +39,17 @@ class Appointment extends Model
         }else{
             return self::where('user_id', Auth::id())->latest();
         }
+    }
+
+    public static function getTodayAccessibleAppointments(){
+        $today = Carbon::now()->toDateString();
+        return self::getAccessibleAppointments()
+        ->whereDate('date_and_time', $today)
+        ->get(); 
+    }
+
+    public function getHour(){
+        $date = new DateTime($this->date_and_time);
+        return $date->format('H:i');
     }
 }
