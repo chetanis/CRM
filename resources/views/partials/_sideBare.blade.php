@@ -115,8 +115,8 @@
       </a>
       <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
-          <a href="icons-bootstrap.html">
-            <i class="bi bi-circle"></i><span>type</span>
+          <a href="{{route('clients-report')}}">
+            <i class="bi bi-circle"></i><span>Clients</span>
           </a>
         </li>
         <li>

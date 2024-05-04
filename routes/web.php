@@ -167,7 +167,12 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/appointments/{appointment}/confirm', [AppointmentController::class, 'confirm'])->name('appointments.confirm');
 
     //delete appointment
-    Route::delete('/appointments/{appointment}', [AppointmentController::class, 'destroy']);    
+    Route::delete('/appointments/{appointment}', [AppointmentController::class, 'destroy']);   
+    
+    
+    //--------  Reports  --------//
+    //show the client report
+    Route::get('/reports/clients', [Controller::class, 'clientsReport'])->name('clients-report');
     
     //------- other routes ----------//
 
