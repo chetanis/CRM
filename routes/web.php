@@ -1,14 +1,15 @@
 <?php
 
+use App\Models\Appointment;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LogController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\CommandController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AppointmentController;
-use App\Http\Controllers\LogController;
-use App\Models\Appointment;
 
 /*
 |--------------------------------------------------------------------------
@@ -172,7 +173,7 @@ Route::middleware(['auth'])->group(function () {
     
     //--------  Reports  --------//
     //show the client report
-    Route::get('/reports/clients', [Controller::class, 'clientsReport'])->name('clients-report');
+    Route::get('/reports/clients', [ReportController::class, 'clientsReport'])->name('clients-report');
     
     //------- other routes ----------//
 

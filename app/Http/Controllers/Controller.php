@@ -30,7 +30,4 @@ class Controller extends BaseController
         return view('index',compact('nbclients','sales','topProducts','appointments'));
     }
 
-    public function clientsReport(){
-        return view('Reports.clients'); 
-    }
 }
