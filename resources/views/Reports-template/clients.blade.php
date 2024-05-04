@@ -23,24 +23,34 @@
 
 <body>
     <center>
-        <h2 class="mt-4">Rapport Client de Tout le Temps</h4>
-        <p>Période de Référence : Janvier 2023 - Décembre 2023</p>
+        @if (isset($all_time))
+            <h2 class="mt-4">Rapport Client de Tout le Temps</h2>
+        @else
+            <h2 class="mt-4">Rapport Client</h2>
+            <p>Période de Référence : {{ $startDate->format('d/m/Y') }} - {{ $endDate->format('d/m/Y') }}</p>
+        @endif
     </center>
-
-    <div class="row mt-5">
-        <div class="col-md-4 text-center">
-            <h5>Nb Clients Avant la Période</h5>
-            <p>0</p> <!-- Replace with the actual data -->
+    @if (isset($all_time))
+        <div class=" text-center mt-5">
+            <h5>Nb de Clients Acquis Pendant la Période</h5>
+            <p>{{ $nb_clients }} </p>
         </div>
-        <div class="col-md-4 text-center">
-            <h5>Nb Clients Acquis Pendant la Période</h5>
-            <p>2000 </p> <!-- Replace with the actual data -->
+    @else
+        <div class="row mt-5">
+            <div class="col-md-4 text-center">
+                <h5>Nb de Clients Avant la Période</h5>
+                <p>{{ $totalNbClients - $nb_clients }}</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <h5>Nb de Clients Acquis Pendant la Période</h5>
+                <p>{{ $nb_clients }} </p>
+            </div>
+            <div class="col-md-4 text-center">
+                <h5>Nb de clients à la fin de la période</h5>
+                <p> {{ $totalNbClients }}</p>
+            </div>
         </div>
-        <div class="col-md-4 text-center">
-            <h5>Nb Clients Après la Période</h5>
-            <p> 2000</p> <!-- Replace with the actual data -->
-        </div>
-    </div>
+    @endif
 
     <div class="row justify-content-center my-3"> <!-- Center content horizontally and add spacing -->
         <div class="col-md-8 text-center"> <!-- Center the content within the column -->
@@ -98,6 +108,22 @@
             const clientsPerYear = @json($clientsPerYear);
             labels = clientsPerYear.map(c => c.year);
             data = clientsPerYear.map(c => c.count);
+            unit = 'Années';
+        @elseif (isset($clientsPerMonth))
+            const clientsPerMonth = @json($clientsPerMonth);
+            labels = clientsPerMonth.map(c => c.month);
+            data = clientsPerMonth.map(c => c.count);
+            unit = 'Mois';
+        @elseif (isset($clientsPerDay))
+            const clientsPerDay = @json($clientsPerDay);
+            labels = clientsPerDay.map(c => c.day);
+            data = clientsPerDay.map(c => c.count);
+            unit = 'Jours';
+        @else
+            const clientsPerDay = @json($clientPerCustom);
+            labels = clientsPerDay.map(c => c.day + '/' + c.month);
+            data = clientsPerDay.map(c => c.count);
+            unit = 'Jours';
         @endif
 
         const chart = new Chart(ctx, {
@@ -116,7 +142,7 @@
                 plugins: {
                     title: {
                         display: true, // Show title
-                        text: 'Nombre de clients / temps', // Title text
+                        text: 'Nombre de clients / '+ unit, // Title text
                         font: {
                             size: 20, // Increase the font size
                             weight: 'bold', // Optional: Make the font bold
