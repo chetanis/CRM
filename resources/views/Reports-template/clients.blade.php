@@ -30,6 +30,7 @@
             <p>Période de Référence : {{ $startDate->format('d/m/Y') }} - {{ $endDate->format('d/m/Y') }}</p>
         @endif
     </center>
+    @if($client_stat_checked)
     @if (isset($all_time))
         <div class=" text-center mt-5">
             <h5>Nb de Clients Acquis Pendant la Période</h5>
@@ -51,21 +52,26 @@
             </div>
         </div>
     @endif
+    @endif
 
+    @if($client_graph_checked)
     <div class="row justify-content-center my-3"> <!-- Center content horizontally and add spacing -->
         <div class="col-md-8 text-center"> <!-- Center the content within the column -->
             <canvas id="clientsChart"></canvas> <!-- Adjust canvas size -->
         </div>
     </div>
+    @endif
 
+    @if($lead_source_checked)
     <!-- Second Canvas Row -->
     <div class="row justify-content-center my-3"> <!-- Center content horizontally and add spacing -->
         <div class="col-md-8 text-center"> <!-- Center the content within the column -->
             <canvas id="clientsByLeadSourceChart"></canvas> <!-- Adjust canvas size -->
         </div>
     </div>
+    @endif
 
-
+    @if($client_activities_checked)
     <center>
         <div class="m-5">
             <h4 class="mb-3">Tableau des clients et leurs activités</h4>
@@ -95,12 +101,14 @@
             </table>
         </div>
     </center>
+    @endif
     <script src="{{ asset('js/script.js') }}"></script>
     <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('jquery/jquery-3.7.1.min.js') }}"></script>
     <script src="{{ asset('chart/chart.js') }}"></script>
 
     <script>
+        @if($client_graph_checked)
         const ctx = document.getElementById('clientsChart').getContext('2d');
 
         let labels, data;
@@ -172,7 +180,9 @@
                 },
             },
         });
+        @endif
 
+        @if($lead_source_checked)
         const ctx2 = document.getElementById('clientsByLeadSourceChart').getContext('2d');
 
         // Data from the controller
@@ -222,6 +232,7 @@
                 }
             }
         });
+        @endif
     </script>
 
 </body>

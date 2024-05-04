@@ -98,16 +98,16 @@
                             </div>
                         </div>
                         <div class="row">
-                            <label class="col-md-3  label">graphique à barres: Source des nouveaux clients</label>
+                            <label class="col-md-3 label">Graphiques en ligne : nombre de clients / temps</label>
                             <div class="col-md-2">
-                                <input class="form-check-input" type="checkbox" name="report_options[]"value="lead_source"> 
+                                <input class="form-check-input" type="checkbox" name="report_options[]"value="client_graph"> 
                                 <label class="ms-2">inclue</label>
                             </div>
                         </div>
                         <div class="row">
-                            <label class="col-md-3 label">Graphiques en ligne : nombre de clients / temps</label>
+                            <label class="col-md-3  label">graphique à barres: Source des nouveaux clients</label>
                             <div class="col-md-2">
-                                <input class="form-check-input" type="checkbox" name="report_options[]"value="client_graph"> 
+                                <input class="form-check-input" type="checkbox" name="report_options[]"value="lead_source"> 
                                 <label class="ms-2">inclue</label>
                             </div>
                         </div>
