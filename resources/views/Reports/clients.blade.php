@@ -50,7 +50,8 @@
             <div class="card-body pt-3 report">
                 <h4 class="mb-0 mt-1 ms-1 ">Sélectionnez ce que vous souhaitez inclure dans le rapport.</h4>
                 <hr>
-                <form id="date-form" action="">
+                <form id="date-form" action="{{route("generate-clients-report")}}" method="POST">
+                    @csrf
                     <div class="col mt-4">
                         <div class="row">
                             <div class="col-md-3 label">Sélectionnez une période:</div>
@@ -92,7 +93,7 @@
                         <div class="row">
                             <label class="col-md-3  label">Statistiques sur le nombre de clients</label>
                             <div class="col-md-2">
-                                <input class="form-check-input" type="checkbox" name="report_options[]"value="client_stat"> 
+                                <input checked class="form-check-input" type="checkbox" name="report_options[]"value="client_stat"> 
                                 <label class="ms-2">inclue</label>
                             </div>
                         </div>
