@@ -18,19 +18,28 @@ class DatabaseSeeder extends Seeder
     {
         $users = [
             [
-                'username' => 'admin',
+                'username' => 'admin2',
                 'password' => Hash::make('12345678'),
                 'privilege' => 'admin',
+                'full_name' => 'admin admin',
+                'created_at' => '2024-02-24 19:23:58',
+                'updated_at' => '2024-02-24 19:23:58'
             ],
             [
-                'username' => 'superuser',
+                'username' => 'superuser2',
                 'password' => Hash::make('12345678'),
                 'privilege' => 'superuser',
+                'full_name' => 'superuser superuser',
+                'created_at' => '2024-02-24 19:23:58',
+                'updated_at' => '2024-02-24 19:23:58'
             ],
             [
-                'username' => 'user',
+                'username' => 'user2',
                 'password' => Hash::make('12345678'),
                 'privilege' => 'user',
+                'full_name' => 'user user',
+                'created_at' => '2024-02-24 19:23:58',
+                'updated_at' => '2024-02-24 19:23:58'
             ],
             // Add more users as needed
         ];
