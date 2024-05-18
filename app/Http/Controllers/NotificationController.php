@@ -13,7 +13,11 @@ class NotificationController extends Controller
     {
         $user = Auth::user();
         $personalNotifications = PersonalNotif::where('user_id', $user->id)->get();
-        $productNotifications = ProductNotif::all();
+        $productNotifications = [];
+        if ($user->privilege === 'superuser' || $user->privilege === 'admin') {
+            $productNotifications = ProductNotif::all();
+        }
+    
 
         return response()->json([
             'personal_notifications' => $personalNotifications,
@@ -21,23 +25,18 @@ class NotificationController extends Controller
         ]);
     }
 
-    public function destroyPersonalNotif($id)
-    {
-        $notification = PersonalNotif::find($id);
-        if ($notification) {
-            $notification->delete();
-            return response()->noContent();
-        }
-
-        return response()->json(['error' => 'Notification not found'], 404);
-    }
-
-    public function destroyProductNotif($id)
+    public function destroy($id)
     {
         $notification = ProductNotif::find($id);
         if ($notification) {
             $notification->delete();
             return response()->noContent();
+        }else{
+            $notification = PersonalNotif::find($id);
+            if ($notification) {
+                $notification->delete();
+                return response()->noContent();
+            }
         }
 
         return response()->json(['error' => 'Notification not found'], 404);

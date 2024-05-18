@@ -18,8 +18,14 @@
 
       <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
         <i class="bi bi-bell"></i>
-        <span class="badge bg-danger badge-number">4</span>
+        <span id="notifCount" class="badge bg-danger badge-number"></span>
       </a><!-- End Notification Icon -->
+
+      <ul id="notifications" class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+        <li id="nb_notif" class="dropdown-header">
+          You have 0 new notifications
+        </li>
+      </ul><!-- End Notification Dropdown Items -->
 
     </li><!-- End Notification Nav -->
 

@@ -10,6 +10,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\CommandController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -170,6 +171,10 @@ Route::middleware(['auth'])->group(function () {
     //delete appointment
     Route::delete('/appointments/{appointment}', [AppointmentController::class, 'destroy']);   
     
+
+    //--------  Notifications  --------//
+    Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::delete('/notifications/{id}', [NotificationController::class, 'destroy']);
     
     //--------  Reports  --------//
     //show the client report

@@ -32,6 +32,8 @@ if ($command->payment_method == 'Espèce') {
     <link href=" {{ asset('css/style.css') }}" rel="stylesheet">
     <link href=" {{ asset('bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 </head>
 
 <body>
@@ -162,8 +164,10 @@ if ($command->payment_method == 'Espèce') {
 
 
     <!-- Template Main JS File -->
+    <script src="{{ asset('jquery/jquery-3.7.1.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
     <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('js/notifications.js') }}"></script>
 
 </body>
 

@@ -27,6 +27,8 @@ $date = new DateTime($appointment->date_and_time);
     <link href=" {{ asset('css/style.css') }}" rel="stylesheet">
     <link href=" {{ asset('bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 </head>
 
 <body>
@@ -155,8 +157,10 @@ $date = new DateTime($appointment->date_and_time);
 
 
     <!-- Template Main JS File -->
+    <script src="{{ asset('jquery/jquery-3.7.1.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
     <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('js/notifications.js') }}"></script>
 
 </body>
 

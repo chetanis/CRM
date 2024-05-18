@@ -488,6 +488,7 @@ h6 {
 }
 
 .header-nav .notifications {
+  width: 40vh;
   inset: 8px -15px auto auto !important;
 }
 
@@ -512,7 +513,7 @@ h6 {
 .header-nav .notifications .notification-item p {
   font-size: 13px;
   margin-bottom: 3px;
-  color: #919191;
+  color: #000000;
 }
 
 .header-nav .notifications .notification-item:hover {

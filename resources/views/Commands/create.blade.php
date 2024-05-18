@@ -134,9 +134,11 @@
 
 
     <!-- Template Main JS File -->
+    <script src="{{ asset('jquery/jquery-3.7.1.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
     <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('js/command.js') }}"></script>
+    <script src="{{ asset('js/notifications.js') }}"></script>
 
 </body>
 
