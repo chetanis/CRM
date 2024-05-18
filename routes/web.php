@@ -55,6 +55,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     //show Logs
     Route::get('/logs', [LogController::class, 'index'])->name('logs');
+
+    //change the user assigned to a client
+    Route::put('/clients/{client}/change-user', [ClientController::class, 'changeUser'])->name('change-user');
 });
 
 //-------------- superuser and admin routes --------------//
@@ -111,9 +114,6 @@ Route::middleware(['auth'])->group(function () {
 
     //delete a client
     Route::delete('/clients/{client}', [ClientController::class, 'destroy']);
-
-    //change the user assigned to
-    Route::put('/clients/{client}/change-user', [ClientController::class, 'changeUser'])->name('change-user');
 
 
     //--------   commands managment  --------//
