@@ -7,6 +7,7 @@ use App\Models\Sale;
 use App\Models\Client;
 use App\Models\Command;
 use App\Models\Product;
+use App\Models\ProductNotif;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\App;
@@ -70,7 +71,8 @@ class CommandController extends Controller
             $totalPrice += $quantity * $product->price;
 
             // Reduce the stock of the product
-            $product->current_stock -= $quantity;
+            $product->subtractStock($quantity);
+
 
             //adding to the sold products
             $product->sold += $quantity;

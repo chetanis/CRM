@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Client;
 use App\Models\Command;
 use Illuminate\Http\Request;
+use App\Models\PersonalNotif;
 use Illuminate\Support\Facades\Auth;
 
 class ClientController extends Controller
@@ -225,6 +226,13 @@ class ClientController extends Controller
             'assigned_to' => 'required|exists:users,id'
         ]);
         $client->changeAssignedTo($request->input('assigned_to'));
+
+        //create personal Notification
+        $personalNotif = new PersonalNotif();
+        $personalNotif->user_id = $request->input('assigned_to');
+        $personalNotif->message = 'Un nouveau client vous a été attribué: ' . $client->first_name . ' ' . $client->last_name;
+        $personalNotif->save();
+        
 
         session()->flash('success', 'user modifié avec succès');
         return redirect()->back();

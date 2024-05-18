@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\ProductNotif;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
@@ -30,6 +31,14 @@ class Product extends Model
         $this->current_stock -= $quantity;
         if ($this->current_stock < 0) {
             $this->current_stock = 0;
+        }
+        //check if the current stock is below the minimum stock
+        if ($this->current_stock < $this->minimum_stock) {
+            //create a product notification
+            ProductNotif::create([
+                'product_id' => $this->id,
+                'message' => 'Le stock de ' . $this->name . ' est inférieur au stock minimum'
+            ]);
         }
         $this->save();
     }
