@@ -141,8 +141,21 @@ class CommandController extends Controller
      */
     public function destroy(string $id)
     {
-
         $command = Command::find($id);
+
+        //add the products to the stock
+        $products = $command->products;
+        foreach ($products as $productData) {
+            $quantity = $productData['quantity'];
+            $productId = $productData['id'];
+            $product = Product::find($productId);
+            // Increase the stock of the product
+            $product->current_stock += $quantity;
+            // Reduce the sold products
+            $product->sold -= $quantity;
+            $product->save();
+        }
+
         $command->delete();
         //create log
         Log::CreateLog("Supprimer commande.", "Commande n°: " . $command->id);
@@ -172,7 +185,22 @@ class CommandController extends Controller
      */
     public function cancel(Request $request, Command $command)
     {
+        //add the products to stock
+        $products = $command->products;
+        foreach ($products as $productData) {
+            $quantity = $productData['quantity'];
+            $productId = $productData['id'];
+            $product = Product::find($productId);
+            // Increase the stock of the product
+            $product->current_stock += $quantity;
+            // Reduce the sold products
+            $product->sold -= $quantity;
+            $product->save();
+        }
+
+        //update the command
         $command->update(['type' => 'cancelled']);
+
         //create log
         Log::CreateLog("Annuler commande.", "Commande n°: " . $command->id);
         Session::flash('success', 'Commande annulée avec succès');
