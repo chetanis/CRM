@@ -19,8 +19,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     $('#nb_notif').text('Vous avez ' + totalNotifs + ' nouvelles notifications');
                 }
 
-                renderNotifications(personalNotifs, '#notifications');
-                renderNotifications(productNotifs, '#notifications');
+                renderPersonalNotifications(personalNotifs, '#notifications');
+                renderProductNotifications(productNotifs, '#notifications');
             },
             error: function (error) {
                 console.error('Error fetching notifications:', error);
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function renderNotifications(notifications, container) {
+    function renderPersonalNotifications(notifications, container) {
         notifications.forEach(notif => {
             $(container).append(`
                 <li>
@@ -38,6 +38,38 @@ document.addEventListener("DOMContentLoaded", function () {
                     <i class="bi bi-exclamation-circle text-warning"></i>
                     <div>
                     <p>${notif.message}</p>
+                    </div>
+
+                    <i class="bi bi-x-lg text-danger delete-notif" data-id="${notif.id}"></i>
+                </li> 
+            `);
+        });
+
+        $('.delete-notif').on('click', function () {
+            const notifId = $(this).data('id');
+            $.ajax({
+                url: 'notifications/' + notifId,
+                method: 'DELETE',
+                success: function () {
+                    $(`i[data-id="${notifId}"]`).closest('li').remove();
+                    updateNotifCount();
+                },
+                error: function (error) {
+                    console.error('Error deleting notification:', error);
+                }
+            });
+        });
+    }
+    function renderProductNotifications(notifications, container) {
+        notifications.forEach(notif => {
+            $(container).append(`
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li class="notification-item ">
+                    <i class="bi bi-exclamation-circle text-warning"></i>
+                    <div>
+                    <p><a href="/products/${notif.product_id}">${notif.message}</a></p>
                     </div>
 
                     <i class="bi bi-x-lg text-danger delete-notif" data-id="${notif.id}"></i>
