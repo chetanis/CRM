@@ -132,6 +132,7 @@ class ReportController extends Controller
             $clientActivity = [];
 
             if ($client_activities_checked) {
+                // dd($startDate, $endDate);
                 //get all client not just in that period
                 $all_clients = Client::getAccessibleClients()->with(['commands', 'appointments'])->get();
                 foreach ($all_clients as $client) {
@@ -139,7 +140,7 @@ class ReportController extends Controller
                     $totalCommands = $commands->count();
                     $confirmedCommands = $commands->where('type', 'done')->count();
                     $cancelledCommands = $commands->where('type', 'cancelled')->count();
-                    $totalAppointments = $client->appointments->whereBetween('date', [$startDate, $endDate])->count();
+                    $totalAppointments = $client->appointments->whereBetween('date_and_time', [$startDate, $endDate])->count();
 
                     // Calculate gains from confirmed commands
                     $gains = $commands->where('type', 'done')->sum('total_price');
@@ -203,7 +204,7 @@ class ReportController extends Controller
                     $totalCommands = $commands->count();
                     $confirmedCommands = $commands->where('type', 'done')->count();
                     $cancelledCommands = $commands->where('type', 'cancelled')->count();
-                    $totalAppointments = $client->appointments->whereBetween('date', [$startDate, $endDate])->count();
+                    $totalAppointments = $client->appointments->whereBetween('date_and_time', [$startDate, $endDate])->count();
 
                     // Calculate gains from confirmed commands
                     $gains = $commands->where('type', 'done')->sum('total_price');
@@ -270,7 +271,7 @@ class ReportController extends Controller
                     $totalCommands = $commands->count();
                     $confirmedCommands = $commands->where('type', 'done')->count();
                     $cancelledCommands = $commands->where('type', 'cancelled')->count();
-                    $totalAppointments = $client->appointments->whereBetween('date', [$startDate, $endDate])->count();
+                    $totalAppointments = $client->appointments->whereBetween('date_and_time', [$startDate, $endDate])->count();
 
                     // Calculate gains from confirmed commands
                     $gains = $commands->where('type', 'done')->sum('total_price');
