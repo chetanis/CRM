@@ -188,6 +188,9 @@ Route::middleware(['auth'])->group(function () {
 
     //generate the client report
     Route::post('/reports/clients', [ReportController::class, 'generateClientsReport'])->name('generate-clients-report');
+
+    //show the command report
+    Route::get('/reports/commands', [ReportController::class, 'commandsReport'])->name('commands-report');
     
     //------- other routes ----------//
 

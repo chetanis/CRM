@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Rapport client</title>
+    <title>Rapport commande et produit</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -37,7 +37,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="pagetitle">
-                        <h1>Rapport client</h1>
+                        <h1>Rapport commande et produit</h1>
                         <nav>
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
@@ -52,7 +52,7 @@
             <div class="card-body pt-3 report">
                 <h4 class="mb-0 mt-1 ms-1 ">Sélectionnez ce que vous souhaitez inclure dans le rapport.</h4>
                 <hr>
-                <form id="date-form" action="{{route("generate-clients-report")}}" method="POST">
+                <form id="date-form" action="{{route("generate-users-report")}}" method="POST">
                     @csrf
                     <div class="col mt-4">
                         <div class="row">
@@ -93,28 +93,28 @@
 
                         </div>
                         <div class="row">
-                            <label class="col-md-3  label">Statistiques sur le nombre de clients</label>
+                            <label class="col-md-3  label">Statistiques sur le nombre des commandes</label>
                             <div class="col-md-2">
                                 <input checked class="form-check-input" type="checkbox" name="report_options[]"value="client_stat"> 
                                 <label class="ms-2">inclue</label>
                             </div>
                         </div>
                         <div class="row">
-                            <label class="col-md-3 label">Graphiques en ligne : nombre de clients en fonction du temps</label>
-                            <div class="col-md-2">
-                                <input class="form-check-input" type="checkbox" name="report_options[]"value="client_graph"> 
-                                <label class="ms-2">inclue</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label class="col-md-3  label">graphique à barres: Source des nouveaux clients</label>
+                            <label class="col-md-3  label">raphique circulaire: pourcentage des commandes confirmés et annulés.</label>
                             <div class="col-md-2">
                                 <input class="form-check-input" type="checkbox" name="report_options[]"value="lead_source"> 
                                 <label class="ms-2">inclue</label>
                             </div>
                         </div>
                         <div class="row">
-                            <label class="col-md-3 label">Tableau des clients et leurs activités</label>
+                            <label class="col-md-3 label">Graphiques en ligne : nombre de commades en fonction du temps</label>
+                            <div class="col-md-2">
+                                <input class="form-check-input" type="checkbox" name="report_options[]"value="client_graph"> 
+                                <label class="ms-2">inclue</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-md-3 label">Tableau de produits avec des statistiques </label>
                             <div class="col-md-2">
                                 <input class="form-check-input" type="checkbox" name="report_options[]" id="client_activities" value="client_activities"> 
                                 <label class="ms-2">inclue</label>

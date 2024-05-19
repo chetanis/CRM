@@ -297,5 +297,11 @@ class ReportController extends Controller
     {
         return view('Reports.users');
     }
+
+
+
+    public function commandsReport(){
+        return view('Reports.commands');
+    }
 }
 

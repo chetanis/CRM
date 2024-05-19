@@ -127,8 +127,8 @@
         </li>
         @endif
         <li>
-          <a href="icons-boxicons.html">
-            <i class="bi bi-circle"></i><span>type</span>
+          <a href="{{route('commands-report')}}">
+            <i class="bi bi-circle"></i><span>commande et produit</span>
           </a>
         </li>
       </ul>
