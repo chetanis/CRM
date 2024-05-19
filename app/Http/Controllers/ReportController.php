@@ -292,4 +292,10 @@ class ReportController extends Controller
         }
         // $pdf = PDF::loadView('Reports.clients', compact('clients'));
     }
+
+    public function usersReport()
+    {
+        return view('Reports.users');
+    }
 }
+

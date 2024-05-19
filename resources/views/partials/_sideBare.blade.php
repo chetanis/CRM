@@ -119,11 +119,13 @@
             <i class="bi bi-circle"></i><span>Clients</span>
           </a>
         </li>
+        @if(auth()->user()->privilege === 'admin')
         <li>
-          <a href="icons-remix.html">
-            <i class="bi bi-circle"></i><span>type</span>
+          <a href="{{route('users-report')}}">
+            <i class="bi bi-circle"></i><span>Users</span>
           </a>
         </li>
+        @endif
         <li>
           <a href="icons-boxicons.html">
             <i class="bi bi-circle"></i><span>type</span>

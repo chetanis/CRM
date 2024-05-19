@@ -59,6 +59,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     //change the user assigned to a client
     Route::put('/clients/{client}/change-user', [ClientController::class, 'changeUser'])->name('change-user');
+
+    //show the users report
+    Route::get('/reports/users', [ReportController::class, 'usersReport'])->name('users-report');
+
+    //generate the users report
+    Route::post('/reports/users', [ReportController::class, 'generateUsersReport'])->name('generate-users-report');
 });
 
 //-------------- superuser and admin routes --------------//
