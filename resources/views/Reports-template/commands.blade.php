@@ -119,7 +119,6 @@
     <script src="{{ asset('chart/chart.js') }}"></script>
 
     <script>
-        unit = 'year'
         @if ($command_percentage_checked)
             var ctx = document.getElementById('commandPercentageChart').getContext('2d');
 
@@ -163,8 +162,9 @@
         @endif
         @if ($command_graph_checked)
             var ctx = document.getElementById('commandChart').getContext('2d');
-
-            var years = {!! $commandsPerYear->pluck('year') !!};
+            
+            var unit = '{{ $timeUnit }}'; 
+            var years = {!! $commandsPerYear->pluck($timeUnit) !!};
             var counts = {!! $commandsPerYear->pluck('count') !!};
 
             var commandChart = new Chart(ctx, {
@@ -218,7 +218,7 @@
 
             // Assuming you passed commandsPerYear as an array of objects with 'year', 'confirmed_count', 'pending_count', and 'cancelled_count' properties
 
-            var years = {!! $commandsPerYear2->pluck('year') !!};
+            var years = {!! $commandsPerYear2->pluck($timeUnit) !!};
             var confirmedCounts = {!! $commandsPerYear2->pluck('confirmed_count') !!};
             var pendingCounts = {!! $commandsPerYear2->pluck('pending_count') !!};
             var cancelledCounts = {!! $commandsPerYear2->pluck('cancelled_count') !!};
