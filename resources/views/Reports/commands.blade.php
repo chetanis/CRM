@@ -52,7 +52,7 @@
             <div class="card-body pt-3 report">
                 <h4 class="mb-0 mt-1 ms-1 ">Sélectionnez ce que vous souhaitez inclure dans le rapport.</h4>
                 <hr>
-                <form id="date-form" action="{{route("generate-users-report")}}" method="POST">
+                <form id="date-form" action="{{route("generate-commands-report")}}" method="POST">
                     @csrf
                     <div class="col mt-4">
                         <div class="row">
@@ -95,53 +95,29 @@
                         <div class="row">
                             <label class="col-md-3  label">Statistiques sur le nombre des commandes</label>
                             <div class="col-md-2">
-                                <input checked class="form-check-input" type="checkbox" name="report_options[]"value="client_stat"> 
+                                <input checked class="form-check-input" type="checkbox" name="report_options[]"value="commands_stat"> 
                                 <label class="ms-2">inclue</label>
                             </div>
                         </div>
                         <div class="row">
                             <label class="col-md-3  label">raphique circulaire: pourcentage des commandes confirmés et annulés.</label>
                             <div class="col-md-2">
-                                <input class="form-check-input" type="checkbox" name="report_options[]"value="lead_source"> 
+                                <input class="form-check-input" type="checkbox" name="report_options[]"value="commands_percentage"> 
                                 <label class="ms-2">inclue</label>
                             </div>
                         </div>
                         <div class="row">
                             <label class="col-md-3 label">Graphiques en ligne : nombre de commades en fonction du temps</label>
                             <div class="col-md-2">
-                                <input class="form-check-input" type="checkbox" name="report_options[]"value="client_graph"> 
+                                <input class="form-check-input" type="checkbox" name="report_options[]"value="commands_graph"> 
                                 <label class="ms-2">inclue</label>
                             </div>
                         </div>
                         <div class="row">
                             <label class="col-md-3 label">Tableau de produits avec des statistiques </label>
                             <div class="col-md-2">
-                                <input class="form-check-input" type="checkbox" name="report_options[]" id="client_activities" value="client_activities"> 
+                                <input class="form-check-input" type="checkbox" name="report_options[]"  value="products_stat"> 
                                 <label class="ms-2">inclue</label>
-                            </div>
-                        </div>
-                        <div id="additional-activities" class="d-none">
-                            <div class="form-group row">
-                                <div class="form-check col-md-2">
-                                    <input type="checkbox" class="form-check-input" name="activity_options[]" value="nb_of_commands" checked>
-                                    <label class="form-check-label">Nb de commandes</label>
-                                </div>
-                                <div class="form-check col-md-3">
-                                    <input type="checkbox" class="form-check-input" name="activity_options[]" value="nb_of_confirmed_sales"checked>
-                                    <label class="form-check-label">Nb de ventes confirmées</label>
-                                </div>
-                                <div class="form-check col-md-3">
-                                    <input type="checkbox" class="form-check-input" name="activity_options[]" value="nb_of_cancelled_commands"checked>
-                                    <label class="form-check-label">Nb de commandes annulées</label>
-                                </div>
-                                <div class="form-check col-md-2">
-                                    <input type="checkbox" class="form-check-input" name="activity_options[]" value="nb_of_appointments"checked>
-                                    <label class="form-check-label">Nb de rendez-vous</label>
-                                </div>
-                                <div class="form-check col-md-2">
-                                    <input type="checkbox" class="form-check-input" name="activity_options[]" value="amount_earned"checked>
-                                    <label class="form-check-label">Gains</label>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -171,14 +147,6 @@
                 $('#custom_dates').removeClass('d-none'); // Show custom date inputs
             } else {
                 $('#custom_dates').addClass('d-none'); // Hide custom date inputs
-            }
-        });
-        // Toggle activities visibility based on checkbox selection
-        $('#client_activities').change(function() {
-            if ($(this).is(':checked')) {
-                $('#additional-activities').removeClass('d-none'); // Show additional checkboxes
-            } else {
-                $('#additional-activities').addClass('d-none'); // Hide additional checkboxes
             }
         });
 

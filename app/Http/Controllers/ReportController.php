@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Client;
+use App\Models\Command;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
@@ -155,7 +157,7 @@ class ReportController extends Controller
                     ];
                 }
             }
-            return view('Reports-template.clients', compact('nb_clients', 'clientsPerMonth', 'clientsBySource', 'clientActivity', 'totalNbClients', 'startDate', 'endDate' ,'client_stat_checked', 'lead_source_checked', 'client_graph_checked', 'client_activities_checked'));
+            return view('Reports-template.clients', compact('nb_clients', 'clientsPerMonth', 'clientsBySource', 'clientActivity', 'totalNbClients', 'startDate', 'endDate', 'client_stat_checked', 'lead_source_checked', 'client_graph_checked', 'client_activities_checked'));
         } elseif ($request->input('time_period') == 'last_month') {
             // Get the start and end dates for the last month
             $endDate = Carbon::now(); // Today's date
@@ -221,7 +223,7 @@ class ReportController extends Controller
             }
 
             // Return the view with the generated data
-            return view('Reports-template.clients', compact('nb_clients', 'clientsPerDay', 'clientsBySource', 'clientActivity', 'startDate', 'endDate', 'totalNbClients','client_stat_checked', 'lead_source_checked', 'client_graph_checked', 'client_activities_checked'));
+            return view('Reports-template.clients', compact('nb_clients', 'clientsPerDay', 'clientsBySource', 'clientActivity', 'startDate', 'endDate', 'totalNbClients', 'client_stat_checked', 'lead_source_checked', 'client_graph_checked', 'client_activities_checked'));
         } else {
 
             $endDate = Carbon::createFromFormat('Y-m-d', $request->input('end_date'));
@@ -288,7 +290,7 @@ class ReportController extends Controller
             }
 
             // Return the view with the generated data
-            return view('Reports-template.clients', compact('nb_clients', 'clientPerCustom', 'clientsBySource', 'clientActivity', 'startDate', 'endDate', 'totalNbClients','client_stat_checked', 'lead_source_checked', 'client_graph_checked', 'client_activities_checked'));
+            return view('Reports-template.clients', compact('nb_clients', 'clientPerCustom', 'clientsBySource', 'clientActivity', 'startDate', 'endDate', 'totalNbClients', 'client_stat_checked', 'lead_source_checked', 'client_graph_checked', 'client_activities_checked'));
         }
         // $pdf = PDF::loadView('Reports.clients', compact('clients'));
     }
@@ -300,8 +302,114 @@ class ReportController extends Controller
 
 
 
-    public function commandsReport(){
+    public function commandsReport()
+    {
         return view('Reports.commands');
     }
-}
 
+    public function generateCommandsReport(Request $request)
+    {
+        $command_stat_checked = false;
+        $command_graph_checked = false;
+        $command_percentage_checked = false;
+        $product_table_checked = false;
+        $reportOptions = $request->input('report_options', []);
+        if (in_array('commands_stat', $reportOptions)) {
+            $command_stat_checked = true;
+        }
+        if (in_array('commands_graph', $reportOptions)) {
+            $command_graph_checked = true;
+        }
+        if (in_array('products_stat', $reportOptions)) {
+            $product_table_checked = true;
+        }
+        if (in_array('commands_percentage', $reportOptions)) {
+            $command_percentage_checked = true;
+        }
+        if ($request->input('time_period') == 'all_time') {
+            // get the accessible commands
+            $commands = Command::getAccessibleCommands();
+
+            $nb_commands = 0;
+            $nb_confirmed_commands = 0;
+            $nb_cancelled_commands = 0;
+            $nb_pending_commands = 0;
+
+            if ($command_stat_checked) {
+                // loop through the commands and counts the number of each type
+                foreach ($commands->get() as $command) {
+                    $nb_commands++;
+                    if ($command->type == 'done') {
+                        $nb_confirmed_commands++;
+                    } elseif ($command->type == 'cancelled') {
+                        $nb_cancelled_commands++;
+                    } else {
+                        $nb_pending_commands++;
+                    }
+                }
+            }
+            //init the percentage
+            $percentage_confirmed = 0;
+            $percentage_cancelled = 0;
+            $percentage_pending = 0;
+            if ($command_percentage_checked) {
+                // Calculate the percentage of each type of command
+                $percentage_confirmed = $nb_confirmed_commands / $nb_commands * 100;
+                $percentage_cancelled = $nb_cancelled_commands / $nb_commands * 100;
+                $percentage_pending = $nb_pending_commands / $nb_commands * 100;
+            }
+
+            $commandsPerYear = [];
+            $commandsPerYear2 = [];
+            if ($command_graph_checked) {
+
+                // get the commands per year
+                $commandsPerYear = clone $commands;
+                $commandsPerYear = $commandsPerYear->selectRaw('YEAR(created_at) as year, COUNT(*) as count')
+                    ->groupBy('year')
+                    ->get()
+                    ->reverse(); // Reverse the order of the results;
+
+                $commandsPerYear2 = clone $commands;
+                $commandsPerYear2 = $commands->selectRaw('YEAR(created_at) as year, 
+                    SUM(CASE WHEN type = "done" THEN 1 ELSE 0 END) as confirmed_count, 
+                    SUM(CASE WHEN type = "pending" THEN 1 ELSE 0 END) as pending_count,
+                    SUM(CASE WHEN type = "cancelled" THEN 1 ELSE 0 END) as cancelled_count')
+                    ->groupBy('year')
+                    ->get()
+                    ->reverse(); // Reverse the order of the results;
+            }
+
+            // Prepare the data for the table
+            $productsTable = [];
+            $totalRevenue =0;
+            $totalProfit = 0;
+            if ($product_table_checked) {
+                $prdoducts = Product::all();
+
+                foreach($prdoducts as $product){
+                    $productRevenue = $product->price * $product->sold;
+                    $totalRevenue += $productRevenue;
+                    $productProfit = ($product->price - $product->purchase_price) * $product->sold;
+                    $totalProfit += $productProfit;
+                    $productsTable[] = [
+                        'product_name' => $product->name,
+                        'total_sold' => $product->sold,
+                        'total_revenue' => $productRevenue,
+                        'total_profit' => $productProfit,
+                    ];
+                }
+            }
+            $all_time = true;
+            return view('Reports-template.commands', compact('nb_commands', 'nb_confirmed_commands', 'nb_cancelled_commands', 'nb_pending_commands', 'percentage_confirmed', 'percentage_cancelled', 'percentage_pending', 'commandsPerYear','commandsPerYear2', 'productsTable', 'all_time', 'command_stat_checked', 'command_graph_checked', 'product_table_checked', 'command_percentage_checked', 'totalRevenue', 'totalProfit'));
+
+            // If the specified time period is 'last_year'
+        } elseif ($request->input('time_period') == 'last_year') {
+
+            // Get the start and end dates for the last year
+            $endDate = Carbon::now();
+            $startDate = $endDate->copy()->subYear();
+        }
+        return view('Reports-template.commands');
+    }
+}
