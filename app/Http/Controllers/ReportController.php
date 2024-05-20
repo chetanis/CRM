@@ -339,7 +339,7 @@ class ReportController extends Controller
         $productsTable = [];
         $totalRevenue = 0;
         $totalProfit = 0;
-        
+
         if ($request->input('time_period') == 'all_time') {
 
             if ($command_stat_checked) {
@@ -402,7 +402,27 @@ class ReportController extends Controller
             $all_time = true;
             $unit = 'année';
             $timeUnit = 'year';
-            return view('Reports-template.commands', compact('nb_commands', 'nb_confirmed_commands', 'nb_cancelled_commands', 'nb_pending_commands', 'percentage_confirmed', 'percentage_cancelled', 'percentage_pending', 'commandsPerYear', 'commandsPerYear2', 'productsTable', 'all_time', 'command_stat_checked', 'command_graph_checked', 'product_table_checked', 'command_percentage_checked', 'totalRevenue', 'totalProfit', 'unit', 'timeUnit'));
+            return view('Reports-template.commands', compact(
+                'nb_commands',
+                'nb_confirmed_commands',
+                'nb_cancelled_commands',
+                'nb_pending_commands',
+                'percentage_confirmed',
+                'percentage_cancelled',
+                'percentage_pending',
+                'commandsPerYear',
+                'commandsPerYear2',
+                'productsTable',
+                'all_time',
+                'command_stat_checked',
+                'command_graph_checked',
+                'product_table_checked',
+                'command_percentage_checked',
+                'totalRevenue',
+                'totalProfit',
+                'unit',
+                'timeUnit'
+            ));
 
             // If the specified time period is 'last_year'
         } elseif ($request->input('time_period') == 'last_year') {
@@ -435,7 +455,7 @@ class ReportController extends Controller
             if ($command_graph_checked) {
                 $commandsPerYear = clone $commands;
                 $commandsPerYear = $commandsPerYear->selectRaw(' MONTH(created_at) as month, COUNT(*) as count')
-                ->groupBy('month')
+                    ->groupBy('month')
                     ->get()
                     ->reverse();
 
@@ -466,7 +486,211 @@ class ReportController extends Controller
             }
             $unit = 'mois';
             $timeUnit = 'month';
-            return view('Reports-template.commands', compact('nb_commands', 'nb_confirmed_commands', 'nb_cancelled_commands', 'nb_pending_commands', 'percentage_confirmed', 'percentage_cancelled', 'percentage_pending', 'commandsPerYear', 'commandsPerYear2', 'productsTable', 'command_stat_checked', 'command_graph_checked', 'product_table_checked', 'command_percentage_checked', 'totalRevenue', 'totalProfit', 'unit', 'timeUnit', 'startDate', 'endDate'));
+            return view('Reports-template.commands', compact(
+                'nb_commands',
+                'nb_confirmed_commands',
+                'nb_cancelled_commands',
+                'nb_pending_commands',
+                'percentage_confirmed',
+                'percentage_cancelled',
+                'percentage_pending',
+                'commandsPerYear',
+                'commandsPerYear2',
+                'productsTable',
+                'command_stat_checked',
+                'command_graph_checked',
+                'product_table_checked',
+                'command_percentage_checked',
+                'totalRevenue',
+                'totalProfit',
+                'unit',
+                'timeUnit',
+                'startDate',
+                'endDate'
+            ));
+        } elseif ($request->input('time_period') == 'last_month') {
+            // Get the start and end dates for the last month
+            $endDate = Carbon::now(); // Today's date
+            $startDate = $endDate->copy()->subMonth(); // Start of the previous month
+
+            $unit = 'jour'; // French for "day"
+            $timeUnit = 'day';
+
+            // Filter commands by date range
+            $commands = Command::getAccessibleCommands()->whereBetween('created_at', [$startDate, $endDate]);
+
+            if ($command_stat_checked) {
+                foreach ($commands->get() as $command) {
+                    $nb_commands++;
+                    if ($command->type == 'done') {
+                        $nb_confirmed_commands++;
+                    } elseif ($command->type == 'cancelled') {
+                        $nb_cancelled_commands++;
+                    } else {
+                        $nb_pending_commands++;
+                    }
+                }
+            }
+
+            if ($command_percentage_checked && $nb_commands > 0) {
+                $percentage_confirmed = $nb_confirmed_commands / $nb_commands * 100;
+                $percentage_cancelled = $nb_cancelled_commands / $nb_commands * 100;
+                $percentage_pending = $nb_pending_commands / $nb_commands * 100;
+            }
+
+            if ($command_graph_checked) {
+                $commandsPerYear = clone $commands;
+                $commandsPerYear = $commandsPerYear->selectRaw('DAY(created_at) as day, COUNT(*) as count')
+                    ->groupBy('day')
+                    ->get()
+                    ->reverse();
+
+                $commandsPerYear2 = clone $commands;
+                $commandsPerYear2 = $commandsPerYear2->selectRaw('DAY(created_at) as day, 
+                    SUM(CASE WHEN type = "done" THEN 1 ELSE 0 END) as confirmed_count, 
+                    SUM(CASE WHEN type = "pending" THEN 1 ELSE 0 END) as pending_count,
+                    SUM(CASE WHEN type = "cancelled" THEN 1 ELSE 0 END) as cancelled_count')
+                    ->groupBy('day')
+                    ->get()
+                    ->reverse();
+            }
+
+            if ($product_table_checked) {
+                $products = Product::all();
+                foreach ($products as $product) {
+                    $productRevenue = $product->price * $product->sold;
+                    $totalRevenue += $productRevenue;
+                    $productProfit = ($product->price - $product->purchase_price) * $product->sold;
+                    $totalProfit += $productProfit;
+                    $productsTable[] = [
+                        'product_name' => $product->name,
+                        'total_sold' => $product->sold,
+                        'total_revenue' => $productRevenue,
+                        'total_profit' => $productProfit,
+                    ];
+                }
+            }
+
+            // Assign results to the view
+            return view('Reports-template.commands', compact(
+                'nb_commands',
+                'nb_confirmed_commands',
+                'nb_cancelled_commands',
+                'nb_pending_commands',
+                'percentage_confirmed',
+                'percentage_cancelled',
+                'percentage_pending',
+                'commandsPerYear',
+                'commandsPerYear2',
+                'productsTable',
+                'command_stat_checked',
+                'command_graph_checked',
+                'product_table_checked',
+                'command_percentage_checked',
+                'totalRevenue',
+                'totalProfit',
+                'unit',
+                'timeUnit',
+                'startDate',
+                'endDate'
+            ));
+        } else {
+            
+            $endDate = Carbon::createFromFormat('Y-m-d', $request->input('end_date'));
+            $startDate = Carbon::createFromFormat('Y-m-d', $request->input('start_date'));
+
+
+            $unit = 'jour'; // French for "day"
+            $timeUnit = 'day';
+
+            // Filter commands by date range
+            $commands = Command::getAccessibleCommands()->whereBetween('created_at', [$startDate, $endDate]);
+
+            if ($command_stat_checked) {
+                foreach ($commands->get() as $command) {
+                    $nb_commands++;
+                    if ($command->type == 'done') {
+                        $nb_confirmed_commands++;
+                    } elseif ($command->type == 'cancelled') {
+                        $nb_cancelled_commands++;
+                    } else {
+                        $nb_pending_commands++;
+                    }
+                }
+            }
+
+            if ($command_percentage_checked && $nb_commands > 0) {
+                $percentage_confirmed = $nb_confirmed_commands / $nb_commands * 100;
+                $percentage_cancelled = $nb_cancelled_commands / $nb_commands * 100;
+                $percentage_pending = $nb_pending_commands / $nb_commands * 100;
+            }
+
+            if ($command_graph_checked) {
+                $commandsPerYear = clone $commands;
+                $commandsPerYear = $commandsPerYear->selectRaw('MONTH(created_at) as month, DAY(created_at) as day, COUNT(*) as count')
+                    ->groupBy('month', 'day')
+                    ->orderBy('month', 'desc')
+                    ->orderBy('day', 'desc')
+                    ->get();
+
+                $commandsPerYear2 = clone $commands;
+                $commandsPerYear2 = $commandsPerYear2->selectRaw('MONTH(created_at) as month, DAY(created_at) as day, 
+                    SUM(CASE WHEN type = "done" THEN 1 ELSE 0 END) as confirmed_count, 
+                    SUM(CASE WHEN type = "pending" THEN 1 ELSE 0 END) as pending_count,
+                    SUM(CASE WHEN type = "cancelled" THEN 1 ELSE 0 END) as cancelled_count')
+                    ->groupBy('month', 'day')
+                    ->orderBy('month', 'desc')
+                    ->orderBy('day', 'desc')
+                    ->get();
+
+
+                // $clientPerCustom = $clientPerCustom->selectRaw('MONTH(created_at) as month, DAY(created_at) as day, COUNT(*) as count')
+                // ->groupBy('month', 'day') // Group by both month and day
+                // ->orderBy('month', 'asc') // Order by month first
+                // ->orderBy('day', 'asc')   // Then order by day
+                // ->get();
+
+            }
+
+            if ($product_table_checked) {
+                $products = Product::all();
+                foreach ($products as $product) {
+                    $productRevenue = $product->price * $product->sold;
+                    $totalRevenue += $productRevenue;
+                    $productProfit = ($product->price - $product->purchase_price) * $product->sold;
+                    $totalProfit += $productProfit;
+                    $productsTable[] = [
+                        'product_name' => $product->name,
+                        'total_sold' => $product->sold,
+                        'total_revenue' => $productRevenue,
+                        'total_profit' => $productProfit,
+                    ];
+                }
+            }
+
+            // Assign results to the view
+            return view('Reports-template.commands', compact(
+                'nb_commands',
+                'nb_confirmed_commands',
+                'nb_cancelled_commands',
+                'nb_pending_commands',
+                'percentage_confirmed',
+                'percentage_cancelled',
+                'percentage_pending',
+                'commandsPerYear',
+                'commandsPerYear2',
+                'productsTable',
+                'command_stat_checked',
+                'command_graph_checked',
+                'product_table_checked',
+                'command_percentage_checked',
+                'totalRevenue',
+                'totalProfit',
+                'unit',
+                'timeUnit',
+                'startDate',
+                'endDate'
+            ));
         }
         return view('Reports-template.commands');
     }
