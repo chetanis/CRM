@@ -89,7 +89,7 @@
                     <!-- Dropdown list of products (or search results) -->
                     <datalist id="products">
                         @foreach ($products as $product)
-                            <option value="{{ $product->name }}" data-price="{{ $product->price }}">Stock actuel:
+                            <option value="{{ $product->name }}" data-id="{{$product->id}}" data-price="{{ $product->price }}">Stock actuel:
                                 {{ $product->current_stock }}, Prix: {{ $product->price }}DA</option>
                         @endforeach
                     </datalist>

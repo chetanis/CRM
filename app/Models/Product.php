@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\ProductNotif;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends Model
 {
@@ -19,6 +20,11 @@ class Product extends Model
         'purchase_price',
         'sold',
     ];
+
+    public function commands(): BelongsToMany
+    {
+        return $this->belongsToMany(Command::class)->withPivot('quantity', 'price_at_sale')->withTimestamps();
+    }
 
     public function addStock(int $quantity)
     {

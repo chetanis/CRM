@@ -300,6 +300,40 @@ class ReportController extends Controller
         return view('Reports.users');
     }
 
+    public function generateUsersReport(Request $request){
+        $user_stat_checked = false;
+        $command_graph_checked = false;
+        $command_percentage_checked = false;
+        $product_table_checked = false;
+        $reportOptions = $request->input('report_options', []);
+        if (in_array('commands_stat', $reportOptions)) {
+            $user_stat_checked = true;
+        }
+        if (in_array('commands_graph', $reportOptions)) {
+            $command_graph_checked = true;
+        }
+        if (in_array('products_stat', $reportOptions)) {
+            $product_table_checked = true;
+        }
+        if (in_array('commands_percentage', $reportOptions)) {
+            $command_percentage_checked = true;
+        }
+        $commands = Command::getAccessibleCommands();
+        $nb_commands = 0;
+        $nb_confirmed_commands = 0;
+        $nb_cancelled_commands = 0;
+        $nb_pending_commands = 0;
+        $percentage_confirmed = 0;
+        $percentage_cancelled = 0;
+        $percentage_pending = 0;
+        $commandsPerYear = [];
+        $commandsPerYear2 = [];
+        $productsTable = [];
+        $totalRevenue = 0;
+        $totalProfit = 0;
+
+    }
+
 
 
     public function commandsReport()
@@ -595,7 +629,7 @@ class ReportController extends Controller
                 'endDate'
             ));
         } else {
-            
+
             $endDate = Carbon::createFromFormat('Y-m-d', $request->input('end_date'));
             $startDate = Carbon::createFromFormat('Y-m-d', $request->input('start_date'));
 
@@ -642,13 +676,6 @@ class ReportController extends Controller
                     ->orderBy('month', 'desc')
                     ->orderBy('day', 'desc')
                     ->get();
-
-
-                // $clientPerCustom = $clientPerCustom->selectRaw('MONTH(created_at) as month, DAY(created_at) as day, COUNT(*) as count')
-                // ->groupBy('month', 'day') // Group by both month and day
-                // ->orderBy('month', 'asc') // Order by month first
-                // ->orderBy('day', 'asc')   // Then order by day
-                // ->get();
 
             }
 

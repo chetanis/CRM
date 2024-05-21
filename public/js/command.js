@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         const productPrice = parseFloat(selectedOption.dataset
         .price); // Retrieve price from dataset
+        const productId = selectedOption.dataset.id;
 
         // Check if the product is already selected
         const existingProduct = document.querySelector(
@@ -45,6 +46,7 @@ document.addEventListener("DOMContentLoaded", function() {
             listItem.dataset.name = productName;
             listItem.dataset.quantity = quantity;
             listItem.dataset.price = productPrice;
+            listItem.dataset.id = productId;
             listItem.textContent = `${productName} - Quantité: ${quantity}`;
             selectedProductsList.appendChild(listItem);
             // Create delete button
@@ -106,10 +108,10 @@ document.addEventListener("DOMContentLoaded", function() {
             return;
         }
         selectedProducts.forEach(product => {
-            const productName = product.dataset.name;
+            const productId = product.dataset.id;
             const quantity = parseInt(product.dataset.quantity);
             products.push({
-                name: productName,
+                id: productId,
                 quantity: quantity,
             });
         });

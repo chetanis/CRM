@@ -228,11 +228,11 @@
             @foreach ($productsWithQuantities as $productWithQuantity)
                 <tr>
                     <td width="10%">{{ $loop->iteration }}</td>
-                    <td>{{ $productWithQuantity['product']->name }}</td>
-                    <td width="15%">{{ $productWithQuantity['product']->price }}</td>
+                    <td>{{ $productWithQuantity['name'] }}</td>
+                    <td width="15%">{{ $productWithQuantity['price_at_sale'] }}</td>
                     <td width="20%">{{ $productWithQuantity['quantity'] }}</td>
                     <td width="20%" class="fw-bold">
-                        {{ $productWithQuantity['product']->price * $productWithQuantity['quantity'] }}</td>
+                        {{ $productWithQuantity['total_price'] }}</td>
                 </tr>
             @endforeach
             <tr style="height: 20px;">

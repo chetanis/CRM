@@ -112,11 +112,10 @@ if ($command->payment_method == 'Espèce') {
                             @foreach ($productsWithQuantities as $productWithQuantity)
                                 <tr>
                                     <th scope="row">{{ $loop->iteration }}</th>
-                                    <td>{{ $productWithQuantity['product']->name }}</td>
-                                    <td>{{ $productWithQuantity['product']->price }} DA</td>
+                                    <td>{{ $productWithQuantity['name'] }}</td>
+                                    <td>{{ $productWithQuantity['price_at_sale'] }} DA</td>
                                     <td>{{ $productWithQuantity['quantity'] }}</td>
-                                    <td>{{ $productWithQuantity['product']->price * $productWithQuantity['quantity'] }}
-                                        DA</td>
+                                    <td>{{ $productWithQuantity['total_price'] }} DA</td>
                                 </tr>
                             @endforeach
                         </tbody>

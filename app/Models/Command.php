@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Command extends Model
 {
@@ -13,15 +14,15 @@ class Command extends Model
     protected $fillable = [
         'client_id',
         'user_id',
-        'products',
         'total_price',
         'type',
         'payment_method',
     ];
 
-    protected $casts = [
-        'products' => 'array',
-    ];
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class)->withPivot('quantity', 'price_at_sale')->withTimestamps();
+    }
 
     // Define the relationship with the Client model
     public function client()
@@ -34,29 +35,41 @@ class Command extends Model
     }
 
     // Define a method to retrieve products with quantities
+    // public function getProductsAndQuantitiesAttribute()
+    // {
+    //     $productsData = $this->products;
+    //     $productIds = array_column($productsData, 'id');
+
+    //     // Fetch the products from the database based on the product IDs
+    //     $products = Product::whereIn('id', $productIds)->get();
+    //     $productsWithQuantities = [];
+
+    //     foreach ($productsData as $productData) {
+    //         $productId = $productData['id'];
+    //         $quantity = $productData['quantity'];
+    //         $product = $products->where('id', $productId)->first();
+
+    //         if ($product) {
+    //             $productsWithQuantities[] = [
+    //                 'product' => $product,
+    //                 'quantity' => $quantity
+    //             ];
+    //         }
+    //     }
+
+    //     return $productsWithQuantities;
+    // }
     public function getProductsAndQuantitiesAttribute()
     {
-        $productsData = $this->products;
-        $productIds = array_column($productsData, 'id');
-
-        // Fetch the products from the database based on the product IDs
-        $products = Product::whereIn('id', $productIds)->get();
-        $productsWithQuantities = [];
-
-        foreach ($productsData as $productData) {
-            $productId = $productData['id'];
-            $quantity = $productData['quantity'];
-            $product = $products->where('id', $productId)->first();
-
-            if ($product) {
-                $productsWithQuantities[] = [
-                    'product' => $product,
-                    'quantity' => $quantity
-                ];
-            }
-        }
-
-        return $productsWithQuantities;
+        return $this->products->map(function ($product) {
+            return [
+                'product_id' => $product->id,
+                'name' => $product->name,
+                'quantity' => $product->pivot->quantity,
+                'price_at_sale' => $product->pivot->price_at_sale,
+                'total_price' => $product->pivot->quantity * $product->pivot->price_at_sale,
+            ];
+        })->toArray();
     }
 
     // Define a scope to filter commands by type

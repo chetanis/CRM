@@ -24,7 +24,7 @@ class CommandController extends Controller
     public function index()
     {
         $commands = Command::getAccessibleCommands()->filter(request(['type']))->paginate(10);
-        
+
         $filter = request(['type'][0]);
         return view('commands.index', compact('commands', 'filter'));
     }
@@ -49,51 +49,70 @@ class CommandController extends Controller
         $request->validate([
             'client' => 'required|string',
             'products' => 'required|array',
-            'products.*.name' => 'required|string',
+            'products.*.id' => 'required|string',
             'products.*.quantity' => 'required|integer|min:1',
             'payment_method' => 'required|string',
         ]);
 
-        $totalPrice = 0;
-        $productsArray = [];
-        $products = $request->input('products');
-        foreach ($products as $productData) {
-            $quantity = $productData['quantity'];
-
-            //getting the product 
-            $productName = $productData['name'];
-            $product = Product::where('name', $productName)->first();
-
-            //checking if the product is available in stock
-            if ($product->current_stock < $quantity) {
-                return response()->json(['error' => "La quantité de " . $productName . " n'est pas disponible en stock"]);
-            }
-            $totalPrice += $quantity * $product->price;
-
-            // Reduce the stock of the product
-            $product->subtractStock($quantity);
-
-
-            //adding to the sold products
-            $product->sold += $quantity;
-            $product->save();
-
-            // Add the product to the products array for the command
-            $productsArray[] = [
-                'id' => $product->id,
-                'quantity' => $quantity,
-            ];
-        }
-        $command = new Command();
-
         $client = Client::find($request->client);
-        $command->client()->associate($client);
-        $command->user_id = Auth::id();
-        $command->total_price = $totalPrice;
-        $command->type = 'pending';
-        $command->products = $productsArray;
-        $command->payment_method = $request->payment_method;
-        $command->save();
+        if (!$client) {
+            return response()->json(['error' => 'Client not found.'], 404);
+        }
+        $command = Command::create([
+            'client_id' => $client->id,
+            'user_id' => Auth::id(),
+            'total_price' => 0, // Initial value, will be updated later
+            'type' => 'pending',
+            'payment_method' => $request->payment_method,
+        ]);
+        $totalPrice = 0;
+        // $productsArray = [];
+        $products = $request->input('products');
+
+        // foreach ($products as $productData) {
+        //     $quantity = $productData['quantity'];
+        //     //getting the product 
+        //     $productName = $productData['name'];
+        //     $product = Product::where('name', $productName)->first();
+        //     //checking if the product is available in stock
+        //     if ($product->current_stock < $quantity) {
+        //         return response()->json(['error' => "La quantité de " . $productName . " n'est pas disponible en stock"]);
+        //     }
+        //     $totalPrice += $quantity * $product->price;
+        //     // Reduce the stock of the product
+        //     $product->subtractStock($quantity);
+        //     //adding to the sold products
+        //     $product->sold += $quantity;
+        //     $product->save();
+        //     // Add the product to the products array for the command
+        //     $productsArray[] = [
+        //         'id' => $product->id,
+        //         'quantity' => $quantity,
+        //     ];
+        // }
+
+        foreach ($products as $product) {
+            $productModel = Product::find($product['id']);
+            $priceAtSale = $productModel->price;
+            $quantity = $product['quantity'];
+            //checking if the product is available in stock
+            if ($productModel->current_stock < $quantity) {
+                return response()->json(['error' => "La quantité de " . $productModel->name . " n'est pas disponible en stock"]);
+            }
+            // Reduce the stock of the product
+            $productModel->subtractStock($quantity);
+            //adding to the sold products
+            $productModel->sold += $quantity;
+
+            $productModel->save();
+            $command->products()->attach($product['id'], [
+                'quantity' => $quantity,
+                'price_at_sale' => $priceAtSale,
+            ]);
+            $totalPrice += $quantity * $priceAtSale;
+        }
+
+        $command->update(['total_price' => $totalPrice]);
 
         //create log
         Log::CreateLog("Creer commande.", "Client concerné: " . $client->first_name . ' ' . $client->last_name . ", commande n°: " . $command->id);
@@ -101,6 +120,20 @@ class CommandController extends Controller
         Session::flash('success', 'Commande ajoutée avec succès');
         return response()->json(['success' => true]);
     }
+    // $salesData = Product::with('commands')->get()->map(function($product) {
+    //     $totalQuantitySold = $product->commands->sum('pivot.quantity');
+    //     $totalRevenue = $product->commands->sum(function($command) {
+    //         return $command->pivot->quantity * $command->pivot->price_at_sale;
+    //     });
+    //     return [
+    //         'product_id' => $product->id,
+    //         'name' => $product->name,
+    //         'total_quantity_sold' => $totalQuantitySold,
+    //         'total_revenue' => $totalRevenue,
+    //     ];
+    // });
+    // 
+    // return $salesData;
 
     /**
      * Display the specified resource.
@@ -143,23 +176,47 @@ class CommandController extends Controller
      */
     public function destroy(string $id)
     {
-        $command = Command::find($id);
+        // $command = Command::find($id);
 
-        //add the products to the stock
+        // //add the products to the stock
+        // $products = $command->products;
+        // foreach ($products as $productData) {
+        //     $quantity = $productData['quantity'];
+        //     $productId = $productData['id'];
+        //     $product = Product::find($productId);
+        //     // Increase the stock of the product
+        //     $product->current_stock += $quantity;
+        //     // Reduce the sold products
+        //     $product->sold -= $quantity;
+        //     $product->save();
+        // }
+
+        // $command->delete();
+        // //create log
+        // Log::CreateLog("Supprimer commande.", "Commande n°: " . $command->id);
+
+        // Session::flash('success', "Commande supprimée avec succès.");
+        // return redirect()->intended(session()->pull('previous_url', '/'));
+
+        $command = Command::with('products')->find($id);
+
+        if (!$command) {
+            Session::flash('error', "Commande non trouvée.");
+            return redirect()->intended(session()->pull('previous_url', '/'));
+        }
+
+        // Add the products to the stock
         $products = $command->products;
-        foreach ($products as $productData) {
-            $quantity = $productData['quantity'];
-            $productId = $productData['id'];
-            $product = Product::find($productId);
-            // Increase the stock of the product
-            $product->current_stock += $quantity;
-            // Reduce the sold products
+        foreach ($products as $product) {
+            $quantity = $product->pivot->quantity;
+            $product->addStock($quantity);
             $product->sold -= $quantity;
             $product->save();
         }
 
         $command->delete();
-        //create log
+
+        // Create log
         Log::CreateLog("Supprimer commande.", "Commande n°: " . $command->id);
 
         Session::flash('success', "Commande supprimée avec succès.");
@@ -176,7 +233,8 @@ class CommandController extends Controller
         $sale->command()->associate($command);
         $sale->user_id = Auth::id();
         $sale->save();
-        //create log
+
+        // Create log
         Log::CreateLog("Confirmer commande.", "Commande n°: " . $command->id);
         Session::flash('success', 'Commande confirmée avec succès');
         return redirect()->back();
@@ -187,23 +245,40 @@ class CommandController extends Controller
      */
     public function cancel(Request $request, Command $command)
     {
-        //add the products to stock
+        // //add the products to stock
+        // $products = $command->products;
+        // foreach ($products as $productData) {
+        //     $quantity = $productData['quantity'];
+        //     $productId = $productData['id'];
+        //     $product = Product::find($productId);
+        //     // Increase the stock of the product
+        //     $product->current_stock += $quantity;
+        //     // Reduce the sold products
+        //     $product->sold -= $quantity;
+        //     $product->save();
+        // }
+
+        // //update the command
+        // $command->update(['type' => 'cancelled']);
+
+        // //create log
+        // Log::CreateLog("Annuler commande.", "Commande n°: " . $command->id);
+        // Session::flash('success', 'Commande annulée avec succès');
+        // return redirect()->back();
+
+        // Add the products to stock
         $products = $command->products;
-        foreach ($products as $productData) {
-            $quantity = $productData['quantity'];
-            $productId = $productData['id'];
-            $product = Product::find($productId);
-            // Increase the stock of the product
-            $product->current_stock += $quantity;
-            // Reduce the sold products
+        foreach ($products as $product) {
+            $quantity = $product->pivot->quantity;
+            $product->addStock($quantity);
             $product->sold -= $quantity;
             $product->save();
         }
 
-        //update the command
+        // Update the command
         $command->update(['type' => 'cancelled']);
 
-        //create log
+        // Create log
         Log::CreateLog("Annuler commande.", "Commande n°: " . $command->id);
         Session::flash('success', 'Commande annulée avec succès');
         return redirect()->back();
