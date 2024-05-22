@@ -300,7 +300,8 @@ class ReportController extends Controller
         return view('Reports.users');
     }
 
-    public function generateUsersReport(Request $request){
+    public function generateUsersReport(Request $request)
+    {
         $user_stat_checked = false;
         $command_graph_checked = false;
         $command_percentage_checked = false;
@@ -331,7 +332,6 @@ class ReportController extends Controller
         $productsTable = [];
         $totalRevenue = 0;
         $totalProfit = 0;
-
     }
 
 
@@ -392,9 +392,11 @@ class ReportController extends Controller
             //init the percentage
             if ($command_percentage_checked) {
                 // Calculate the percentage of each type of command
-                $percentage_confirmed = $nb_confirmed_commands / $nb_commands * 100;
-                $percentage_cancelled = $nb_cancelled_commands / $nb_commands * 100;
-                $percentage_pending = $nb_pending_commands / $nb_commands * 100;
+                if ($nb_commands > 0) {
+                    $percentage_confirmed = $nb_confirmed_commands / $nb_commands * 100;
+                    $percentage_cancelled = $nb_cancelled_commands / $nb_commands * 100;
+                    $percentage_pending = $nb_pending_commands / $nb_commands * 100;
+                }
             }
 
             if ($command_graph_checked) {
@@ -418,20 +420,25 @@ class ReportController extends Controller
 
             // Prepare the data for the table
             if ($product_table_checked) {
-                $prdoducts = Product::all();
-
-                foreach ($prdoducts as $product) {
-                    $productRevenue = $product->price * $product->sold;
-                    $totalRevenue += $productRevenue;
-                    $productProfit = ($product->price - $product->purchase_price) * $product->sold;
-                    $totalProfit += $productProfit;
-                    $productsTable[] = [
+                $productsTable = Product::with(['commands' => function ($query) {
+                    $query->where('type', 'done');
+                }])->get()->map(function ($product) use (&$totalRevenue, &$totalProfit) {
+                    $totalQuantitySold = $product->commands->sum('pivot.quantity');
+                    $totalProductRevenue = $product->commands->sum(function ($command) {
+                        return $command->pivot->quantity * $command->pivot->price_at_sale;
+                    });
+                    $totalProductProfit = $product->commands->sum(function ($command) {
+                        return $command->pivot->quantity * ($command->pivot->price_at_sale - $command->pivot->price_at_purchase);
+                    });
+                    $totalRevenue += $totalProductRevenue;
+                    $totalProfit += $totalProductProfit;
+                    return [
                         'product_name' => $product->name,
-                        'total_sold' => $product->sold,
-                        'total_revenue' => $productRevenue,
-                        'total_profit' => $productProfit,
+                        'total_sold' => $totalQuantitySold,
+                        'total_revenue' => $totalProductRevenue,
+                        'total_profit' => $totalProductProfit,
                     ];
-                }
+                });
             }
             $all_time = true;
             $unit = 'année';
@@ -676,7 +683,6 @@ class ReportController extends Controller
                     ->orderBy('month', 'desc')
                     ->orderBy('day', 'desc')
                     ->get();
-
             }
 
             if ($product_table_checked) {
