@@ -19,6 +19,7 @@ class Product extends Model
         'price',
         'purchase_price',
         'sold',
+        'on_hold',
     ];
 
     public function commands(): BelongsToMany

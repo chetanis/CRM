@@ -92,6 +92,11 @@
                                     </div>
 
                                     <div class="row">
+                                        <div class="col-lg-3 col-md-4 label">En suspens</div>
+                                        <div class="col-lg-9 col-md-8">{{ $product->on_hold }}</div>
+                                    </div>
+
+                                    <div class="row">
                                         <div class="col-lg-3 col-md-4 label">Stock minimum</div>
                                         <div class="col-lg-9 col-md-8">{{ $product->minimum_stock }}</div>
                                     </div>

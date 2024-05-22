@@ -102,7 +102,7 @@ class CommandController extends Controller
             // Reduce the stock of the product
             $productModel->subtractStock($quantity);
             //adding to the sold products
-            $productModel->sold += $quantity;
+            $productModel->on_hold += $quantity;
 
             $productModel->save();
             $command->products()->attach($product['id'], [
@@ -210,7 +210,7 @@ class CommandController extends Controller
         foreach ($products as $product) {
             $quantity = $product->pivot->quantity;
             $product->addStock($quantity);
-            $product->sold -= $quantity;
+            $product->on_hold -= $quantity;
             $product->save();
         }
 
@@ -229,6 +229,11 @@ class CommandController extends Controller
     public function confirm(Request $request, Command $command)
     {
         $command->update(['type' => 'done']);
+        $command->products->each(function ($product) {
+            $product->on_hold -= $product->pivot->quantity;
+            $product->sold += $product->pivot->quantity;
+            $product->save();
+        });
         $sale = new Sale();
         $sale->command()->associate($command);
         $sale->user_id = Auth::id();
@@ -271,6 +276,7 @@ class CommandController extends Controller
         foreach ($products as $product) {
             $quantity = $product->pivot->quantity;
             $product->addStock($quantity);
+            $product->on_hold -= $quantity;
             $product->sold -= $quantity;
             $product->save();
         }
