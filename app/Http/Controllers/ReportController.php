@@ -510,21 +510,33 @@ class ReportController extends Controller
                     ->reverse();
             }
 
+            // Prepare the data for the table
             if ($product_table_checked) {
-                $products = Product::all();
-                foreach ($products as $product) {
-                    $productRevenue = $product->price * $product->sold;
-                    $totalRevenue += $productRevenue;
-                    $productProfit = ($product->price - $product->purchase_price) * $product->sold;
-                    $totalProfit += $productProfit;
-                    $productsTable[] = [
+                $productsTable = Product::with(['commands' => function ($query) use ($startDate, $endDate) {
+                    $query->where('type', 'done')
+                        ->whereBetween('commands.created_at', [$startDate, $endDate]);
+                }])->get()->map(function ($product) use (&$totalRevenue, &$totalProfit) {
+                    $totalQuantitySold = $product->commands->sum('pivot.quantity');
+                    $totalProductRevenue = $product->commands->sum(function ($command) {
+                        return $command->pivot->quantity * $command->pivot->price_at_sale;
+                    });
+                    $totalProductProfit = $product->commands->sum(function ($command) {
+                        return $command->pivot->quantity * ($command->pivot->price_at_sale - $command->pivot->price_at_purchase);
+                    });
+
+                    // Update the total revenue and profit
+                    $totalRevenue += $totalProductRevenue;
+                    $totalProfit += $totalProductProfit;
+
+                    return [
                         'product_name' => $product->name,
-                        'total_sold' => $product->sold,
-                        'total_revenue' => $productRevenue,
-                        'total_profit' => $productProfit,
+                        'total_sold' => $totalQuantitySold,
+                        'total_revenue' => $totalProductRevenue,
+                        'total_profit' => $totalProductProfit,
                     ];
-                }
+                });
             }
+
             $unit = 'mois';
             $timeUnit = 'month';
             return view('Reports-template.commands', compact(
@@ -596,20 +608,31 @@ class ReportController extends Controller
                     ->reverse();
             }
 
+            // Prepare the data for the table
             if ($product_table_checked) {
-                $products = Product::all();
-                foreach ($products as $product) {
-                    $productRevenue = $product->price * $product->sold;
-                    $totalRevenue += $productRevenue;
-                    $productProfit = ($product->price - $product->purchase_price) * $product->sold;
-                    $totalProfit += $productProfit;
-                    $productsTable[] = [
+                $productsTable = Product::with(['commands' => function ($query) use ($startDate, $endDate) {
+                    $query->where('type', 'done')
+                        ->whereBetween('commands.created_at', [$startDate, $endDate]);
+                }])->get()->map(function ($product) use (&$totalRevenue, &$totalProfit) {
+                    $totalQuantitySold = $product->commands->sum('pivot.quantity');
+                    $totalProductRevenue = $product->commands->sum(function ($command) {
+                        return $command->pivot->quantity * $command->pivot->price_at_sale;
+                    });
+                    $totalProductProfit = $product->commands->sum(function ($command) {
+                        return $command->pivot->quantity * ($command->pivot->price_at_sale - $command->pivot->price_at_purchase);
+                    });
+
+                    // Update the total revenue and profit
+                    $totalRevenue += $totalProductRevenue;
+                    $totalProfit += $totalProductProfit;
+
+                    return [
                         'product_name' => $product->name,
-                        'total_sold' => $product->sold,
-                        'total_revenue' => $productRevenue,
-                        'total_profit' => $productProfit,
+                        'total_sold' => $totalQuantitySold,
+                        'total_revenue' => $totalProductRevenue,
+                        'total_profit' => $totalProductProfit,
                     ];
-                }
+                });
             }
 
             // Assign results to the view
@@ -685,20 +708,31 @@ class ReportController extends Controller
                     ->get();
             }
 
+            // Prepare the data for the table
             if ($product_table_checked) {
-                $products = Product::all();
-                foreach ($products as $product) {
-                    $productRevenue = $product->price * $product->sold;
-                    $totalRevenue += $productRevenue;
-                    $productProfit = ($product->price - $product->purchase_price) * $product->sold;
-                    $totalProfit += $productProfit;
-                    $productsTable[] = [
+                $productsTable = Product::with(['commands' => function ($query) use ($startDate, $endDate) {
+                    $query->where('type', 'done')
+                        ->whereBetween('commands.created_at', [$startDate, $endDate]);
+                }])->get()->map(function ($product) use (&$totalRevenue, &$totalProfit) {
+                    $totalQuantitySold = $product->commands->sum('pivot.quantity');
+                    $totalProductRevenue = $product->commands->sum(function ($command) {
+                        return $command->pivot->quantity * $command->pivot->price_at_sale;
+                    });
+                    $totalProductProfit = $product->commands->sum(function ($command) {
+                        return $command->pivot->quantity * ($command->pivot->price_at_sale - $command->pivot->price_at_purchase);
+                    });
+
+                    // Update the total revenue and profit
+                    $totalRevenue += $totalProductRevenue;
+                    $totalProfit += $totalProductProfit;
+
+                    return [
                         'product_name' => $product->name,
-                        'total_sold' => $product->sold,
-                        'total_revenue' => $productRevenue,
-                        'total_profit' => $productProfit,
+                        'total_sold' => $totalQuantitySold,
+                        'total_revenue' => $totalProductRevenue,
+                        'total_profit' => $totalProductProfit,
                     ];
-                }
+                });
             }
 
             // Assign results to the view
