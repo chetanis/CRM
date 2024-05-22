@@ -26,13 +26,20 @@
             <i class="bi bi-circle"></i><span>Afficher les utilisateurs</span>
           </a>
         </li>
+      </ul>
+    </li><!-- End audit Nav -->
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#audit-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-card-list"></i><span>Audit</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="audit-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
           <a href="{{route('logs')}}">
             <i class="bi bi-circle"></i><span>Afficher le journal d'activité</span>
           </a>
         </li>
       </ul>
-    </li><!-- End Users Nav -->
+    </li><!-- End audit Nav -->
     @endif
 
     @if(auth()->user()->privilege === 'admin' || auth()->user()->privilege === 'superuser')
