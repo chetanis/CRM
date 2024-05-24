@@ -33,7 +33,7 @@ class Sale extends Model
             return self::latest();
         } else {
             // If the user is a regular user, show only the sales they made
-            return self::where('user_id', Auth::id())->latest();
+            return self::where('sales.user_id', Auth::id())->latest();
         }
     }
 }

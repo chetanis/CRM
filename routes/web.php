@@ -199,6 +199,13 @@ Route::middleware(['auth'])->group(function () {
 
     // show home page
     Route::get('/dashboard', [Controller::class, 'dashboard'])->name('dashboard');
+
+    //filter sales data in the dashboard
+    Route::get('/sales-filter', [Controller::class, 'filterSales']);
+
+    //filter revenue data in the dashboard
+    Route::get('/revenue-filter', [Controller::class, 'filterRevenue']);
+
 });
 
 

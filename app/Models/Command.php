@@ -87,7 +87,7 @@ class Command extends Model
             return self::latest();
         } else {
             // If the user is a regular user, show only the commands created by them
-            return self::where('user_id', Auth::id())->latest();
+            return self::where('commands.user_id', Auth::id())->latest();
         }
     }
 

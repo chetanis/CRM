@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\ProductNotif;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -48,5 +49,12 @@ class Product extends Model
             ]);
         }
         $this->save();
+    }
+
+    public function getTotalRevenueFromConfirmedCommands()
+    {
+        return $this->commands()
+                    ->where('type', 'done')
+                    ->sum(DB::raw('command_product.quantity * command_product.price_at_sale'));
     }
 }

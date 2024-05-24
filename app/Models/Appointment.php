@@ -37,7 +37,7 @@ class Appointment extends Model
         if (Auth::user()->privilege === 'admin' || Auth::user()->privilege === 'superuser') {
             return self::latest();
         }else{
-            return self::where('user_id', Auth::id())->latest();
+            return self::where('appointments.user_id', Auth::id())->latest();
         }
     }
 

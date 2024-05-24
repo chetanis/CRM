@@ -66,26 +66,27 @@
                                         <li class="dropdown-header text-start">
                                             <h6>Filter</h6>
                                         </li>
-
-                                        <li><a class="dropdown-item" href="#">Today</a></li>
-                                        <li><a class="dropdown-item" href="#">This Month</a></li>
-                                        <li><a class="dropdown-item" href="#">This Year</a></li>
+                                        <li><a class="dropdown-item sale-filter-option" href="#"
+                                                data-filter="today">Today</a></li>
+                                        <li><a class="dropdown-item sale-filter-option" href="#"
+                                                data-filter="month">This Month</a></li>
+                                        <li><a class="dropdown-item sale-filter-option" href="#"
+                                                data-filter="year">This Year</a></li>
                                     </ul>
                                 </div>
 
                                 <div class="card-body">
-                                    <h5 class="card-title">Vantes <span>| Today</span></h5>
+                                    <h5 class="card-title sale-card-title">Vantes <span class="sale-card-title-span">| Today</span></h5>
 
                                     <div class="d-flex align-items-center">
                                         <div
                                             class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                             <i class="bi bi-cart"></i>
                                         </div>
-                                        <div class="ps-3">
-                                            <h6>145</h6>
-                                            <span class="text-success small pt-1 fw-bold">12%</span> <span
-                                                class="text-muted small pt-2 ps-1">increase</span>
-
+                                        <div class="ps-3 ">
+                                            <h6 class="sale-card-body">{{ $nbSales }}</h6>
+                                            <span class="sale-card-body-diff-side text-success medium pt-2 ps-1">+</span>
+                                            <span class="sale-card-body-diff text-success small pt-1 fw-bold">{{$salesPercentageDiff}}%</span> 
                                         </div>
                                     </div>
                                 </div>
@@ -104,15 +105,17 @@
                                         <li class="dropdown-header text-start">
                                             <h6>Filter</h6>
                                         </li>
-
-                                        <li><a class="dropdown-item" href="#">Today</a></li>
-                                        <li><a class="dropdown-item" href="#">This Month</a></li>
-                                        <li><a class="dropdown-item" href="#">This Year</a></li>
+                                        <li><a class="dropdown-item revenue-filter-option" href="#"
+                                                data-filter="today">Today</a></li>
+                                        <li><a class="dropdown-item revenue-filter-option" href="#"
+                                                data-filter="month">This Month</a></li>
+                                        <li><a class="dropdown-item revenue-filter-option" href="#"
+                                                data-filter="year">This Year</a></li>
                                     </ul>
                                 </div>
 
                                 <div class="card-body">
-                                    <h5 class="card-title">Revenu <span>| This Month</span></h5>
+                                    <h5 class="card-title  revenue-card-title">Revenu <span class="revenue-card-title-span">| This Month</span></h5>
 
                                     <div class="d-flex align-items-center">
                                         <div
@@ -120,9 +123,9 @@
                                             <i class="bi bi-currency-dollar"></i>
                                         </div>
                                         <div class="ps-3">
-                                            <h6>$3,264</h6>
-                                            <span class="text-success small pt-1 fw-bold">8%</span> <span
-                                                class="text-muted small pt-2 ps-1">increase</span>
+                                            <h6 class=" revenue-card-body">{{$totalRevenue }}</h6>
+                                            <span class="revenue-card-body-diff-side text-success medium pt-2 ps-1">+</span>
+                                            <span class="revenue-card-body-diff text-success small pt-1 fw-bold">{{$RevenuePercentageDiff}}%</span> 
 
                                         </div>
                                     </div>
@@ -294,9 +297,7 @@
                                     <table class="table table-borderless">
                                         <thead>
                                             <tr>
-                                                {{-- <th scope="col">#</th> --}}
                                                 <th scope="col">Product</th>
-                                                {{-- <th scope="col">Price</th> --}}
                                                 <th scope="col">Sold</th>
                                                 <th scope="col">Revenue</th>
                                             </tr>
@@ -304,12 +305,10 @@
                                         <tbody>
                                             @foreach ($topProducts as $product)
                                                 <tr>
-                                                    {{-- <th scope="row" class="text-primary">{{ $product->id }}</th> --}}
                                                     <td><a href='/products/{{ $product->id }}'
                                                             class="text-primary fw-bold">{{ $product->name }}</a></td>
-                                                    {{-- <td>{{ $product->price }} DA</td> --}}
                                                     <td class="fw-bold">{{ $product->sold }}</td>
-                                                    <td>{{ $product->sold * $product->price }} DA</td>
+                                                    <td>{{ $product->getTotalRevenueFromConfirmedCommands() }} DA</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -335,10 +334,10 @@
 
     <!-- Template Main JS File -->
     <script src="{{ asset('jquery/jquery-3.7.1.min.js') }}"></script>
-    <script src="{{ asset('js/script.js') }}"></script>
+    {{-- <script src="{{ asset('js/script.js') }}"></script> --}}
     <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('js/notifications.js') }}"></script>
-
+    <script src="{{ asset('js/dashboard.js') }}"></script>
 </body>
 
 </html>
