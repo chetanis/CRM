@@ -126,7 +126,6 @@
                                             <h6 class=" revenue-card-body">{{$totalRevenue }}</h6>
                                             <span class="revenue-card-body-diff-side text-success medium pt-2 ps-1">+</span>
                                             <span class="revenue-card-body-diff text-success small pt-1 fw-bold">{{$RevenuePercentageDiff}}%</span> 
-
                                         </div>
                                     </div>
                                 </div>
@@ -146,15 +145,17 @@
                                         <li class="dropdown-header text-start">
                                             <h6>Filter</h6>
                                         </li>
-
-                                        <li><a class="dropdown-item" href="#">Today</a></li>
-                                        <li><a class="dropdown-item" href="#">This Month</a></li>
-                                        <li><a class="dropdown-item" href="#">This Year</a></li>
+                                        <li><a class="dropdown-item client-filter-option" href="#"
+                                                data-filter="today">Today</a></li>
+                                        <li><a class="dropdown-item client-filter-option" href="#"
+                                                data-filter="month">This Month</a></li>
+                                        <li><a class="dropdown-item client-filter-option" href="#"
+                                                data-filter="year">This Year</a></li>
                                     </ul>
                                 </div>
 
                                 <div class="card-body">
-                                    <h5 class="card-title">Clients <span>| This Year</span></h5>
+                                    <h5 class="card-title">Clients <span class="client-card-title-span">| This Year</span></h5>
 
                                     <div class="d-flex align-items-center">
                                         <div
@@ -162,8 +163,9 @@
                                             <i class="bi bi-people"></i>
                                         </div>
                                         <div class="ps-3">
-                                            <h6>{{ $nbclients }}</h6>
-                                            {{-- <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span> --}}
+                                            <h6 class="client-card-body">{{ $nbclients }}</h6>
+                                            <span class="client-card-body-diff-side text-success medium pt-2 ps-1">+</span>
+                                            <span class="client-card-body-diff text-success small pt-1 fw-bold">{{$clientsPercentageDiff}}%</span> 
 
                                         </div>
                                     </div>
@@ -177,21 +179,8 @@
                         <div class="col-12">
                             <div class="card recent-sales overflow-auto">
 
-                                <div class="filter">
-                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i
-                                            class="bi bi-three-dots"></i></a>
-                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                        <li class="dropdown-header text-start">
-                                            <h6>Filter</h6>
-                                        </li>
-                                        <li><a class="dropdown-item" href="#">Today</a></li>
-                                        <li><a class="dropdown-item" href="#">This Month</a></li>
-                                        <li><a class="dropdown-item" href="#">This Year</a></li>
-                                    </ul>
-                                </div>
-
                                 <div class="card-body">
-                                    <h5 class="card-title">Ventes récentes <span>| Today</span></h5>
+                                    <h5 class="card-title">Ventes récentes</h5>
                                     @if ($sales->count() > 0)
                                         <table class="table table-borderless datatable">
                                             <thead>
@@ -277,22 +266,8 @@
                         <div class="col-12">
                             <div class="card top-selling overflow-auto">
 
-                                <div class="filter">
-                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i
-                                            class="bi bi-three-dots"></i></a>
-                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                        <li class="dropdown-header text-start">
-                                            <h6>Filter</h6>
-                                        </li>
-
-                                        <li><a class="dropdown-item" href="#">Today</a></li>
-                                        <li><a class="dropdown-item" href="#">This Month</a></li>
-                                        <li><a class="dropdown-item" href="#">This Year</a></li>
-                                    </ul>
-                                </div>
-
                                 <div class="card-body pb-0">
-                                    <h5 class="card-title">Produits les plus vendus <span>| Today</span></h5>
+                                    <h5 class="card-title">Produits les plus vendus </h5>
 
                                     <table class="table table-borderless">
                                         <thead>

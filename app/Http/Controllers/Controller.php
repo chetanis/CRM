@@ -25,8 +25,6 @@ class Controller extends BaseController
         $startOfMonth = Carbon::now()->startOfMonth();
         $endOfMonth = Carbon::now()->endOfMonth();
 
-        //get the number of clients
-        $nbclients = Client::getAccessibleClients()->count();
         //get the latest 5 sales
         $sales = Sale::getAccessibleSales()->latest()->take(5)->get();
 
@@ -57,8 +55,15 @@ class Controller extends BaseController
         $nbSalesYesterday = Sale::getAccessibleSales()->whereDate('created_at', $today->subDay())->count();
         $salesPercentageDiff = $nbSalesYesterday == 0 ? 100 : (($nbSales - $nbSalesYesterday) / $nbSalesYesterday) * 100;
 
+        // Get the number of clients for this year
+        $nbclients = Client::getAccessibleClients()->whereYear('created_at', $today->year)->count();
 
-        return view('index', compact('nbclients', 'sales', 'topProducts', 'appointments', 'totalRevenue', 'nbSales', 'salesPercentageDiff', 'RevenuePercentageDiff'));
+        // Get the precentage difference between the number of clients of this year and the previous year
+        $nbclientsPrevious = Client::getAccessibleClients()->whereYear('created_at', $today->subYear()->year)->count();
+        $clientsPercentageDiff = $nbclientsPrevious == 0 ? 100 : (($nbclients - $nbclientsPrevious) / $nbclientsPrevious) * 100;
+
+
+        return view('index', compact('nbclients', 'sales', 'topProducts', 'appointments', 'totalRevenue', 'nbSales', 'salesPercentageDiff', 'RevenuePercentageDiff', 'clientsPercentageDiff'));
     }
 
     //filter the sales
@@ -164,6 +169,53 @@ class Controller extends BaseController
 
         return response()->json([
             'totalRevenue' => round($totalRevenue),
+            'percentageDiff' => $percentageDiff,
+        ]);
+    }
+
+    //filter the clients
+    public function filterClients(Request $request)
+    {
+        $filter = $request->input('filter');
+        $now = Carbon::now();
+        $clientsQuery = Client::getAccessibleClients();
+
+        $nbClientsCurrent = 0;
+        $nbClientsPrevious = 0;
+
+        switch ($filter) {
+            case 'today':
+                $nbClientsCurrent = $clientsQuery->whereDate('created_at', $now->toDateString())->count();
+                $nbClientsPrevious = Client::getAccessibleClients()
+                    ->whereDate('created_at', $now->subDay()->toDateString())
+                    ->count();
+                break;
+            case 'month':
+                $nbClientsCurrent = $clientsQuery->whereMonth('created_at', $now->month)->whereYear('created_at', $now->year)->count();
+                $nbClientsPrevious = Client::getAccessibleClients()
+                    ->whereMonth('created_at', $now->subMonth()->month)
+                    ->whereYear('created_at', $now->year)
+                    ->count();
+                break;
+            case 'year':
+                $nbClientsCurrent = $clientsQuery->whereYear('created_at', $now->year)->count();
+                $nbClientsPrevious = Client::getAccessibleClients()
+                    ->whereYear('created_at', $now->subYear()->year)
+                    ->count();
+                break;
+            default:
+                return response()->json(['error' => 'Invalid filter'], 400);
+        }
+
+        // Calculate the percentage difference
+        if ($nbClientsPrevious == 0) {
+            $percentageDiff = $nbClientsCurrent > 0 ? 100 : 0;
+        } else {
+            $percentageDiff = (($nbClientsCurrent - $nbClientsPrevious) / $nbClientsPrevious) * 100;
+        }
+
+        return response()->json([
+            'nbClients' => $nbClientsCurrent,
             'percentageDiff' => $percentageDiff,
         ]);
     }

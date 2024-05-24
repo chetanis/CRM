@@ -206,6 +206,9 @@ Route::middleware(['auth'])->group(function () {
     //filter revenue data in the dashboard
     Route::get('/revenue-filter', [Controller::class, 'filterRevenue']);
 
+    //filter client data in the dashboard
+    Route::get('/clients-filter', [Controller::class, 'filterClients']);
+
 });
 
 
