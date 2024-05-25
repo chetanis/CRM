@@ -81,6 +81,12 @@ $date = new DateTime($appointment->date_and_time);
                     <p class="m-0">{{ $appointment->purpose }}</p>
                 </div>
             </div>
+            @if ($appointment->status == 'done')
+                <div class="row mt-3">
+                    <div class="col-md-2">Résultat:</div>
+                        <p class="m-0 col">{{ $appointment->result }}</p>
+                </div>
+            @endif
             @if (Auth::user()->privilege == 'admin')
                 <div class="row mt-3">
                     <div class="col-md-2">assigné à:</div>
@@ -104,11 +110,8 @@ $date = new DateTime($appointment->date_and_time);
                         </form>
                     </div>
                     <div class="col-3">
-                        <form action="/appointments/{{ $appointment->id }}/confirm" method="POST">
-                            @csrf
-                            @method('put')
-                            <button type="submit" class="btn btn-outline-success">Rendez-vous terminé</button>
-                        </form>
+                        <button data-bs-toggle="modal" data-bs-target="#confirmAppointment{{ $appointment->id }}"
+                            type="button" class="btn btn-outline-success">Rendez-vous terminé</button>
                     </div>
                     <div class="col text-end"> <!-- Align the form to the right -->
                         <form action="/appointments/{{ $appointment->id }}" method="POST">
@@ -145,6 +148,42 @@ $date = new DateTime($appointment->date_and_time);
                         </div>
                     </div>
                 </div>
+                <div class="modal fade" id="confirmAppointment{{ $appointment->id }}" tabindex="-1"
+                    aria-labelledby="confirmAppointmentLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmAppointmentLabel">Terminé le rendez-vous</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="/appointments/{{ $appointment->id }}/confirm" method="POST">
+                                    @csrf
+                                    @method('put')
+                                    <div class="mb-3">
+                                        <label for="result" class="form-label">Résultat du rendez-vous</label>
+                                        <textarea class="form-control" id="result" name="result" rows="3" required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Soumettre le résultat</button>
+                                    
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="resultField" class="row g-0 mt-3" style="display: none;">
+                    <div class="col-12">
+                        <form action="/appointments/{{ $appointment->id }}/result" method="POST">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="result" class="form-label">Résultat du rendez-vous</label>
+                                <textarea class="form-control" id="result" name="result" rows="3" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Soumettre le résultat</button>
+                        </form>
+                    </div>
+                </div>
             @endif
 
         </section>
@@ -161,6 +200,13 @@ $date = new DateTime($appointment->date_and_time);
     <script src="{{ asset('js/script.js') }}"></script>
     <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('js/notifications.js') }}"></script>
+    <script>
+        $(document).ready(function(){
+        $("#confirmBtn").click(function(){
+            $("#resultField").toggle();
+        });
+    });
+    </script>
 
 </body>
 

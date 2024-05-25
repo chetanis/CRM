@@ -74,9 +74,9 @@ class AppointmentController extends Controller
         return redirect()->back();
     }
 
-    public function confirm(Appointment $appointment)
+    public function confirm(Appointment $appointment,Request $request)
     {
-        $appointment->update(['status' => 'done']);
+        $appointment->update(['status' => 'done', 'result' => $request->input('result')]);
         //create log
         Log::CreateLog("Confirmer rendez-vous.", "Rendez-vous n°: " . $appointment->id);
         Session::flash('success', 'Rendez-vous confirmée avec succès');

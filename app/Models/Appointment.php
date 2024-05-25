@@ -17,6 +17,7 @@ class Appointment extends Model
         'date_and_time',
         'purpose',
         'status',
+        'result'
     ];
 
     protected $dates = ['date_and_time'];
