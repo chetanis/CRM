@@ -84,7 +84,7 @@ $date = new DateTime($appointment->date_and_time);
             @if ($appointment->status == 'done')
                 <div class="row mt-3">
                     <div class="col-md-2">Résultat:</div>
-                        <p class="m-0 col">{{ $appointment->result }}</p>
+                        <p class="m-0 col">{{  empty($appointment->result) ? '/' : $appointment->result }}</p>
                 </div>
             @endif
             @if (Auth::user()->privilege == 'admin')
