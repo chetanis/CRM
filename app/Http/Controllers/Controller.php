@@ -45,7 +45,7 @@ class Controller extends BaseController
             ->whereBetween('sales.created_at', [$startOfMonth->subMonth(), $endOfMonth->subMonth()])
             ->join('commands', 'sales.command_id', '=', 'commands.id')
             ->sum('commands.total_price');
-        $RevenuePercentageDiff = $totalRevenuePrevious == 0 ? 100 : (($totalRevenue - $totalRevenuePrevious) / $totalRevenuePrevious) * 100;
+        $RevenuePercentageDiff = $totalRevenuePrevious == 0 ? 100 : round((($totalRevenue - $totalRevenuePrevious) / $totalRevenuePrevious) * 100);
 
         // Get the number of sales for today
         $nbSales = Sale::getAccessibleSales()->whereDate('created_at', $today)
@@ -53,14 +53,14 @@ class Controller extends BaseController
 
         //get the percentage difference between the number of sales of today and yesterday
         $nbSalesYesterday = Sale::getAccessibleSales()->whereDate('created_at', $today->subDay())->count();
-        $salesPercentageDiff = $nbSalesYesterday == 0 ? 100 : (($nbSales - $nbSalesYesterday) / $nbSalesYesterday) * 100;
+        $salesPercentageDiff = $nbSalesYesterday == 0 ? 100 : round((($nbSales - $nbSalesYesterday) / $nbSalesYesterday) * 100);
 
         // Get the number of clients for this year
         $nbclients = Client::getAccessibleClients()->whereYear('created_at', $today->year)->count();
 
         // Get the precentage difference between the number of clients of this year and the previous year
         $nbclientsPrevious = Client::getAccessibleClients()->whereYear('created_at', $today->subYear()->year)->count();
-        $clientsPercentageDiff = $nbclientsPrevious == 0 ? 100 : (($nbclients - $nbclientsPrevious) / $nbclientsPrevious) * 100;
+        $clientsPercentageDiff = $nbclientsPrevious == 0 ? 100 : round((($nbclients - $nbclientsPrevious) / $nbclientsPrevious) * 100);
 
 
         return view('index', compact('nbclients', 'sales', 'topProducts', 'appointments', 'totalRevenue', 'nbSales', 'salesPercentageDiff', 'RevenuePercentageDiff', 'clientsPercentageDiff'));
@@ -104,7 +104,7 @@ class Controller extends BaseController
         if ($nbSalesPrevious == 0) {
             $percentageDiff = $nbSalesCurrent > 0 ? 100 : 0;
         } else {
-            $percentageDiff = (($nbSalesCurrent - $nbSalesPrevious) / $nbSalesPrevious) * 100;
+            $percentageDiff = round((($nbSalesCurrent - $nbSalesPrevious) / $nbSalesPrevious) * 100);
         }
 
 
@@ -164,7 +164,7 @@ class Controller extends BaseController
         if ($totalRevenuePrevious == 0) {
             $percentageDiff = $totalRevenue > 0 ? 100 : 0;
         } else {
-            $percentageDiff = (($totalRevenue - $totalRevenuePrevious) / $totalRevenuePrevious) * 100;
+            $percentageDiff = round((($totalRevenue - $totalRevenuePrevious) / $totalRevenuePrevious) * 100);
         }
 
         return response()->json([
@@ -211,7 +211,7 @@ class Controller extends BaseController
         if ($nbClientsPrevious == 0) {
             $percentageDiff = $nbClientsCurrent > 0 ? 100 : 0;
         } else {
-            $percentageDiff = (($nbClientsCurrent - $nbClientsPrevious) / $nbClientsPrevious) * 100;
+            $percentageDiff = round((($nbClientsCurrent - $nbClientsPrevious) / $nbClientsPrevious) * 100);
         }
 
         return response()->json([

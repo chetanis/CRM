@@ -76,7 +76,8 @@
                                 </div>
 
                                 <div class="card-body">
-                                    <h5 class="card-title sale-card-title">Vantes <span class="sale-card-title-span">| Today</span></h5>
+                                    <h5 class="card-title sale-card-title">Vantes <span class="sale-card-title-span">|
+                                            Today</span></h5>
 
                                     <div class="d-flex align-items-center">
                                         <div
@@ -85,8 +86,18 @@
                                         </div>
                                         <div class="ps-3 ">
                                             <h6 class="sale-card-body">{{ $nbSales }}</h6>
-                                            <span class="sale-card-body-diff-side text-success medium pt-2 ps-1">+</span>
-                                            <span class="sale-card-body-diff text-success small pt-1 fw-bold">{{$salesPercentageDiff}}%</span> 
+                                            @if ($salesPercentageDiff >= 0)
+                                                <span
+                                                    class="sale-card-body-diff-side text-success medium pt-2 ps-1">+</span>
+                                                <span
+                                                    class="sale-card-body-diff text-success small pt-1 fw-bold">{{ $salesPercentageDiff }}%</span>
+                                            @else
+                                                <span
+                                                    class="sale-card-body-diff-side text-success medium pt-2 ps-1"></span>
+                                                <span
+                                                    class="sale-card-body-diff text-danger small pt-1 fw-bold">{{ $salesPercentageDiff }}%</span>
+                                            @endif
+
                                         </div>
                                     </div>
                                 </div>
@@ -115,7 +126,8 @@
                                 </div>
 
                                 <div class="card-body">
-                                    <h5 class="card-title  revenue-card-title">Revenu <span class="revenue-card-title-span">| This Month</span></h5>
+                                    <h5 class="card-title  revenue-card-title">Revenu <span
+                                            class="revenue-card-title-span">| This Month</span></h5>
 
                                     <div class="d-flex align-items-center">
                                         <div
@@ -123,9 +135,11 @@
                                             <i class="bi bi-currency-dollar"></i>
                                         </div>
                                         <div class="ps-3">
-                                            <h6 class=" revenue-card-body">{{$totalRevenue }}</h6>
-                                            <span class="revenue-card-body-diff-side text-success medium pt-2 ps-1">+</span>
-                                            <span class="revenue-card-body-diff text-success small pt-1 fw-bold">{{$RevenuePercentageDiff}}%</span> 
+                                            <h6 class=" revenue-card-body extra-small">{{ $totalRevenue }}</h6>
+                                            <span
+                                                class="revenue-card-body-diff-side text-success medium pt-2 ps-1">+</span>
+                                            <span
+                                                class="revenue-card-body-diff text-success small pt-1 fw-bold">{{ $RevenuePercentageDiff }}%</span>
                                         </div>
                                     </div>
                                 </div>
@@ -155,7 +169,8 @@
                                 </div>
 
                                 <div class="card-body">
-                                    <h5 class="card-title">Clients <span class="client-card-title-span">| This Year</span></h5>
+                                    <h5 class="card-title">Clients <span class="client-card-title-span">| This
+                                            Year</span></h5>
 
                                     <div class="d-flex align-items-center">
                                         <div
@@ -164,8 +179,15 @@
                                         </div>
                                         <div class="ps-3">
                                             <h6 class="client-card-body">{{ $nbclients }}</h6>
-                                            <span class="client-card-body-diff-side text-success medium pt-2 ps-1">+</span>
-                                            <span class="client-card-body-diff text-success small pt-1 fw-bold">{{$clientsPercentageDiff}}%</span> 
+                                            @if ($clientsPercentageDiff >= 0)
+                                                <span
+                                                    class="client-card-body-diff-side text-success medium pt-2 ps-1">+</span>
+                                                <span
+                                                    class="client-card-body-diff text-success small pt-1 fw-bold">{{ $clientsPercentageDiff }}%</span>
+                                            @else
+                                                <span
+                                                    class="client-card-body-diff text-danger small pt-1 fw-bold">{{ $clientsPercentageDiff }}%</span>
+                                            @endif
 
                                         </div>
                                     </div>

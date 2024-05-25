@@ -63,7 +63,7 @@ function updateSalesCard(filter) {
                 percentageDiffElement.classList.remove('text-success');
                 percentageDiffElement.classList.add('text-danger');
 
-                percentageDiffSideElement.textContent = '-';
+                percentageDiffSideElement.textContent = '';
                 percentageDiffSideElement.classList.remove('text-success');
                 percentageDiffSideElement.classList.add('text-danger');
             }
@@ -111,7 +111,7 @@ function updateRevenueCard(filter) {
                 percentageDiffElement.classList.remove('text-success');
                 percentageDiffElement.classList.add('text-danger');
 
-                percentageDiffSideElement.textContent = '-';
+                percentageDiffSideElement.textContent = '';
                 percentageDiffSideElement.classList.remove('text-success');
                 percentageDiffSideElement.classList.add('text-danger');
             }
@@ -159,7 +159,6 @@ function updateClientCard(filter) {
                 percentageDiffElement.classList.remove('text-success');
                 percentageDiffElement.classList.add('text-danger');
 
-                percentageDiffSideElement.textContent = '-';
                 percentageDiffSideElement.classList.remove('text-success');
                 percentageDiffSideElement.classList.add('text-danger');
             }
