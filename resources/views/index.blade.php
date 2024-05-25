@@ -282,6 +282,38 @@
 
                         </div>
                     </div><!-- End Recent Activity -->
+
+                    <!-- Top Clients -->
+                    <div class="col-12">
+                        <div class="card top-selling overflow-auto">
+
+                            <div class="card-body pb-0">
+                                <h5 class="card-title">Les meilleurs clients </h5>
+
+                                <table class="table table-borderless">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Client</th>
+                                            <th scope="col">Ventes</th>
+                                            <th scope="col">Revenue</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($topClients as $client)
+                                            <tr>
+                                                <td><a href='/clients/{{ $client->id }}'
+                                                        class="text-primary fw-bold">{{ $client->first_name }}{{ $client->last_name }}</a></td>
+                                                <td class="fw-bold">{{ $client->total_sales }}</td>
+                                                <td>{{ $client->total_revenue }}DA</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                        </div>
+                    </div><!-- End Top Clients -->
                     <!-- if admin -->
                     @if (Auth::user()->privilege == 'admin')
                         <!-- Top Selling -->

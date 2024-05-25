@@ -8,6 +8,7 @@ use App\Models\Client;
 use App\Models\Product;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -62,8 +63,15 @@ class Controller extends BaseController
         $nbclientsPrevious = Client::getAccessibleClients()->whereYear('created_at', $today->subYear()->year)->count();
         $clientsPercentageDiff = $nbclientsPrevious == 0 ? 100 : round((($nbclients - $nbclientsPrevious) / $nbclientsPrevious) * 100);
 
+        $topClients = Client::getAccessibleClientsQuery()->join('commands', 'clients.id', '=', 'commands.client_id')
+            ->select('clients.id', 'clients.first_name', 'clients.last_name', DB::raw('SUM(commands.total_price) as total_revenue'), DB::raw('COUNT(commands.id) as total_sales'))
+            ->where('commands.type', 'done')
+            ->groupBy('clients.id', 'clients.first_name', 'clients.last_name')
+            ->orderByDesc('total_revenue')
+            ->take(5)
+            ->get();
 
-        return view('index', compact('nbclients', 'sales', 'topProducts', 'appointments', 'totalRevenue', 'nbSales', 'salesPercentageDiff', 'RevenuePercentageDiff', 'clientsPercentageDiff'));
+        return view('index', compact('nbclients', 'sales', 'topProducts', 'appointments', 'totalRevenue', 'nbSales', 'salesPercentageDiff', 'RevenuePercentageDiff', 'clientsPercentageDiff', 'topClients'));
     }
 
     //filter the sales

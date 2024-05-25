@@ -56,6 +56,16 @@ class Client extends Model
             return self::where('assigned_to', Auth::id())->latest();
         }
     }
+    public static function getAccessibleClientsQuery()
+    {
+        // If the user is an admin or superuser, show all clients
+        if (Auth::user()->privilege === 'admin' || Auth::user()->privilege === 'superuser') {
+            return self::query();
+        } else {
+            // If the user is a regular user, show only the clients assigned to them
+            return self::where('assigned_to', Auth::id());
+        }
+    }
 
     //change the user that is assigned to the client + pending commands
     public function changeAssignedTo(int $userId)
