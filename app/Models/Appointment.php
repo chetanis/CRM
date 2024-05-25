@@ -42,10 +42,19 @@ class Appointment extends Model
     }
 
     public static function getTodayAccessibleAppointments(){
+
         $today = Carbon::now()->toDateString();
-        return self::getAccessibleAppointments()
-        ->whereDate('date_and_time', $today)
-        ->get(); 
+
+        if (Auth::user()->privilege === 'admin' || Auth::user()->privilege === 'superuser') {
+            return self::whereDate('date_and_time', $today)
+            ->orderBy('date_and_time', 'asc')
+            ->get();
+        }else{
+            return self::where('appointments.user_id', Auth::id())
+            ->orderBy('date_and_time', 'asc')
+            ->whereDate('date_and_time', $today)
+            ->get(); 
+        }
     }
 
     public function getHour(){
