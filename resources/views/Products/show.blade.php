@@ -112,7 +112,7 @@
                                     </div>
                                     
                                     <div class="col-lg-9 mt-5 col-md-8 d-flex justify-content-center">
-                                        <form method="POST" action="/products/{{ $product->id }}">
+                                        <form id="delete-product-form" method="POST" action="/products/{{ $product->id }}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger">Supprimer le product</button>
@@ -197,11 +197,6 @@
 
                                 </div>
 
-                                <div class="tab-pane fade profile-historique pt-3" id="profile-historique">
-
-                                    <h2>bientot disponible</h2>
-
-                                </div>
                             </div><!-- End Bordered Tabs -->
 
                         </div>
@@ -223,6 +218,17 @@
     <script src="{{ asset('js/script.js') }}"></script>
     <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('js/notifications.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#delete-product-form').on('submit', function(e) {
+                e.preventDefault(); // Prevent the form from submitting immediately
+                
+                if (confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
+                    this.submit(); // Submit the form if the user confirms
+                }
+            });
+        });
+    </script>
 
 </body>
 

@@ -129,21 +129,21 @@ if ($command->payment_method == 'Espèce') {
                     @if ($command->type == 'pending')
                         <div class="row">
                             <div class="col-3">
-                                <form action="/commands/{{ $command->id }}/confirm" method="POST">
+                                <form id="confirm-command-form" action="/commands/{{ $command->id }}/confirm" method="POST">
                                     @csrf
                                     @method('put')
                                     <button type="submit" class="btn btn-primary">Confirmer la commande</button>
                                 </form>
                             </div>
                             <div class="col-3">
-                                <form action="/commands/{{ $command->id }}/cancel" method="POST">
+                                <form id="cancel-command-form" action="/commands/{{ $command->id }}/cancel" method="POST">
                                     @csrf
                                     @method('put')
                                     <button type="submit" class="btn btn-danger">Annuler la commande</button>
                                 </form>
                             </div>
                             <div class="col text-end"> <!-- Align the form to the right -->
-                                <form action="/commands/{{ $command->id }}" method="POST">
+                                <form id="delete-command-form" action="/commands/{{ $command->id }}" method="POST">
                                     @csrf
                                     @method('delete')
                                     <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
@@ -167,6 +167,35 @@ if ($command->payment_method == 'Espèce') {
     <script src="{{ asset('js/script.js') }}"></script>
     <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('js/notifications.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#delete-command-form').on('submit', function(e) {
+                e.preventDefault(); // Prevent the form from submitting immediately
+                
+                if (confirm('Êtes-vous sûr de vouloir supprimer cette commande ?')) {
+                    this.submit(); // Submit the form if the user confirms
+                }
+            });
+        });
+        $(document).ready(function() {
+            $('#cancel-command-form').on('submit', function(e) {
+                e.preventDefault(); // Prevent the form from submitting immediately
+                
+                if (confirm('Êtes-vous sûr de vouloir annuler cette commande ?')) {
+                    this.submit(); // Submit the form if the user confirms
+                }
+            });
+        });
+        $(document).ready(function() {
+            $('#confirm-command-form').on('submit', function(e) {
+                e.preventDefault(); // Prevent the form from submitting immediately
+                
+                if (confirm('Êtes-vous sûr de vouloir confirmer cette commande ?')) {
+                    this.submit(); // Submit the form if the user confirms
+                }
+            });
+        });
+    </script>
 
 </body>
 

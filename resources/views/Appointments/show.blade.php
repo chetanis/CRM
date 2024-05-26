@@ -84,7 +84,7 @@ $date = new DateTime($appointment->date_and_time);
             @if ($appointment->status == 'done')
                 <div class="row mt-3">
                     <div class="col-md-2">Résultat:</div>
-                        <p class="m-0 col">{{  empty($appointment->result) ? '/' : $appointment->result }}</p>
+                    <p class="m-0 col">{{ empty($appointment->result) ? '/' : $appointment->result }}</p>
                 </div>
             @endif
             @if (Auth::user()->privilege == 'admin')
@@ -103,7 +103,7 @@ $date = new DateTime($appointment->date_and_time);
                             type="button" class="btn btn-outline-primary">Reporter le rendez-vous</button>
                     </div>
                     <div class="col-3">
-                        <form action="/appointments/{{ $appointment->id }}/cancel" method="POST">
+                        <form id="cancel-appointment-form" action="/appointments/{{ $appointment->id }}/cancel" method="POST">
                             @csrf
                             @method('put')
                             <button type="submit" class="btn btn-outline-danger">Annuler le rendez-vous </button>
@@ -114,7 +114,7 @@ $date = new DateTime($appointment->date_and_time);
                             type="button" class="btn btn-outline-success">Rendez-vous terminé</button>
                     </div>
                     <div class="col text-end"> <!-- Align the form to the right -->
-                        <form action="/appointments/{{ $appointment->id }}" method="POST">
+                        <form id="delete-appointment-form" action="/appointments/{{ $appointment->id }}" method="POST">
                             @csrf
                             @method('delete')
                             <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
@@ -166,7 +166,7 @@ $date = new DateTime($appointment->date_and_time);
                                         <textarea class="form-control" id="result" name="result" rows="3" required></textarea>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Soumettre le résultat</button>
-                                    
+
                                 </form>
                             </div>
                         </div>
@@ -201,11 +201,29 @@ $date = new DateTime($appointment->date_and_time);
     <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('js/notifications.js') }}"></script>
     <script>
-        $(document).ready(function(){
-        $("#confirmBtn").click(function(){
-            $("#resultField").toggle();
+        $(document).ready(function() {
+            $("#confirmBtn").click(function() {
+                $("#resultField").toggle();
+            });
+            $(document).ready(function() {
+                $('#delete-appointment-form').on('submit', function(e) {
+                    e.preventDefault(); // Prevent the form from submitting immediately
+
+                    if (confirm('Êtes-vous sûr de vouloir supprimer ce RDV ?')) {
+                        this.submit(); // Submit the form if the user confirms
+                    }
+                });
+            });
+            $(document).ready(function() {
+                $('#cancel-appointment-form').on('submit', function(e) {
+                    e.preventDefault(); // Prevent the form from submitting immediately
+
+                    if (confirm('Êtes-vous sûr de vouloir annuler ce RDV ?')) {
+                        this.submit(); // Submit the form if the user confirms
+                    }
+                });
+            });
         });
-    });
     </script>
 
 </body>

@@ -181,7 +181,7 @@
                                                 data-bs-target="#changeAssignedUser" type="button"
                                                 class="btn btn-primary me-3">Changer l'utilisateur assigné</button>
                                         @endif
-                                        <form method="POST" action="/clients/{{ $client->id }}">
+                                        <form id="delete-client-form" method="POST" action="/clients/{{ $client->id }}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger">Supprimer le client</button>
@@ -440,18 +440,6 @@
                                                 <p>N° des rendez-vous: <span
                                                         class="text-primary">{{ $appointments->count() }}</span></p>
                                             </div>
-                                            {{-- <div class="col">
-                                                <p>en attente: <span class="text-warning">{{ $countPending }}</span>
-                                                </p>
-                                            </div>
-                                            <div class="col">
-                                                <p>annulées: <span class="text-danger">{{ $countCancelled }}</span>
-                                                </p>
-                                            </div>
-                                            <div class="col">
-                                                <p>confirmées: <span class="text-success">{{ $countConfirmed }}</span>
-                                                </p>
-                                            </div> --}}
                                         </div>
 
                                         <table class="table table-striped">
@@ -507,6 +495,17 @@
     <script src="{{ asset('js/script.js') }}"></script>
     <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('js/notifications.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#delete-client-form').on('submit', function(e) {
+                e.preventDefault(); // Prevent the form from submitting immediately
+                
+                if (confirm('Êtes-vous sûr de vouloir supprimer ce client ?')) {
+                    this.submit(); // Submit the form if the user confirms
+                }
+            });
+        });
+    </script>
 
 </body>
 
