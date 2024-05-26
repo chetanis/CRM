@@ -90,6 +90,16 @@ class ProductController extends Controller
     ]);
 
     try {
+        //check if he updated the stock
+        if ($request->input('current_stock') != $product->current_stock) {
+            //check if he added or subtracted stock
+            if ($request->input('current_stock') > $product->current_stock) {
+                $product->addStock($request->input('current_stock') - $product->current_stock);
+            } else {
+                $product->subtractStock($product->current_stock - $request->input('current_stock'));
+            }
+        }
+        //update the product
         $product->update($request->all());
         //create log
         Log::CreateLog('modifier produit', 'Produit modifie: ' . $product->name );

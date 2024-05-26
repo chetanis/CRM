@@ -71,26 +71,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     <div>
                     <p><a href="/products/${notif.product_id}">${notif.message}</a></p>
                     </div>
-
-                    <i class="bi bi-x-lg text-danger delete-notif" data-id="${notif.id}"></i>
                 </li> 
             `);
         });
 
-        $('.delete-notif').on('click', function () {
-            const notifId = $(this).data('id');
-            $.ajax({
-                url: 'notifications/' + notifId,
-                method: 'DELETE',
-                success: function () {
-                    $(`i[data-id="${notifId}"]`).closest('li').remove();
-                    updateNotifCount();
-                },
-                error: function (error) {
-                    console.error('Error deleting notification:', error);
-                }
-            });
-        });
     }
 
     function updateNotifCount() {

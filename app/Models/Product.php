@@ -30,8 +30,14 @@ class Product extends Model
 
     public function addStock(int $quantity)
     {
+        $old_stock = $this->current_stock;
         $this->current_stock += $quantity;
         $this->save();
+
+        //if the stock was below the minimum stock and now it is above delete the notification
+        if ($old_stock < $this->minimum_stock && $this->current_stock >= $this->minimum_stock) {
+            ProductNotif::where('product_id', $this->id)->delete();
+        }
     }
 
     public function subtractStock(int $quantity)
