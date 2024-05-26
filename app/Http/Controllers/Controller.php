@@ -26,6 +26,34 @@ class Controller extends BaseController
         $startOfMonth = Carbon::now()->startOfMonth();
         $endOfMonth = Carbon::now()->endOfMonth();
 
+        // Get the start and end of last week
+        $startOfLastWeek = Carbon::now()->subWeek();
+        $endOfLastWeek = Carbon::now();
+
+
+        // Get the dates of last week
+        $datesOfLastWeek = [];
+        for ($date = $startOfLastWeek; $date->lte($endOfLastWeek); $date->addDay()) {
+            $datesOfLastWeek[$date->format('M d')] = 0;
+        }
+
+        // Get the start and end of last week
+        $startOfLastWeek = Carbon::now()->subWeek();
+        $endOfLastWeek = Carbon::now();
+        // Query sales data for last week
+        $salesLastWeek = Sale::getAccessibleSales()
+            ->whereBetween('sales.created_at', [$startOfLastWeek, $endOfLastWeek])
+            ->select(DB::raw('DATE(created_at) as date'), DB::raw('COUNT(id) as total_sales'))
+            ->groupBy('date')
+            ->get();
+
+        // Merge sales data with all dates of last week
+        foreach ($salesLastWeek as $sale) {
+            // Format date without year (e.g., 'May 24')
+            $formattedDate = Carbon::parse($sale->date)->format('M d');
+            $datesOfLastWeek[$formattedDate] = $sale->total_sales;
+        }
+
         //get the latest 5 sales
         $sales = Sale::getAccessibleSales()->latest()->take(5)->get();
 
@@ -71,7 +99,19 @@ class Controller extends BaseController
             ->take(5)
             ->get();
 
-        return view('index', compact('nbclients', 'sales', 'topProducts', 'appointments', 'totalRevenue', 'nbSales', 'salesPercentageDiff', 'RevenuePercentageDiff', 'clientsPercentageDiff', 'topClients'));
+        return view('index', compact(
+            'nbclients',
+            'sales',
+            'topProducts',
+            'appointments',
+            'totalRevenue',
+            'nbSales',
+            'salesPercentageDiff',
+            'RevenuePercentageDiff',
+            'clientsPercentageDiff',
+            'topClients',
+            'datesOfLastWeek'
+        ));
     }
 
     //filter the sales

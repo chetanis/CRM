@@ -242,6 +242,16 @@
                             </div>
                         </div><!-- End Recent Sales -->
 
+                        <!-- Sales Chart -->
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Ventes <span>de la semaine dernière</span></h5>
+                                <!-- bar Chart -->
+                                <canvas id="salesChart"></canvas>
+                                <!-- End bar Chart -->
+                            </div>
+                        </div><!-- End Sales Chart -->
+
                     </div>
                 </div><!-- End Left side columns -->
 
@@ -302,7 +312,8 @@
                                         @foreach ($topClients as $client)
                                             <tr>
                                                 <td><a href='/clients/{{ $client->id }}'
-                                                        class="text-primary fw-bold">{{ $client->first_name }}{{ $client->last_name }}</a></td>
+                                                        class="text-primary fw-bold">{{ $client->first_name }}{{ $client->last_name }}</a>
+                                                </td>
                                                 <td class="fw-bold">{{ $client->total_sales }}</td>
                                                 <td>{{ $client->total_revenue }}DA</td>
                                             </tr>
@@ -367,6 +378,57 @@
     <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('js/notifications.js') }}"></script>
     <script src="{{ asset('js/dashboard.js') }}"></script>
+    <script src="{{ asset('chart/chart.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Data passed from the controller
+            const salesData = @json($datesOfLastWeek);
+
+            // Prepare labels and data
+            const labels = Object.keys(salesData);
+            const salesCounts = Object.values(salesData);
+
+            // Create the chart
+            const ctx = document.getElementById('salesChart').getContext('2d');
+            const salesChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Ventes',
+                        data: salesCounts,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Date'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Number of Sales'
+                            },
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
