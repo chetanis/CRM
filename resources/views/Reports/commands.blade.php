@@ -52,7 +52,7 @@
             <div class="card-body pt-3 report">
                 <h4 class="mb-0 mt-1 ms-1 ">Sélectionnez ce que vous souhaitez inclure dans le rapport.</h4>
                 <hr>
-                <form id="date-form" action="{{route("generate-commands-report")}}" method="POST">
+                <form id="date-form" action="{{ route('generate-commands-report') }}" method="POST">
                     @csrf
                     <div class="col mt-4">
                         <div class="row">
@@ -95,31 +95,39 @@
                         <div class="row">
                             <label class="col-md-3  label">Statistiques sur le nombre des commandes</label>
                             <div class="col-md-2">
-                                <input checked class="form-check-input" type="checkbox" name="report_options[]"value="commands_stat"> 
+                                <input checked class="form-check-input" type="checkbox"
+                                    name="report_options[]"value="commands_stat">
                                 <label class="ms-2">inclue</label>
                             </div>
                         </div>
                         <div class="row">
-                            <label class="col-md-3  label">raphique circulaire: pourcentage des commandes confirmés et annulés.</label>
+                            <label class="col-md-3  label">raphique circulaire: pourcentage des commandes confirmés et
+                                annulés.</label>
                             <div class="col-md-2">
-                                <input class="form-check-input" type="checkbox" name="report_options[]"value="commands_percentage"> 
+                                <input class="form-check-input" type="checkbox"
+                                    name="report_options[]"value="commands_percentage">
                                 <label class="ms-2">inclue</label>
                             </div>
                         </div>
                         <div class="row">
-                            <label class="col-md-3 label">Graphiques en ligne : nombre de commades en fonction du temps</label>
+                            <label class="col-md-3 label">Graphiques en ligne : nombre de commades en fonction du
+                                temps</label>
                             <div class="col-md-2">
-                                <input class="form-check-input" type="checkbox" name="report_options[]"value="commands_graph"> 
+                                <input class="form-check-input" type="checkbox"
+                                    name="report_options[]"value="commands_graph">
                                 <label class="ms-2">inclue</label>
                             </div>
                         </div>
-                        <div class="row">
-                            <label class="col-md-3 label">Tableau de produits avec des statistiques </label>
-                            <div class="col-md-2">
-                                <input class="form-check-input" type="checkbox" name="report_options[]"  value="products_stat"> 
-                                <label class="ms-2">inclue</label>
+                        @if (auth()->user()->privilege === 'admin' || auth()->user()->privilege === 'superuser')
+                            <div class="row">
+                                <label class="col-md-3 label">Tableau de produits avec des statistiques </label>
+                                <div class="col-md-2">
+                                    <input class="form-check-input" type="checkbox" name="report_options[]"
+                                        value="products_stat">
+                                    <label class="ms-2">inclue</label>
+                                </div>
                             </div>
-                        </div>
+                        @endif
                     </div>
                     <button type="submit" class="btn btn-primary mt-3">Submit</button>
                 </form>
@@ -170,7 +178,8 @@
             }
 
             // Check if at least one activity option is selected if activity tables is checked before form submission
-            if ($('#client_activities').is(':checked') && $('input[name="activity_options[]"]:checked').length === 0) {
+            if ($('#client_activities').is(':checked') && $('input[name="activity_options[]"]:checked').length ===
+                0) {
                 alert('Veuillez sélectionner au moins une option d\'activité.');
                 event.preventDefault(); // Prevent form submission
                 return;

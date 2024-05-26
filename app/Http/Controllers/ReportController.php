@@ -7,6 +7,7 @@ use App\Models\Client;
 use App\Models\Command;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
@@ -354,12 +355,16 @@ class ReportController extends Controller
         if (in_array('commands_graph', $reportOptions)) {
             $command_graph_checked = true;
         }
-        if (in_array('products_stat', $reportOptions)) {
-            $product_table_checked = true;
-        }
         if (in_array('commands_percentage', $reportOptions)) {
             $command_percentage_checked = true;
         }
+        //if the user is an admin or superuser give the possibility to see the products table
+        if (Auth::user()->privilege === 'admin' || Auth::user()->privilege === 'superuser') {
+            if (in_array('products_stat', $reportOptions)) {
+                $product_table_checked = true;
+            }
+        }
+        
         $commands = Command::getAccessibleCommands();
         $nb_commands = 0;
         $nb_confirmed_commands = 0;
