@@ -61,7 +61,7 @@
                 <th scope="col">Nom</th>
                 <th scope="col">Email</th>
                 <th scope="col">Telephone</th>
-                <th scope="col">Start Date</th>
+                <th scope="col">Date de début</th>
                 <th scope="col">Détails</th>
               </tr>
             </thead>

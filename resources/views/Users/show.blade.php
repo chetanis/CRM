@@ -39,7 +39,7 @@
             </div>
         @endif
         <div class="pagetitle">
-            <h1>Profile</h1>
+            <h1>Profil du utilisateur</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
@@ -60,12 +60,12 @@
 
                                 <li class="nav-item">
                                     <button class="nav-link active" data-bs-toggle="tab"
-                                        data-bs-target="#profile-overview">Overview</button>
+                                        data-bs-target="#profile-overview">Aperçu</button>
                                 </li>
 
                                 <li class="nav-item">
                                     <button class="nav-link " data-bs-toggle="tab"
-                                        data-bs-target="#profile-edit">Modifier profile</button>
+                                        data-bs-target="#profile-edit">Modifier profil</button>
                                 </li>
 
                                 <li class="nav-item">
@@ -81,7 +81,7 @@
                             <div class="tab-content pt-2">
                                 {{-- Show client details --}}
                                 <div class="tab-pane fade show active profile-overview" id="profile-overview">
-                                    <h5 class="card-title">Profile Details</h5>
+                                    <h5 class="card-title">Détails du profil</h5>
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">Nom d'utilisateur</div>
@@ -96,7 +96,7 @@
                                         <div class="col-lg-9 col-md-8">{{ $user->privilege }}</div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-lg-3 col-md-4 label">User depuis</div>
+                                        <div class="col-lg-3 col-md-4 label">Date de début</div>
                                         <div class="col-lg-9 col-md-8">{{ $user->created_at->format('d-m-Y') }}</div>
                                     </div>
                                     <div class="row">

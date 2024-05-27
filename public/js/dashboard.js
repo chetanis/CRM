@@ -28,13 +28,13 @@ function updateSalesCard(filter) {
     let filterText = '';
     switch (filter) {
         case 'today':
-            filterText = 'Today';
+            filterText = "Aujourd'hui";
             break;
         case 'month':
-            filterText = 'This Month';
+            filterText = 'Ce Mois';
             break;
         case 'year':
-            filterText = 'This Year';
+            filterText = 'Cette Année';
             break;
     }
     document.querySelector('.sale-card-title-span').textContent = `| ${filterText}`;
@@ -76,13 +76,13 @@ function updateRevenueCard(filter) {
     let filterText = '';
     switch (filter) {
         case 'today':
-            filterText = 'Today';
+            filterText = "Aujourd'hui";
             break;
         case 'month':
-            filterText = 'This Month';
+            filterText = 'Ce Mois';
             break;
         case 'year':
-            filterText = 'This Year';
+            filterText = 'Cette Année';
             break;
     }
     document.querySelector('.revenue-card-title-span').textContent = `| ${filterText}`;
@@ -124,13 +124,13 @@ function updateClientCard(filter) {
     let filterText = '';
     switch (filter) {
         case 'today':
-            filterText = 'Today';
+            filterText = "Aujourd'hui";
             break;
         case 'month':
-            filterText = 'This Month';
+            filterText = 'Ce Mois';
             break;
         case 'year':
-            filterText = 'This Year';
+            filterText = 'Cette Année';
             break;
     }
     document.querySelector('.client-card-title-span').textContent = `| ${filterText}`;

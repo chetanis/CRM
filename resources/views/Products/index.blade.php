@@ -62,7 +62,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Nom</th>
-                    <th scope="col">Categorie</th>
+                    <th scope="col">Catégorie</th>
                     <th scope="col">Stock actuel</th>
                     <th scope="col">Gérer le stock</th>
                     <th scope="col">Détails</th>

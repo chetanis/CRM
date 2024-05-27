@@ -67,10 +67,10 @@
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">username</th>
+                <th scope="col">nom d'utilisateur</th>
                 <th scope="col">Nom complet</th>
                 <th scope="col">Privilege</th>
-                <th scope="col">Start Date</th>
+                <th scope="col">Date de début</th>
                 <th scope="col">Détails</th>
               </tr>
             </thead>

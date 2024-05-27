@@ -64,20 +64,20 @@
                                             class="bi bi-three-dots"></i></a>
                                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                         <li class="dropdown-header text-start">
-                                            <h6>Filter</h6>
+                                            <h6>Filtre</h6>
                                         </li>
                                         <li><a class="dropdown-item sale-filter-option" href="#"
-                                                data-filter="today">Today</a></li>
+                                                data-filter="today">Aujourd'hui</a></li>
                                         <li><a class="dropdown-item sale-filter-option" href="#"
-                                                data-filter="month">This Month</a></li>
+                                                data-filter="month">Ce Mois</a></li>
                                         <li><a class="dropdown-item sale-filter-option" href="#"
-                                                data-filter="year">This Year</a></li>
+                                                data-filter="year">Cette Année</a></li>
                                     </ul>
                                 </div>
 
                                 <div class="card-body">
                                     <h5 class="card-title sale-card-title">Vantes <span class="sale-card-title-span">|
-                                            Today</span></h5>
+                                            Aujourd'hui</span></h5>
 
                                     <div class="d-flex align-items-center">
                                         <div
@@ -114,20 +114,20 @@
                                             class="bi bi-three-dots"></i></a>
                                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                         <li class="dropdown-header text-start">
-                                            <h6>Filter</h6>
+                                            <h6>Filtre</h6>
                                         </li>
                                         <li><a class="dropdown-item revenue-filter-option" href="#"
-                                                data-filter="today">Today</a></li>
+                                                data-filter="today">Aujourd'hui</a></li>
                                         <li><a class="dropdown-item revenue-filter-option" href="#"
-                                                data-filter="month">This Month</a></li>
+                                                data-filter="month">Ce Mois</a></li>
                                         <li><a class="dropdown-item revenue-filter-option" href="#"
-                                                data-filter="year">This Year</a></li>
+                                                data-filter="year">Cette Année</a></li>
                                     </ul>
                                 </div>
 
                                 <div class="card-body">
                                     <h5 class="card-title  revenue-card-title">Revenu <span
-                                            class="revenue-card-title-span">| This Month</span></h5>
+                                            class="revenue-card-title-span">| Ce Mois</span></h5>
 
                                     <div class="d-flex align-items-center">
                                         <div
@@ -157,20 +157,19 @@
                                             class="bi bi-three-dots"></i></a>
                                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                         <li class="dropdown-header text-start">
-                                            <h6>Filter</h6>
+                                            <h6>Filtre</h6>
                                         </li>
                                         <li><a class="dropdown-item client-filter-option" href="#"
-                                                data-filter="today">Today</a></li>
+                                                data-filter="today">Aujourd'hui</a></li>
                                         <li><a class="dropdown-item client-filter-option" href="#"
-                                                data-filter="month">This Month</a></li>
+                                                data-filter="month">Ce Mois</a></li>
                                         <li><a class="dropdown-item client-filter-option" href="#"
-                                                data-filter="year">This Year</a></li>
+                                                data-filter="year">Cette Année</a></li>
                                     </ul>
                                 </div>
 
                                 <div class="card-body">
-                                    <h5 class="card-title">Clients <span class="client-card-title-span">| This
-                                            Year</span></h5>
+                                    <h5 class="card-title">Clients <span class="client-card-title-span">| Cette Année</span></h5>
 
                                     <div class="d-flex align-items-center">
                                         <div
@@ -208,9 +207,9 @@
                                             <thead>
                                                 <tr>
                                                     <th scope="col">#</th>
-                                                    <th scope="col">Customer</th>
+                                                    <th scope="col">Client</th>
                                                     <th scope="col">Date de vente</th>
-                                                    <th scope="col">Price</th>
+                                                    <th scope="col">Prix</th>
                                                     <th scope="col">Détails</th>
                                                 </tr>
                                             </thead>
@@ -338,7 +337,7 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col">Product</th>
-                                                <th scope="col">Sold</th>
+                                                <th scope="col">Vendu</th>
                                                 <th scope="col">Revenue</th>
                                             </tr>
                                         </thead>
@@ -374,7 +373,7 @@
 
     <!-- Template Main JS File -->
     <script src="{{ asset('jquery/jquery-3.7.1.min.js') }}"></script>
-    {{-- <script src="{{ asset('js/script.js') }}"></script> --}}
+    <script src="{{ asset('js/script.js') }}"></script>
     <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('js/notifications.js') }}"></script>
     <script src="{{ asset('js/dashboard.js') }}"></script>
@@ -414,7 +413,7 @@
                         y: {
                             title: {
                                 display: true,
-                                text: 'Number of Sales'
+                                text: 'Nombre de ventes'
                             },
                             beginAtZero: true
                         }

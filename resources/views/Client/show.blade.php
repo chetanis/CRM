@@ -39,7 +39,7 @@
             </div>
         @endif
         <div class="pagetitle">
-            <h1>Profile</h1>
+            <h1>Profil du client</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
@@ -60,12 +60,13 @@
 
                                 <li class="nav-item">
                                     <button class="nav-link active" data-bs-toggle="tab"
-                                        data-bs-target="#profile-overview">Overview</button>
+                                        data-bs-target="#profile-overview">Aperçu
+                                    </button>
                                 </li>
 
                                 <li class="nav-item">
                                     <button class="nav-link " data-bs-toggle="tab"
-                                        data-bs-target="#profile-edit">Modifier profile</button>
+                                        data-bs-target="#profile-edit">Modifier profil</button>
                                 </li>
 
                                 <li class="nav-item">
@@ -81,7 +82,7 @@
                             <div class="tab-content pt-2">
                                 {{-- Show client details --}}
                                 <div class="tab-pane fade show active profile-overview" id="profile-overview">
-                                    <h5 class="card-title">Profile Details</h5>
+                                    <h5 class="card-title">Détails du profil</h5>
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label ">Nom complet</div>
@@ -106,7 +107,7 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-lg-3 col-md-4 label">Job title</div>
+                                        <div class="col-lg-3 col-md-4 label">Profession</div>
                                         <div class="col-lg-9 col-md-8">
                                             {{ empty($client->job_title) ? '...' : $client->job_title }}</div>
                                     </div>
@@ -152,7 +153,7 @@
                                             {{ empty($client->code_fiscal) ? '...' : $client->code_fiscal }}</div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-lg-3 col-md-4 label">Lead source</div>
+                                        <div class="col-lg-3 col-md-4 label">Source de prospect</div>
                                         <div class="col-lg-9 col-md-8">
                                             {{ empty($client->lead_source) ? '...' : $client->lead_source }}</div>
                                     </div>
@@ -281,8 +282,7 @@
                                         </div>
 
                                         <div class="row mb-3">
-                                            <label for="job" class="col-md-4 col-lg-3 col-form-label">Job
-                                                title</label>
+                                            <label for="job" class="col-md-4 col-lg-3 col-form-label">Profession</label>
                                             <div class="col-md-8 col-lg-9">
                                                 <input name="job" type="text"
                                                     value="{{ $client->job_title }}" class="form-control"
@@ -348,8 +348,7 @@
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label for="lead" class="col-md-4 col-lg-3 col-form-label">Lead
-                                                source</label>
+                                            <label for="lead" class="col-md-4 col-lg-3 col-form-label">Source de prospect</label>
                                             <div class="col-md-8 col-lg-9">
                                                 <input name="lead" type="text"
                                                     value="{{ $client->lead_source }}" class="form-control"

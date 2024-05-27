@@ -32,7 +32,7 @@
     <main id="main" class="main">
 
         <div class="pagetitle">
-            <h1>Ajouoter un client</h1>
+            <h1>Ajouter un client</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
@@ -71,7 +71,7 @@
                     <input name="company" type="text" class="form-control" id="sName">
                 </div>
                 <div class="col-md-6">
-                    <label for="job" class="form-label">Job title</label>
+                    <label for="job" class="form-label">Profession</label>
                     <input name="job" type="text" class="form-control" id="job">
                 </div>
                 <div class="col-md-6">
@@ -104,7 +104,7 @@
             <p >Détails supplémentaires :</p>
             <div class="row g-3">
                 <div class="col-md-6">
-                    <label for="leads" class="form-label">Lead source</label>
+                    <label for="leads" class="form-label">Source de prospect</label>
                     <input name="lead" type="text" class="form-control" id="leads">
                 </div>
                 <div class="col-md-6">
