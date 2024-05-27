@@ -75,7 +75,7 @@
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">Catégorie</div>
-                                        <div class="col-lg-9 col-md-8">{{ $product->category }}</div>
+                                        <div class="col-lg-9 col-md-8">{{ $product->category->name }}</div>
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">Prix</div>
@@ -139,7 +139,7 @@
                                             <label for="category"
                                                 class="col-md-4 col-lg-3 col-form-label">Catégorie</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input name="category" type="text" value="{{ $product->category }}"
+                                                <input name="category" type="text" value="{{ $product->name }}"
                                                     class="form-control" id="category">
                                             </div>
                                         </div>

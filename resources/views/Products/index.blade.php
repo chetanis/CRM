@@ -73,7 +73,7 @@
                     <tr>
                         <th scope="row">{{ $product->id }}</th>
                         <td>{{ $product->name }}</td>
-                        <td>{{ $product->category }}</td>
+                        <td>{{ $product->category->name }}</td>
                         <td>{{ $product->current_stock }}</td>
                         <td>
                             <button data-bs-toggle="modal" data-bs-target="#manageStockModal{{ $product->id }}"

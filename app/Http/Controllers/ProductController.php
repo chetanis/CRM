@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Log;
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -25,7 +26,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('Products.create');
+        $categories = Category::all();
+        return view('Products.create',compact('categories'));
     }
 
     //store a new product
@@ -37,7 +39,7 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'current_stock' => 'required|numeric',
             'minimum_stock' => 'required|numeric',
-            'category' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
             'purchase_price' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/'
         ]);
 
@@ -50,7 +52,7 @@ class ProductController extends Controller
         $product->description = $request->input('description');
         $product->current_stock = $request->input('current_stock');
         $product->minimum_stock = $request->input('minimum_stock');
-        $product->category = $request->input('category');
+        $product->category_id = $request->category_id;
         $product->purchase_price = $request->input('purchase_price');
         // Save the product to the database
         $product->save();

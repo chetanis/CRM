@@ -14,7 +14,6 @@ class Product extends Model
     protected $fillable = [
         'name',
         'description',
-        'category',
         'current_stock',
         'minimum_stock',
         'price',
@@ -22,6 +21,11 @@ class Product extends Model
         'sold',
         'on_hold',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 
     public function commands(): BelongsToMany
     {
