@@ -102,7 +102,7 @@
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">Notes</div>
                                         <div class="col-md-8 col-lg-9">
-                                            <textarea name="notes" id="notes" class="form-control" style="height: 50"readonly></textarea>
+                                            <textarea name="notes" id="notes" class="form-control" style="height: 50"readonly>{{$user->notes}}</textarea>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -176,13 +176,13 @@
                                             </div>
                                         </div>
 
-                                        {{-- <div class="row mb-3">
+                                        <div class="row mb-3">
                                             <label for="notes"
                                                 class="col-md-4 col-lg-3 col-form-label">Notes</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <textarea name="notes" id="notes" class="form-control" style="height: 100px">{{ $client->notes }}</textarea>
+                                                <textarea name="notes" id="notes" class="form-control" style="height: 100px">{{ $user->notes }}</textarea>
                                             </div>
-                                        </div> --}}
+                                        </div>
 
                                         <div class="text-center">
                                             <button type="submit" class="btn btn-primary">Save Changes</button>

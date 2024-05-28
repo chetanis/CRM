@@ -46,7 +46,7 @@ class UserController extends Controller
     public function showRegisterForm(Request $request)
     {
 
-        return view('createUser');
+        return view('Users.create');
     }
 
     // handel the creation of a user
@@ -55,17 +55,19 @@ class UserController extends Controller
         $validatedData = $request->validate([
             'username' => ['required', 'unique:users'],
             'password' => ['required', 'min:8'],
-            'privilege' => ['required', 'in:superuser,user'],
+            'full_name' => ['required'],
+            'privilege' => ['required', 'in:superuser,user,admin'],
         ]);
-
         $user = new User();
         $user->username = $validatedData['username'];
+        $user->full_name = $validatedData['full_name'];
         $user->password = Hash::make($validatedData['password']);
         $user->privilege = $validatedData['privilege'];
+        $user->notes = $request->input('notes');
         $user->save();
         Log::CreateLog('creer utilisateur', 'utilisateur: ' . $user->username . ' privilege: ' . $user->privilege);
 
-        return redirect()->route('dashboard');
+        return redirect()->back()->with('success', 'Utilisateur ajouter!');
     }
 
     // handel the logout
@@ -113,6 +115,7 @@ class UserController extends Controller
             'username' => ['nullable', 'unique:users,username,' . $user->id],
             'password' => ['nullable', 'min:8','string'],
             'privilege' => ['nullable', 'in:superuser,user,admin'],
+            'notes' => ['nullable','string']
         ]);
 
         if($validatedData['full_name']){
@@ -126,6 +129,9 @@ class UserController extends Controller
         }
         if($validatedData['privilege']){
             $user->privilege = $validatedData['privilege'];
+        }
+        if($validatedData['notes']){
+            $user->notes = $validatedData['notes'];
         }
         $user->save();
         Log::CreateLog('modifer utilisateur', 'utilisateur: ' . $user->username );
