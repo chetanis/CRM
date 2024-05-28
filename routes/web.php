@@ -41,7 +41,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     // show the register form
     Route::get('/register', [UserController::class, 'showRegisterForm'])->name('register');
     //create a user 
-    Route::post('/register', [UserController::class, 'register']);
+    Route::post('/register', [UserController::class, 'register'])->name('create-user');
     //all users
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
