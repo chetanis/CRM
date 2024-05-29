@@ -82,7 +82,12 @@ class Controller extends BaseController
 
         //get the percentage difference between the number of sales of today and yesterday
         $nbSalesYesterday = Sale::getAccessibleSales()->whereDate('created_at', $today->subDay())->count();
-        $salesPercentageDiff = $nbSalesYesterday == 0 ? 100 : round((($nbSales - $nbSalesYesterday) / $nbSalesYesterday) * 100);
+
+        if ($nbSalesYesterday == 0) {
+            $salesPercentageDiff = $nbSales > 0 ? 100 : 0;
+        } else {
+            $salesPercentageDiff = round((($nbSales - $nbSalesYesterday) / $nbSalesYesterday) * 100);
+        }
 
         // Get the number of clients for this year
         $nbclients = Client::getAccessibleClients()->whereYear('created_at', $today->year)->count();
