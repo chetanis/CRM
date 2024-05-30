@@ -135,7 +135,7 @@ class UserController extends Controller
             $user->notes = $validatedData['notes'];
         }
         $user->save();
-        Log::CreateLog('modifer utilisateur', 'utilisateur: ' . $user->username );
+        Log::CreateLog('modifier utilisateur', 'utilisateur: ' . $user->username );
         Session::flash('success', 'Utilisateur modifié avec succès');
         return redirect()->back();
     }
