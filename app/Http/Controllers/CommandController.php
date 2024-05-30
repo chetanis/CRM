@@ -23,9 +23,10 @@ class CommandController extends Controller
      */
     public function index()
     {
-        $commands = Command::getAccessibleCommands()->filter(request(['type']))->paginate(10);
+        $commands = Command::getAccessibleCommands()->filter(request(['type','client']))->paginate(10);
 
-        $filter = request(['type'][0]);
+        $filter = [request(['type'][0]), request(['client'][0])];
+        // dd($filter);
         return view('commands.index', compact('commands', 'filter'));
     }
 

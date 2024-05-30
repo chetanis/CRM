@@ -34,31 +34,6 @@ class Command extends Model
         return $this->belongsTo(User::class);
     }
 
-    // Define a method to retrieve products with quantities
-    // public function getProductsAndQuantitiesAttribute()
-    // {
-    //     $productsData = $this->products;
-    //     $productIds = array_column($productsData, 'id');
-
-    //     // Fetch the products from the database based on the product IDs
-    //     $products = Product::whereIn('id', $productIds)->get();
-    //     $productsWithQuantities = [];
-
-    //     foreach ($productsData as $productData) {
-    //         $productId = $productData['id'];
-    //         $quantity = $productData['quantity'];
-    //         $product = $products->where('id', $productId)->first();
-
-    //         if ($product) {
-    //             $productsWithQuantities[] = [
-    //                 'product' => $product,
-    //                 'quantity' => $quantity
-    //             ];
-    //         }
-    //     }
-
-    //     return $productsWithQuantities;
-    // }
     public function getProductsAndQuantitiesAttribute()
     {
         return $this->products->map(function ($product) {
@@ -75,8 +50,15 @@ class Command extends Model
     // Define a scope to filter commands by type
     public function scopeFilter($query, array $filters)
     {
-        if($filters['type'] ?? false){
+        if ($filters['type'] ?? false) {
             $query->where('type', $filters['type']);
+        }
+
+        if ($filters['client'] ?? false) {
+            $query->whereHas('client', function ($client) use ($filters) {
+                $client->where('first_name', 'LIKE', '%' . $filters['client'] . '%')
+                    ->orWhere('last_name', 'LIKE', '%' . $filters['client'] . '%');
+            });
         }
     }
 
@@ -97,5 +79,4 @@ class Command extends Model
         $this->user_id = $userId;
         $this->save();
     }
-
 }
