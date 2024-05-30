@@ -159,7 +159,8 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">Client depuis</div>
-                                        <div class="col-lg-9 col-md-8">{{ $client->created_at->format('d-m-Y') }}</div>
+                                        <div class="col-lg-9 col-md-8">{{ $client->created_at->format('d-m-Y') }}
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">Notes</div>
@@ -175,53 +176,58 @@
                                                 {{ $client->assignedTo->id . '. ' . $client->assignedTo->full_name }}
                                             </div>
                                         </div>
-                                    @endif
-                                    <div class="col-lg-9 mt-5 col-md-8 d-flex justify-content-center">
-                                        @if (Auth::user()->privilege == 'admin')
-                                            <button data-bs-toggle="modal"
-                                                data-bs-target="#changeAssignedUser" type="button"
-                                                class="btn btn-primary me-3">Changer l'utilisateur assigné</button>
-                                        @endif
-                                        <form id="delete-client-form" method="POST" action="/clients/{{ $client->id }}">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">Supprimer le client</button>
-                                        </form>
-                                    </div>
-                                    @if (Auth::user()->privilege == 'admin')
-                                    <!-- change the user assigned to the client -->
-                                    <div class="modal fade" id="changeAssignedUser" tabindex="-1"
-                                        aria-labelledby="changeAssignedUserLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="changeAssignedUserLabel">Changer l'utilisateur assigné à {{ $client->last_name .' '. $client->first_name }}</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <form action="/clients/{{$client->id}}/change-user" method="POST">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <div class="mb-3">
-                                                            <div>
-                                                                <input list="users" type="text" required class="form-control"
-                                                                    placeholder="Chercher un utilisateur" name="assigned_to">
-                                                                <!-- Dropdown list of users (or search user) -->
-                                                                <datalist id="users">
-                                                                    @foreach ($users as $user)
-                                                                        <option value="{{ $user->id }}">
-                                                                            {{ $user->username.': '.$user->full_name }}</option>
-                                                                    @endforeach
-                                                                </datalist>
+                                        <div class="col-lg-9 mt-5 col-md-8 d-flex justify-content-center">
+                                            <button data-bs-toggle="modal" data-bs-target="#changeAssignedUser"
+                                                type="button" class="btn btn-primary me-3">Changer l'utilisateur
+                                                assigné</button>
+                                            <form id="delete-client-form" method="POST"
+                                                action="/clients/{{ $client->id }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger">Supprimer le
+                                                    client</button>
+                                            </form>
+                                        </div>
+                                        <!-- change the user assigned to the client -->
+                                        <div class="modal fade" id="changeAssignedUser" tabindex="-1"
+                                            aria-labelledby="changeAssignedUserLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="changeAssignedUserLabel">Changer
+                                                            l'utilisateur assigné à
+                                                            {{ $client->last_name . ' ' . $client->first_name }}</h5>
+                                                        <button type="button" class="btn-close"
+                                                            data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form action="/clients/{{ $client->id }}/change-user"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <div class="mb-3">
+                                                                <div>
+                                                                    <input list="users" type="text" required
+                                                                        class="form-control"
+                                                                        placeholder="Chercher un utilisateur"
+                                                                        name="assigned_to">
+                                                                    <!-- Dropdown list of users (or search user) -->
+                                                                    <datalist id="users">
+                                                                        @foreach ($users as $user)
+                                                                            <option value="{{ $user->id }}">
+                                                                                {{ $user->username . ': ' . $user->full_name }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </datalist>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <button type="submit" class="btn btn-primary">Mettre à jour</button>
-                                                    </form>
+                                                            <button type="submit" class="btn btn-primary">Mettre à
+                                                                jour</button>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
                                     @endif
 
                                 </div>
@@ -282,7 +288,8 @@
                                         </div>
 
                                         <div class="row mb-3">
-                                            <label for="job" class="col-md-4 col-lg-3 col-form-label">Profession</label>
+                                            <label for="job"
+                                                class="col-md-4 col-lg-3 col-form-label">Profession</label>
                                             <div class="col-md-8 col-lg-9">
                                                 <input name="job" type="text"
                                                     value="{{ $client->job_title }}" class="form-control"
@@ -348,7 +355,8 @@
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label for="lead" class="col-md-4 col-lg-3 col-form-label">Source de prospect</label>
+                                            <label for="lead" class="col-md-4 col-lg-3 col-form-label">Source de
+                                                prospect</label>
                                             <div class="col-md-8 col-lg-9">
                                                 <input name="lead" type="text"
                                                     value="{{ $client->lead_source }}" class="form-control"
@@ -498,7 +506,7 @@
         $(document).ready(function() {
             $('#delete-client-form').on('submit', function(e) {
                 e.preventDefault(); // Prevent the form from submitting immediately
-                
+
                 if (confirm('Êtes-vous sûr de vouloir supprimer ce client ?')) {
                     this.submit(); // Submit the form if the user confirms
                 }
