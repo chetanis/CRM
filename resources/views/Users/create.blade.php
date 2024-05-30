@@ -77,9 +77,9 @@
                 <label for="privilege" class="col-md-4 col-lg-3 col-form-label">Privilege</label>
                 <div class="col-md-3">
                     <select class="form-control" id="privilege" name="privilege">
-                        <option value="user">User</option>
-                        <option value="superuser">Super User</option>
-                        <option value="admin">Admin</option>
+                        <option value="user">Agent</option>
+                        <option value="superuser">Manager</option>
+                        <option value="admin">Administrateur</option>
                     </select>
                 </div>
             </div>

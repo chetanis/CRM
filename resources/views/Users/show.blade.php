@@ -72,7 +72,7 @@
                                     <button class="nav-link " data-bs-toggle="tab"
                                         data-bs-target="#Clients-historique">Clients</button>
                                 </li>
-                                
+
                                 <li class="nav-item">
                                     <button class="nav-link " data-bs-toggle="tab"
                                         data-bs-target="#Commands-historique">Commandes</button>
@@ -83,7 +83,7 @@
                                 </li>
                             </ul>
                             <div class="tab-content pt-2">
-                                {{-- Show client details --}}
+                                {{-- Show User details --}}
                                 <div class="tab-pane fade show active profile-overview" id="profile-overview">
                                     <h5 class="card-title">Détails du profil</h5>
 
@@ -97,7 +97,14 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label ">Privilege</div>
-                                        <div class="col-lg-9 col-md-8">{{ $user->privilege }}</div>
+                                        {{-- <div class="col-lg-9 col-md-8">{{ $user->privilege }}</div> --}}
+                                        @if ($user->privilege == 'admin')
+                                            <div class="col-lg-9 col-md-8">Administrateur</div>
+                                        @elseif ($user->privilege == 'user')
+                                            <div class="col-lg-9 col-md-8">Agent</div>
+                                        @else
+                                            <div class="col-lg-9 col-md-8">Manger</div>
+                                        @endif
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">Date de début</div>
@@ -106,7 +113,7 @@
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">Notes</div>
                                         <div class="col-md-8 col-lg-9">
-                                            <textarea name="notes" id="notes" class="form-control" style="height: 50"readonly>{{$user->notes}}</textarea>
+                                            <textarea name="notes" id="notes" class="form-control" style="height: 50"readonly>{{ $user->notes }}</textarea>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -144,8 +151,9 @@
                                             <label for="full_name" class="col-md-4 col-lg-3 col-form-label">Nom
                                                 complet</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input name="full_name" type="text" value="{{ $user->full_name }}"
-                                                    class="form-control" id="full_name">
+                                                <input name="full_name" type="text"
+                                                    value="{{ $user->full_name }}" class="form-control"
+                                                    id="full_name">
                                             </div>
                                         </div>
                                         <div class="row mb-3">
@@ -162,12 +170,12 @@
                                             <div class="col-md-8 col-lg-9">
                                                 <select name="privilege" id="privilege" class="form-select">
                                                     <option value="admin"
-                                                        @if ($user->privilege == 'admin') selected @endif>Admin</option>
+                                                        @if ($user->privilege == 'admin') selected @endif>Administrateur</option>
                                                     <option value="superuser"
-                                                        @if ($user->privilege == 'superuser') selected @endif>Superuser
+                                                        @if ($user->privilege == 'superuser') selected @endif>Manager
                                                     </option>
                                                     <option value="user"
-                                                        @if ($user->privilege == 'user') selected @endif>User</option>
+                                                        @if ($user->privilege == 'user') selected @endif>Agent</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -198,85 +206,88 @@
 
                                 {{-- Show user's clietns --}}
 
-                                <div class="tab-pane fade profile-historique pt-3"
-                                    id="Clients-historique">
+                                <div class="tab-pane fade profile-historique pt-3" id="Clients-historique">
                                     <!-- check if the there are clients or no -->
                                     @if ($clients->count() == 0)
                                         <h4 class="ms-3">Pas de clients pour le moment</h4>
                                     @else
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">Nom</th>
-                                                <th scope="col">Email</th>
-                                                <th scope="col">Telephone</th>
-                                                <th scope="col">Start Date</th>
-                                                <th scope="col">Détails</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($clients as $client)
+                                        <table class="table">
+                                            <thead>
                                                 <tr>
-                                                    <th scope="row">{{ $client->id }}</th>
-                                                    <td>{{ $client->last_name }} {{ $client->first_name }}</td>
-                                                    <td>{{ $client->email }}</td>
-                                                    <td>{{ $client->phone_number }}</td>
-                                                    <td>{{ $client->created_at->format('d/m/Y') }}</td>
-                                                    <td>
-                                                        <button onclick="window.location.href='/clients/{{ $client->id }}'" type="button"
-                                                            class="btn btn-outline-primary btn-sm">Consulter</button>
-                                                    </td>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Nom</th>
+                                                    <th scope="col">Email</th>
+                                                    <th scope="col">Telephone</th>
+                                                    <th scope="col">Start Date</th>
+                                                    <th scope="col">Détails</th>
                                                 </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($clients as $client)
+                                                    <tr>
+                                                        <th scope="row">{{ $client->id }}</th>
+                                                        <td>{{ $client->last_name }} {{ $client->first_name }}</td>
+                                                        <td>{{ $client->email }}</td>
+                                                        <td>{{ $client->phone_number }}</td>
+                                                        <td>{{ $client->created_at->format('d/m/Y') }}</td>
+                                                        <td>
+                                                            <button
+                                                                onclick="window.location.href='/clients/{{ $client->id }}'"
+                                                                type="button"
+                                                                class="btn btn-outline-primary btn-sm">Consulter</button>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     @endif
                                 </div>
 
                                 {{-- Show user's commands --}}
 
-                                <div class="tab-pane fade profile-historique pt-3"
-                                    id="Commands-historique">
+                                <div class="tab-pane fade profile-historique pt-3" id="Commands-historique">
                                     <!-- check if the there are clients or no -->
                                     @if ($commands->count() == 0)
                                         <h4 class="ms-3">Pas de commandes pour le moment</h4>
                                     @else
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">Nom client</th>
-                                                <th scope="col">Tel client</th>
-                                                <th scope="col">Montant</th>
-                                                <th scope="col">Date de commande</th>
-                                                <th scope="col">Statut</th>
-                                                <th scope="col">Détails</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($commands as $command)
+                                        <table class="table">
+                                            <thead>
                                                 <tr>
-                                                    <th scope="row">{{ $command->id }}</th>
-                                                    <td>{{ $command->client->last_name }} {{ $command->client->first_name }}</td>
-                                                    <td>{{ $command->client->phone_number }}</td>
-                                                    <td>{{ $command->total_price }} DA</td>
-                                                    <td>{{ $command->created_at->format('d/m/Y') }}</td>
-                                                    @if ($command->type == 'pending')
-                                                        <td><span class="badge bg-warning">En attente</span></td>
-                                                    @elseif($command->type == 'done')
-                                                        <td><span class="badge bg-success">Confirmé</span></td>
-                                                    @else
-                                                        <td><span class="badge bg-danger">Annulé</span></td>
-                                                    @endif
-                                                    <td>
-                                                        <button onclick="window.location.href='/commands/{{ $command->id }}'" type="button"
-                                                            class="btn btn-outline-primary btn-sm">Consulter</button>
-                                                    </td>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Nom client</th>
+                                                    <th scope="col">Tel client</th>
+                                                    <th scope="col">Montant</th>
+                                                    <th scope="col">Date de commande</th>
+                                                    <th scope="col">Statut</th>
+                                                    <th scope="col">Détails</th>
                                                 </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($commands as $command)
+                                                    <tr>
+                                                        <th scope="row">{{ $command->id }}</th>
+                                                        <td>{{ $command->client->last_name }}
+                                                            {{ $command->client->first_name }}</td>
+                                                        <td>{{ $command->client->phone_number }}</td>
+                                                        <td>{{ $command->total_price }} DA</td>
+                                                        <td>{{ $command->created_at->format('d/m/Y') }}</td>
+                                                        @if ($command->type == 'pending')
+                                                            <td><span class="badge bg-warning">En attente</span></td>
+                                                        @elseif($command->type == 'done')
+                                                            <td><span class="badge bg-success">Confirmé</span></td>
+                                                        @else
+                                                            <td><span class="badge bg-danger">Annulé</span></td>
+                                                        @endif
+                                                        <td>
+                                                            <button
+                                                                onclick="window.location.href='/commands/{{ $command->id }}'"
+                                                                type="button"
+                                                                class="btn btn-outline-primary btn-sm">Consulter</button>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     @endif
                                 </div>
 
