@@ -2,38 +2,46 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Models\Log;
+use Illuminate\Http\Request;
 
 class LogController extends Controller
 {
     public function index(Request $request)
     {
-        // Extract unique tables and actions from the logs
-        $uniqueTables = Log::selectRaw('DISTINCT(SUBSTRING_INDEX(action, " ", 1)) as `table`')
-                           ->pluck('table')
-                           ->toArray();
 
-        $uniqueActions = Log::selectRaw('DISTINCT(SUBSTRING_INDEX(SUBSTRING_INDEX(action, " ", 2), " ", -1)) as `action`')
-                            ->pluck('action')
-                            ->toArray();
+        // Define the unique tables and actions
+        $uniqueTables = [
+            'utilisateur', 'clients', 'commande', 'rendez-vous', 'produit'
+        ];
+
+        $uniqueActions = [
+            'Créer', 'annuler', 'changer', 'confirmer', 'modifier', 'Reprogrammer', 'supprimer', 'ajouter stock'
+        ];
 
         // Filter logs based on search criteria
-        $logs = Log::query();
+        $query = Log::query();
 
         if ($request->filled('user_id')) {
-            $logs->where('user_id', $request->user_id);
+            $query->where('user_id', $request->user_id);
         }
 
-        if ($request->filled('table') && $request->filled('action')) {
-            $logs->where('action', 'like', $request->table . ' ' . $request->action . '%');
+        if ($request->filled('table')) {
+            $query->where('action', 'like', '%' . $request->table . '%');
+        }
+
+        if ($request->filled('action')) {
+            $query->where('action', 'like', '%' . $request->action . '%');
         }
 
         if ($request->filled('start_date') && $request->filled('end_date')) {
-            $logs->whereBetween('created_at', [$request->start_date, $request->end_date]);
+            $startDate = Carbon::createFromFormat('Y-m-d', $request->start_date)->startOfDay();
+            $endDate = Carbon::createFromFormat('Y-m-d', $request->end_date);
+            $query->whereBetween('created_at', [$startDate, $endDate]);
         }
 
-        $logs = $logs->latest()->paginate(20);
+        $logs = $query->latest()->paginate(20);
 
         return view('logs.index', compact('logs', 'uniqueTables', 'uniqueActions'));
     }

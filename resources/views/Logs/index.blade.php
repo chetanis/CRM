@@ -51,14 +51,14 @@
         <form method="GET" action="{{ route('logs') }}" class="mb-4">
             <div class="form-row row">
                 <div class="form-group col-md-2">
-                    <label for="user_id">utilisateur</label>
+                    <label for="user_id">Nom d'utilisateur</label>
                     <input type="text" class="form-control" id="user_id" name="user_id"
                         value="{{ request('user_id') }}">
                 </div>
                 <div class="form-group col-md-2">
                     <label for="table">Table</label>
                     <select class="form-control" id="table" name="table">
-                        <option value="">Select Table</option>
+                        <option value="">Tous</option>
                         @foreach ($uniqueTables as $table)
                             <option value="{{ $table }}" {{ request('table') == $table ? 'selected' : '' }}>
                                 {{ ucfirst($table) }}
@@ -69,7 +69,7 @@
                 <div class="form-group col-md-2">
                     <label for="action">Action</label>
                     <select class="form-control" id="action" name="action">
-                        <option value="">Select Action</option>
+                        <option value="">Tous</option>
                         @foreach ($uniqueActions as $action)
                             <option value="{{ $action }}" {{ request('action') == $action ? 'selected' : '' }}>
                                 {{ ucfirst($action) }}
