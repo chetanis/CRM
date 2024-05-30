@@ -103,8 +103,9 @@ class UserController extends Controller
     {
         $clients = $user->getClients();
         $commands = $user->getCommands();
+        $appointments = $user->appointments();
         $nbSales = $commands->where('type','done')->count();
-        return view('users.show', compact('user','clients','commands','nbSales'));
+        return view('users.show', compact('user','clients','commands','nbSales','appointments'));
     }
 
     // update a user

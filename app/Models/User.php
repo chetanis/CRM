@@ -38,7 +38,7 @@ class User extends Authenticatable
     // Define the relationship with the Client model
     public function appointments()
     {
-        return $this->hasMany(Appointment::class);
+        return Appointment::where('user_id', $this->id)->latest()->get();
     }
 
     //get the clients of the user
