@@ -87,8 +87,9 @@
                     <input type="date" class="form-control" id="end_date" name="end_date"
                         value="{{ request('end_date') }}">
                 </div>
-                <div class=" col-md-1 align-self-end">
+                <div class="form-group col-md-2 align-self-end">
                     <button type="submit" class="btn btn-primary">Chercher</button>
+                    <a href="{{ route('logs') }}" id="resetButton" class="btn btn-secondary bi bi-arrow-counterclockwise"></a>
                 </div>
             </div>
         </form>
@@ -127,6 +128,17 @@
     <script src="{{ asset('js/script.js') }}"></script>
     <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('js/notifications.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            // Listen for click event on reset button
+            $('#resetButton').click(function() {
+                // Reload the page
+                $(this).attr('href', '/logs');
+
+            });
+        })
+    </script>
+
 </body>
 
 </html>
