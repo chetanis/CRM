@@ -32,33 +32,51 @@ class Appointment extends Model
         return $this->belongsTo(Client::class);
     }
 
+    // Define a scope to filter commands by type
+    public function scopeFilter($query, array $filters)
+    {
+        if ($filters['period'] ?? false) {
+            if ($filters['period'] === 'today') {
+                $query->whereDate('date_and_time', Carbon::now()->toDateString());
+            } elseif ($filters['period'] === 'week') {
+                $startOfWeek = Carbon::now()->startOfDay();
+                $endOfWeek = $startOfWeek->copy()->addDays(6)->endOfDay();
+                $query->whereBetween('date_and_time', [$startOfWeek, $endOfWeek]);
+            } elseif ($filters['period'] === 'month') {
+                $query->whereMonth('date_and_time', Carbon::now()->month);
+            }
+        }
+    }
+
     //get the appointments that the user can access
     public static function getAccessibleAppointments()
     {
         if (Auth::user()->privilege === 'admin' || Auth::user()->privilege === 'superuser') {
             return self::latest();
-        }else{
+        } else {
             return self::where('appointments.user_id', Auth::id())->latest();
         }
     }
 
-    public static function getTodayAccessibleAppointments(){
+    public static function getTodayAccessibleAppointments()
+    {
 
         $today = Carbon::now()->toDateString();
 
         if (Auth::user()->privilege === 'admin' || Auth::user()->privilege === 'superuser') {
             return self::whereDate('date_and_time', $today)
-            ->orderBy('date_and_time', 'asc')
-            ->get();
-        }else{
+                ->orderBy('date_and_time', 'asc')
+                ->get();
+        } else {
             return self::where('appointments.user_id', Auth::id())
-            ->orderBy('date_and_time', 'asc')
-            ->whereDate('date_and_time', $today)
-            ->get(); 
+                ->orderBy('date_and_time', 'asc')
+                ->whereDate('date_and_time', $today)
+                ->get();
         }
     }
 
-    public function getHour(){
+    public function getHour()
+    {
         $date = new DateTime($this->date_and_time);
         return $date->format('H:i');
     }

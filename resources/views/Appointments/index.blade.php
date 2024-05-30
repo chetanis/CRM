@@ -59,10 +59,10 @@
         </div>
         <div class="col mb-3 ms-2">
 
-            {{-- @if (!$filter) <a href="/commands" class="btn btn-primary btn-sm">Tous</a> @else <a href="/commands" class="btn btn-outline-primary btn-sm">Tous</a> @endif
-            @if ($filter=='done') <a href="/commands?type=done" class="btn btn-success btn-sm">Confirmé</a> @else <a href="/commands?type=done" class="btn btn-outline-success btn-sm">Confirmé</a> @endif
-            @if ($filter=='cancelled') <a href="/commands?type=cancelled" class="btn btn-danger btn-sm">Annulé</a> @else <a href="/commands?type=cancelled" class="btn btn-outline-danger btn-sm">Annulé</a> @endif
-            @if ($filter=='pending') <a href="/commands?type=pending" class="btn btn-warning btn-sm">En attente</a> @else <a href="/commands?type=pending" class="btn btn-outline-warning btn-sm">En attente</a> @endif --}}
+            @if (!$filter) <a href="/appointments" class="btn btn-primary btn-sm">Tous</a> @else <a href="/appointments" class="btn btn-outline-primary btn-sm">Tous</a> @endif
+            @if ($filter=='today') <a href="/appointments?period=today" class="btn btn-success btn-sm">Aujourd'hui</a> @else <a href="/appointments?period=today" class="btn btn-outline-success btn-sm">Aujourd'hui</a> @endif
+            @if ($filter=='week') <a href="/appointments?period=week" class="btn btn-danger btn-sm">Cette semaine</a> @else <a href="/appointments?period=week" class="btn btn-outline-danger btn-sm">Cette semaine</a> @endif
+            @if ($filter=='month') <a href="/appointments?period=month" class="btn btn-warning btn-sm">Ce mois</a> @else <a href="/appointments?period=month" class="btn btn-outline-warning btn-sm">Ce mois</a> @endif
         </div>
         <table class="table">
             <thead>
