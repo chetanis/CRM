@@ -46,6 +46,13 @@ class Appointment extends Model
                 $query->whereMonth('date_and_time', Carbon::now()->month);
             }
         }
+
+        if ($filters['client'] ?? false) {
+            $query->whereHas('client', function ($client) use ($filters) {
+                $client->where('first_name', 'LIKE', '%' . $filters['client'] . '%')
+                    ->orWhere('last_name', 'LIKE', '%' . $filters['client'] . '%');
+            });
+        }
     }
 
     //get the appointments that the user can access

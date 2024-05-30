@@ -48,8 +48,9 @@
                 </div>
                 <div class="col-md-6">
                     <div class="search-bar">
-                        <form class="d-flex align-items-center" {{-- action="{{ route('search-client') }}" --}} method="GET">
-                            <input type="text" name="search" class="form-control me-1"
+                        <form class="d-flex align-items-center"  action="/appointments"  method="GET">
+                            <input type="hidden" name="period" value="{{ request('period') }}">
+                            <input type="text" name="client" class="form-control me-1" value="{{ request('client') }}"
                                 placeholder="Chercher un rendez-vous">
                             <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i></button>
                         </form>
@@ -59,10 +60,10 @@
         </div>
         <div class="col mb-3 ms-2">
 
-            @if (!$filter) <a href="/appointments" class="btn btn-primary btn-sm">Tous</a> @else <a href="/appointments" class="btn btn-outline-primary btn-sm">Tous</a> @endif
-            @if ($filter=='today') <a href="/appointments?period=today" class="btn btn-success btn-sm">Aujourd'hui</a> @else <a href="/appointments?period=today" class="btn btn-outline-success btn-sm">Aujourd'hui</a> @endif
-            @if ($filter=='week') <a href="/appointments?period=week" class="btn btn-danger btn-sm">Cette semaine</a> @else <a href="/appointments?period=week" class="btn btn-outline-danger btn-sm">Cette semaine</a> @endif
-            @if ($filter=='month') <a href="/appointments?period=month" class="btn btn-warning btn-sm">Ce mois</a> @else <a href="/appointments?period=month" class="btn btn-outline-warning btn-sm">Ce mois</a> @endif
+            @if (!$filter[0]) <a href="/appointments" class="btn btn-primary btn-sm">Tous</a> @else <a href="/appointments" class="btn btn-outline-primary btn-sm">Tous</a> @endif
+            @if ($filter[0]=='today') <a href="/appointments?period=today" class="btn btn-success btn-sm">Aujourd'hui</a> @else <a href="/appointments?period=today" class="btn btn-outline-success btn-sm">Aujourd'hui</a> @endif
+            @if ($filter[0]=='week') <a href="/appointments?period=week" class="btn btn-danger btn-sm">Cette semaine</a> @else <a href="/appointments?period=week" class="btn btn-outline-danger btn-sm">Cette semaine</a> @endif
+            @if ($filter[0]=='month') <a href="/appointments?period=month" class="btn btn-warning btn-sm">Ce mois</a> @else <a href="/appointments?period=month" class="btn btn-outline-warning btn-sm">Ce mois</a> @endif
         </div>
         <table class="table">
             <thead>

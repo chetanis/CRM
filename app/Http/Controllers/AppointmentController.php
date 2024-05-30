@@ -53,9 +53,9 @@ class AppointmentController extends Controller
 
     public function index()
     {
-        $appointments = Appointment::getAccessibleAppointments()->filter(request(['period']))->paginate(10);
+        $appointments = Appointment::getAccessibleAppointments()->filter(request(['period','client']))->paginate(10);
 
-        $filter = request(['period'][0]);
+        $filter = [request(['period'][0]),request(['client'][0])];
 
         return view('Appointments.index', compact('appointments','filter'));
     }
