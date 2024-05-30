@@ -65,7 +65,7 @@ class UserController extends Controller
         $user->privilege = $validatedData['privilege'];
         $user->notes = $request->input('notes');
         $user->save();
-        Log::CreateLog('creer utilisateur', 'utilisateur: ' . $user->username . ' privilege: ' . $user->privilege);
+        Log::CreateLog('Créer utilisateur', 'utilisateur: ' . $user->username . ' privilege: ' . $user->privilege);
 
         return redirect()->back()->with('success', 'Utilisateur ajouter!');
     }

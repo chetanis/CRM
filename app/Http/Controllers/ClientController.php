@@ -84,7 +84,7 @@ class ClientController extends Controller
         $client->save();
 
         //create log
-        Log::CreateLog('creer client', 'Client cree: ' . $client->first_name . ' ' . $client->last_name);
+        Log::CreateLog('Créer client', 'Client cree: ' . $client->first_name . ' ' . $client->last_name);
 
         // Redirect back with a success message
         return redirect()->back()->with('success', 'Client ajouter!');

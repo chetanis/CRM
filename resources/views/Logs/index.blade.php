@@ -48,6 +48,50 @@
                 </div>
             </div>
         </div>
+        <form method="GET" action="{{ route('logs') }}" class="mb-4">
+            <div class="form-row row">
+                <div class="form-group col-md-2">
+                    <label for="user_id">utilisateur</label>
+                    <input type="text" class="form-control" id="user_id" name="user_id"
+                        value="{{ request('user_id') }}">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="table">Table</label>
+                    <select class="form-control" id="table" name="table">
+                        <option value="">Select Table</option>
+                        @foreach ($uniqueTables as $table)
+                            <option value="{{ $table }}" {{ request('table') == $table ? 'selected' : '' }}>
+                                {{ ucfirst($table) }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="action">Action</label>
+                    <select class="form-control" id="action" name="action">
+                        <option value="">Select Action</option>
+                        @foreach ($uniqueActions as $action)
+                            <option value="{{ $action }}" {{ request('action') == $action ? 'selected' : '' }}>
+                                {{ ucfirst($action) }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="start_date">Date de début</label>
+                    <input type="date" class="form-control" id="start_date" name="start_date"
+                        value="{{ request('start_date') }}">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="end_date">Date de fin</label>
+                    <input type="date" class="form-control" id="end_date" name="end_date"
+                        value="{{ request('end_date') }}">
+                </div>
+                <div class=" col-md-1 align-self-end">
+                    <button type="submit" class="btn btn-primary">Chercher</button>
+                </div>
+            </div>
+        </form>
         <table class="table">
             <thead>
                 <tr>
@@ -63,7 +107,7 @@
                     <tr>
                         <th scope="row">{{ $log->id }}</th>
                         <td>{{ $log->created_at->format('d-m-Y à H:i') }}</td>
-                        <td><a href="/users/{{$log->user_id}}"> {{ $log->user->username }}</a></td>
+                        <td><a href="/users/{{ $log->user_id }}"> {{ $log->user->username }}</a></td>
                         <td>{{ $log->action }}</td>
                         <td>{{ $log->details }}</td>
                     </tr>

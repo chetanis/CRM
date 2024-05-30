@@ -94,7 +94,7 @@ class CommandController extends Controller
         $command->update(['total_price' => $totalPrice]);
 
         //create log
-        Log::CreateLog("Creer commande.", "Client concerné: " . $client->first_name . ' ' . $client->last_name . ", commande n°: " . $command->id);
+        Log::CreateLog("Créer commande.", "Client concerné: " . $client->first_name . ' ' . $client->last_name . ", commande n°: " . $command->id);
 
         Session::flash('success', 'Commande ajoutée avec succès');
         return response()->json(['success' => true]);

@@ -58,7 +58,7 @@ class ProductController extends Controller
         $product->save();
 
         //create log
-        Log::CreateLog('creer produit', 'Produit cree: ' . $product->name );
+        Log::CreateLog('Créer produit', 'Produit cree: ' . $product->name );
 
         // Redirect back with a success message
         return redirect()->back()->with('success', 'Produit ajouter!');
