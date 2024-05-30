@@ -13,7 +13,7 @@ class LogController extends Controller
 
         // Define the unique tables and actions
         $uniqueTables = [
-            'utilisateur', 'clients', 'commande', 'rendez-vous', 'produit'
+            'utilisateur', 'client', 'commande', 'rendez-vous', 'produit'
         ];
 
         $uniqueActions = [
