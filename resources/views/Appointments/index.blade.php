@@ -60,10 +60,10 @@
         </div>
         <div class="col mb-3 ms-2">
 
-            @if (!$filter[0]) <a href="/appointments" class="btn btn-primary btn-sm">Tous</a> @else <a href="/appointments" class="btn btn-outline-primary btn-sm">Tous</a> @endif
-            @if ($filter[0]=='today') <a href="/appointments?period=today" class="btn btn-success btn-sm">Aujourd'hui</a> @else <a href="/appointments?period=today" class="btn btn-outline-success btn-sm">Aujourd'hui</a> @endif
-            @if ($filter[0]=='week') <a href="/appointments?period=week" class="btn btn-danger btn-sm">Cette semaine</a> @else <a href="/appointments?period=week" class="btn btn-outline-danger btn-sm">Cette semaine</a> @endif
-            @if ($filter[0]=='month') <a href="/appointments?period=month" class="btn btn-warning btn-sm">Ce mois</a> @else <a href="/appointments?period=month" class="btn btn-outline-warning btn-sm">Ce mois</a> @endif
+            @if (empty($filters['period'])) <a href="/appointments" class="btn btn-primary btn-sm">Tous</a> @else <a href="/appointments" class="btn btn-outline-primary btn-sm">Tous</a> @endif
+            @if (!empty($filters['period']) and $filters['period']=='today') <a href="/appointments?period=today" class="btn btn-success btn-sm">Aujourd'hui</a> @else <a href="/appointments?period=today" class="btn btn-outline-success btn-sm">Aujourd'hui</a> @endif
+            @if (!empty($filters['period']) and $filters['period']=='week') <a href="/appointments?period=week" class="btn btn-danger btn-sm">Cette semaine</a> @else <a href="/appointments?period=week" class="btn btn-outline-danger btn-sm">Cette semaine</a> @endif
+            @if (!empty($filters['period']) and $filters['period']=='month') <a href="/appointments?period=month" class="btn btn-warning btn-sm">Ce mois</a> @else <a href="/appointments?period=month" class="btn btn-outline-warning btn-sm">Ce mois</a> @endif
         </div>
         <table class="table">
             <thead>
