@@ -328,9 +328,9 @@ class ReportController extends Controller
 
             $userActivity = [];
             //get users activity
-            if ($user_activities_checked || $user_sales_checked || $user_client_graph_checked) {
-                $userActivity = User::getUserActivity();
-            }
+
+            $userActivity = User::getUserActivity();
+
 
             if ($user_stat_checked) {
                 $nb_users = count($userActivity);
@@ -348,7 +348,7 @@ class ReportController extends Controller
             ));
 
             // If the specified time period is 'last_year'
-        }elseif ($request->input('time_period') == 'last_year') {
+        } elseif ($request->input('time_period') == 'last_year') {
             // Get the start and end dates for the last year
             $endDate = Carbon::now();
             $startDate = $endDate->copy()->subYear();
@@ -358,9 +358,9 @@ class ReportController extends Controller
 
             $userActivity = [];
             //get users activity
-            if ($user_activities_checked || $user_sales_checked || $user_client_graph_checked) {
-                $userActivity = User::getUserActivity($startDate, $endDate);
-            }
+
+            $userActivity = User::getUserActivity($startDate, $endDate);
+
 
             if ($user_stat_checked) {
                 $nb_users_in_period = User::whereBetween('created_at', [$startDate, $endDate])->count();
@@ -389,9 +389,9 @@ class ReportController extends Controller
 
             $userActivity = [];
             //get users activity
-            if ($user_activities_checked || $user_sales_checked || $user_client_graph_checked) {
-                $userActivity = User::getUserActivity($startDate, $endDate);
-            }
+
+            $userActivity = User::getUserActivity($startDate, $endDate);
+
 
             if ($user_stat_checked) {
                 $nb_users_in_period = User::whereBetween('created_at', [$startDate, $endDate])->count();
@@ -418,9 +418,9 @@ class ReportController extends Controller
 
             $userActivity = [];
             //get users activity
-            if ($user_activities_checked || $user_sales_checked || $user_client_graph_checked) {
-                $userActivity = User::getUserActivity($startDate, $endDate);
-            }
+
+            $userActivity = User::getUserActivity($startDate, $endDate);
+
 
             if ($user_stat_checked) {
                 $nb_users_in_period = User::whereBetween('created_at', [$startDate, $endDate])->count();
@@ -436,7 +436,7 @@ class ReportController extends Controller
                 'user_client_graph_checked',
                 'user_sales_checked',
                 'user_activities_checked',
-                'nb_users_in_period'    
+                'nb_users_in_period'
             ));
         }
     }
