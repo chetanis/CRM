@@ -95,28 +95,28 @@
                         <div class="row">
                             <label class="col-md-3  label">Statistiques sur le nombre des utilisateurs</label>
                             <div class="col-md-2">
-                                <input checked class="form-check-input" type="checkbox" name="report_options[]"value="client_stat"> 
+                                <input checked class="form-check-input" type="checkbox" name="report_options[]"value="user_stat"> 
                                 <label class="ms-2">inclue</label>
                             </div>
                         </div>
                         <div class="row">
                             <label class="col-md-3 label">Graphiques en ligne : nombre de clients / utilisateur</label>
                             <div class="col-md-2">
-                                <input class="form-check-input" type="checkbox" name="report_options[]"value="client_graph"> 
+                                <input class="form-check-input" type="checkbox" name="report_options[]"value="user_client_graph"> 
                                 <label class="ms-2">inclue</label>
                             </div>
                         </div>
                         <div class="row">
-                            <label class="col-md-3  label">graphique à barres: Revenu de chaque utilisateur</label>
+                            <label class="col-md-3  label">Graphique à barres: nombre de ventes de chaque utilisateur</label>
                             <div class="col-md-2">
-                                <input class="form-check-input" type="checkbox" name="report_options[]"value="lead_source"> 
+                                <input class="form-check-input" type="checkbox" name="report_options[]"value="user_sales_graph"> 
                                 <label class="ms-2">inclue</label>
                             </div>
                         </div>
                         <div class="row">
                             <label class="col-md-3 label">Tableau des utilisateurs et leurs activités</label>
                             <div class="col-md-2">
-                                <input class="form-check-input" type="checkbox" name="report_options[]" id="client_activities" value="client_activities"> 
+                                <input class="form-check-input" type="checkbox" name="report_options[]" id="user_activities" value="user_activities"> 
                                 <label class="ms-2">inclue</label>
                             </div>
                         </div>
@@ -174,7 +174,7 @@
             }
         });
         // Toggle activities visibility based on checkbox selection
-        $('#client_activities').change(function() {
+        $('#user_activities').change(function() {
             if ($(this).is(':checked')) {
                 $('#additional-activities').removeClass('d-none'); // Show additional checkboxes
             } else {
@@ -202,7 +202,7 @@
             }
 
             // Check if at least one activity option is selected if activity tables is checked before form submission
-            if ($('#client_activities').is(':checked') && $('input[name="activity_options[]"]:checked').length === 0) {
+            if ($('#user_activities').is(':checked') && $('input[name="activity_options[]"]:checked').length === 0) {
                 alert('Veuillez sélectionner au moins une option d\'activité.');
                 event.preventDefault(); // Prevent form submission
                 return;

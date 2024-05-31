@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Client;
 use App\Models\Command;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -304,35 +305,140 @@ class ReportController extends Controller
     public function generateUsersReport(Request $request)
     {
         $user_stat_checked = false;
-        $command_graph_checked = false;
-        $command_percentage_checked = false;
-        $product_table_checked = false;
+        $user_client_graph_checked = false;
+        $user_activities_checked = false;
+        $user_sales_checked = false;
         $reportOptions = $request->input('report_options', []);
-        if (in_array('commands_stat', $reportOptions)) {
+        if (in_array('user_stat', $reportOptions)) {
             $user_stat_checked = true;
         }
-        if (in_array('commands_graph', $reportOptions)) {
-            $command_graph_checked = true;
+        if (in_array('user_client_graph', $reportOptions)) {
+            $user_client_graph_checked = true;
         }
-        if (in_array('products_stat', $reportOptions)) {
-            $product_table_checked = true;
+        if (in_array('user_sales_graph', $reportOptions)) {
+            $user_sales_checked = true;
         }
-        if (in_array('commands_percentage', $reportOptions)) {
-            $command_percentage_checked = true;
+        if (in_array('user_activities', $reportOptions)) {
+            $user_activities_checked = true;
         }
-        $commands = Command::getAccessibleCommands();
-        $nb_commands = 0;
-        $nb_confirmed_commands = 0;
-        $nb_cancelled_commands = 0;
-        $nb_pending_commands = 0;
-        $percentage_confirmed = 0;
-        $percentage_cancelled = 0;
-        $percentage_pending = 0;
-        $commandsPerYear = [];
-        $commandsPerYear2 = [];
-        $productsTable = [];
-        $totalRevenue = 0;
-        $totalProfit = 0;
+
+
+        if ($request->input('time_period') == 'all_time') {
+            $nb_users = 0;
+
+            $userActivity = [];
+            //get users activity
+            if ($user_activities_checked || $user_sales_checked || $user_client_graph_checked) {
+                $userActivity = User::getUserActivity();
+            }
+
+            if ($user_stat_checked) {
+                $nb_users = count($userActivity);
+            }
+
+            $all_time = true;
+            return view('Reports-template.users', compact(
+                'nb_users',
+                'userActivity',
+                'all_time',
+                'user_stat_checked',
+                'user_client_graph_checked',
+                'user_sales_checked',
+                'user_activities_checked'
+            ));
+
+            // If the specified time period is 'last_year'
+        }elseif ($request->input('time_period') == 'last_year') {
+            // Get the start and end dates for the last year
+            $endDate = Carbon::now();
+            $startDate = $endDate->copy()->subYear();
+
+            $nb_users = 0;
+            $nb_users_in_period = 0;
+
+            $userActivity = [];
+            //get users activity
+            if ($user_activities_checked || $user_sales_checked || $user_client_graph_checked) {
+                $userActivity = User::getUserActivity($startDate, $endDate);
+            }
+
+            if ($user_stat_checked) {
+                $nb_users_in_period = User::whereBetween('created_at', [$startDate, $endDate])->count();
+                $nb_users = count($userActivity);
+            }
+
+            return view('Reports-template.users', compact(
+                'nb_users',
+                'userActivity',
+                'startDate',
+                'endDate',
+                'user_stat_checked',
+                'user_client_graph_checked',
+                'user_sales_checked',
+                'user_activities_checked',
+                'nb_users_in_period'
+            ));
+        } elseif ($request->input('time_period') == 'last_month') {
+            // Get the start and end dates for the last month
+            $endDate = Carbon::now(); // Today's date
+            $startDate = $endDate->copy()->subMonth(); // Start of the previous month
+
+            $nb_users = 0;
+            $nb_users_in_period = 0;
+
+
+            $userActivity = [];
+            //get users activity
+            if ($user_activities_checked || $user_sales_checked || $user_client_graph_checked) {
+                $userActivity = User::getUserActivity($startDate, $endDate);
+            }
+
+            if ($user_stat_checked) {
+                $nb_users_in_period = User::whereBetween('created_at', [$startDate, $endDate])->count();
+                $nb_users = count($userActivity);
+            }
+
+            return view('Reports-template.users', compact(
+                'nb_users',
+                'userActivity',
+                'startDate',
+                'endDate',
+                'user_stat_checked',
+                'user_client_graph_checked',
+                'user_sales_checked',
+                'user_activities_checked',
+                'nb_users_in_period'
+            ));
+        } else {
+            $endDate = Carbon::createFromFormat('Y-m-d', $request->input('end_date'));
+            $startDate = Carbon::createFromFormat('Y-m-d', $request->input('start_date'));
+
+            $nb_users = 0;
+            $nb_users_in_period = 0;
+
+            $userActivity = [];
+            //get users activity
+            if ($user_activities_checked || $user_sales_checked || $user_client_graph_checked) {
+                $userActivity = User::getUserActivity($startDate, $endDate);
+            }
+
+            if ($user_stat_checked) {
+                $nb_users_in_period = User::whereBetween('created_at', [$startDate, $endDate])->count();
+                $nb_users = count($userActivity);
+            }
+
+            return view('Reports-template.users', compact(
+                'nb_users',
+                'userActivity',
+                'startDate',
+                'endDate',
+                'user_stat_checked',
+                'user_client_graph_checked',
+                'user_sales_checked',
+                'user_activities_checked',
+                'nb_users_in_period'    
+            ));
+        }
     }
 
 
@@ -364,7 +470,7 @@ class ReportController extends Controller
                 $product_table_checked = true;
             }
         }
-        
+
         $commands = Command::getAccessibleCommands();
         $nb_commands = 0;
         $nb_confirmed_commands = 0;

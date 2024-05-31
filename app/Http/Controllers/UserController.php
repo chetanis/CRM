@@ -101,9 +101,9 @@ class UserController extends Controller
     // show a user
     public function show(User $user)
     {
-        $clients = $user->getClients();
-        $commands = $user->getCommands();
-        $appointments = $user->appointments();
+        $clients = $user->clients()->get();
+        $commands = $user->commands()->get();
+        $appointments = $user->appointments()->get();
         $nbSales = $commands->where('type','done')->count();
         return view('users.show', compact('user','clients','commands','nbSales','appointments'));
     }
