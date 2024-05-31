@@ -50,8 +50,8 @@
                     <div class="search-bar">
                         <form class="d-flex align-items-center" action="/commands" method="GET">
                             <input type="hidden" name="type" value="{{ request('type') }}">
-                            <input type="text" name="client" class="form-control me-1" value="{{ request('client') }}"
-                                placeholder="Chercher une commande">
+                            <input type="text" name="client" class="form-control me-1"
+                                value="{{ request('client') }}" placeholder="Chercher une commande">
                             <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i></button>
                         </form>
                     </div><!-- End Search Bar -->
@@ -59,11 +59,29 @@
             </div>
         </div>
         <div class="col mb-3 ms-2">
-
-            @if (!$filter[0]) <a href="/commands" class="btn btn-primary btn-sm">Tous</a> @else <a href="/commands" class="btn btn-outline-primary btn-sm">Tous</a> @endif
-            @if ($filter[0]=='done') <a href="/commands?type=done" class="btn btn-success btn-sm">Confirmé</a> @else <a href="/commands?type=done" class="btn btn-outline-success btn-sm">Confirmé</a> @endif
-            @if ($filter[0]=='cancelled') <a href="/commands?type=cancelled" class="btn btn-danger btn-sm">Annulé</a> @else <a href="/commands?type=cancelled" class="btn btn-outline-danger btn-sm">Annulé</a> @endif
-            @if ($filter[0]=='pending') <a href="/commands?type=pending" class="btn btn-warning btn-sm">En attente</a> @else <a href="/commands?type=pending" class="btn btn-outline-warning btn-sm">En attente</a> @endif
+            @php
+                $clientParam = request('client') ? '&client=' . request('client') : '';
+            @endphp
+            @if (!request('type'))
+                <a href="/commands?type={{ $clientParam }}" class="btn btn-primary btn-sm">Tous</a>
+            @else
+                <a href="/commands?type={{ $clientParam }}" class="btn btn-outline-primary btn-sm">Tous</a>
+            @endif
+            @if (request('type') == 'done')
+                <a href="/commands?type=done{{ $clientParam }}" class="btn btn-success btn-sm">Confirmé</a>
+            @else
+                <a href="/commands?type=done{{ $clientParam }}" class="btn btn-outline-success btn-sm">Confirmé</a>
+            @endif
+            @if (request('type') == 'cancelled')
+                <a href="/commands?type=cancelled{{ $clientParam }}" class="btn btn-danger btn-sm">Annulé</a>
+            @else
+                <a href="/commands?type=cancelled{{ $clientParam }}" class="btn btn-outline-danger btn-sm">Annulé</a>
+            @endif
+            @if (request('type') == 'pending')
+                <a href="/commands?type=pending{{ $clientParam }}" class="btn btn-warning btn-sm">En attente</a>
+            @else
+                <a href="/commands?type=pending{{ $clientParam }}" class="btn btn-outline-warning btn-sm">En attente</a>
+            @endif
         </div>
         <table class="table">
             <thead>
