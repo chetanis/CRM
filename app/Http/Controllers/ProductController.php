@@ -15,10 +15,12 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::latest()->paginate(10);
-        return view('Products.index',
+        return view(
+            'Products.index',
             [
                 'products' => $products
-            ]);
+            ]
+        );
     }
 
     /**
@@ -27,7 +29,7 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('Products.create',compact('categories'));
+        return view('Products.create', compact('categories'));
     }
 
     //store a new product
@@ -58,7 +60,7 @@ class ProductController extends Controller
         $product->save();
 
         //create log
-        Log::CreateLog('Créer produit', 'Produit cree: ' . $product->name );
+        Log::CreateLog('Créer produit', 'Produit cree: ' . $product->name);
 
         // Redirect back with a success message
         return redirect()->back()->with('success', 'Produit ajouter!');
@@ -70,7 +72,8 @@ class ProductController extends Controller
     public function show(string $id)
     {
         $product = Product::findOrFail($id);
-        return view('Products.show', ['product' => $product]);
+        $categories = Category::all();
+        return view('Products.show', compact('product', 'categories'));
     }
 
 
@@ -78,38 +81,43 @@ class ProductController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-{
-    $product = Product::findOrFail($id);
+    {
+        $product = Product::findOrFail($id);
 
-    $request->validate([
-        'name' => 'required|string',
-        'price' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
-        'description' => 'nullable|string',
-        'current_stock' => 'required|numeric',
-        'minimum_stock' => 'required|numeric',
-        'category' => 'required|string',
-        'purchase_price' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/'
-    ]);
+        $request->validate([
+            'name' => 'required|string',
+            'price' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
+            'description' => 'nullable|string',
+            'current_stock' => 'required|numeric',
+            'minimum_stock' => 'required|numeric',
+            'category_id' => 'required|int',
+            'purchase_price' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/'
+        ]);
 
-    try {
-        //check if he updated the stock
-        if ($request->input('current_stock') != $product->current_stock) {
-            //check if he added or subtracted stock
-            if ($request->input('current_stock') > $product->current_stock) {
-                $product->addStock($request->input('current_stock') - $product->current_stock);
-            } else {
-                $product->subtractStock($product->current_stock - $request->input('current_stock'));
+
+        try {
+            //check if he updated the stock
+            if ($request->input('current_stock') != $product->current_stock) {
+                //check if he added or subtracted stock
+                if ($request->input('current_stock') > $product->current_stock) {
+                    $product->addStock($request->input('current_stock') - $product->current_stock);
+                } else {
+                    $product->subtractStock($product->current_stock - $request->input('current_stock'));
+                }
             }
+            // Explicitly set the category_id before updating other attributes
+            $product->category_id = $request->input('category_id');
+
+            // Update other product attributes
+            $product->update($request->except('category_id'));
+            
+            //create log
+            Log::CreateLog('modifier produit', 'Produit modifie: ' . $product->name);
+            return redirect()->back()->with('success', 'Produit mis à jour avec succès !');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to update product. Please try again.');
         }
-        //update the product
-        $product->update($request->all());
-        //create log
-        Log::CreateLog('modifier produit', 'Produit modifie: ' . $product->name );
-        return redirect()->back()->with('success', 'Produit mis à jour avec succès !');
-    } catch (\Exception $e) {
-        return redirect()->back()->with('error', 'Failed to update product. Please try again.');
     }
-}
 
 
     /**
@@ -120,7 +128,7 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $product->delete();
         //create log
-        Log::CreateLog('supprimer produit', 'Produit supprime: ' . $product->name );
+        Log::CreateLog('supprimer produit', 'Produit supprime: ' . $product->name);
         return redirect()->route('products.index')->with('success', 'Produit supprimé avec succès !');
     }
 
@@ -135,7 +143,7 @@ class ProductController extends Controller
         $product->addStock($request->input('quantity'));
 
         //create log
-        Log::CreateLog('ajouter stock', 'Produit: ' . $product->name . ' quantite: ' . $request->input('quantity') );
+        Log::CreateLog('ajouter stock', 'Produit: ' . $product->name . ' quantite: ' . $request->input('quantity'));
         return redirect()->back()->with('success', 'Stock ajouté avec succès !');
     }
 
@@ -144,8 +152,7 @@ class ProductController extends Controller
     {
         $search = $request->input('search');
 
-        $products = Product::where('name', 'like', "%{$search}%")->
-        orWhere('category', 'like', "%{$search}%")->paginate(10);
+        $products = Product::where('name', 'like', "%{$search}%")->paginate(10);
 
         return view('Products.index', ['products' => $products]);
     }

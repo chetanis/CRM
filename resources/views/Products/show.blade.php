@@ -136,11 +136,17 @@
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label for="category"
-                                                class="col-md-4 col-lg-3 col-form-label">Catégorie</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <input name="category" type="text" value="{{ $product->name }}"
-                                                    class="form-control" id="category">
+                                            <label for="category" class="col-md-4 col-lg-3 col-form-label">Catégorie</label>
+                                            <div class="col-md-3">
+                                                <select name="category_id" class="form-control" id="category">
+                                                    <option value="{{$product->category->id}}">{{$product->category->name}}</option>
+                                                    @foreach ($categories as $category)
+                                                        @if ($category->id == $product->category->id)
+                                                            @continue
+                                                        @endif
+                                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                         </div>
 
