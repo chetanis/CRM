@@ -76,7 +76,7 @@
                                 </div>
 
                                 <div class="card-body">
-                                    <h5 class="card-title sale-card-title">Vantes <span class="sale-card-title-span">|
+                                    <h5 class="card-title sale-card-title">Ventes <span class="sale-card-title-span">|
                                             Aujourd'hui</span></h5>
 
                                     <div class="d-flex align-items-center">
@@ -136,11 +136,19 @@
                                         </div>
                                         <div class="ps-3">
                                             <h6 class=" revenue-card-body extra-small">{{ $totalRevenue }}</h6>
-                                            <span
-                                                class="revenue-card-body-diff-side text-success medium pt-2 ps-1">+</span>
-                                            <span
-                                                class="revenue-card-body-diff text-success small pt-1 fw-bold">{{ $RevenuePercentageDiff }}%</span>
+                                            @if ($RevenuePercentageDiff >= 0)
+                                                <span
+                                                    class="revenue-card-body-diff-side text-success medium pt-2 ps-1">+</span>
+                                                <span
+                                                    class="revenue-card-body-diff text-success small pt-1 fw-bold">{{ $RevenuePercentageDiff }}%</span>
+                                            @else
+                                                <span
+                                                    class="revenue-card-body-diff-side text-success medium pt-2 ps-1"></span>
+                                                <span
+                                                    class="revenue-card-body-diff text-danger small pt-1 fw-bold">{{ $RevenuePercentageDiff }}%</span>
+                                            @endif
                                         </div>
+
                                     </div>
                                 </div>
 
@@ -169,7 +177,8 @@
                                 </div>
 
                                 <div class="card-body">
-                                    <h5 class="card-title">Clients <span class="client-card-title-span">| Cette Année</span></h5>
+                                    <h5 class="card-title">Clients <span class="client-card-title-span">| Cette
+                                            Année</span></h5>
 
                                     <div class="d-flex align-items-center">
                                         <div
