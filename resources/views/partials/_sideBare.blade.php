@@ -61,6 +61,11 @@
                                     <i class="bi bi-circle"></i><span>Afficher les produits</span>
                                 </a>
                             </li>
+                            <li>
+                                <a href="{{ route('categories.index') }}">
+                                    <i class="bi bi-circle"></i><span>Catégorie</span>
+                                </a>
+                            </li>
                         </ul>
                     </li><!-- End Produits Nav -->
                 @endif

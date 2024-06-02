@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Category;
 use App\Models\Appointment;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
@@ -9,6 +10,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\CommandController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\NotificationController;
 
@@ -95,6 +97,16 @@ Route::middleware(['auth', 'superuserOrAdmin'])->group(function () {
 
     //delete a product
     Route::delete('/products/{product}', [ProductController::class, 'destroy']);
+
+    //show category list
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+
+    //careate a category
+    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+
+    //update category
+    Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
+
 });
 
 //--------   User routes  --------//
