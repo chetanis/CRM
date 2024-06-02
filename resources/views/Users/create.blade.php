@@ -53,28 +53,28 @@
         <form id="productForm" action="{{ route('create-user') }}" method="POST">
             @csrf
             <div class="row mb-3">
-                <label for="yourUsername" class="col-md-4 col-lg-3 col-form-label">Nom d'utilisateur</label>
+                <label for="yourUsername" class="col-md-4 col-lg-3 col-form-label">Nom d'utilisateur <span style="color: red;">*</span></label>
                 <div class="col-md-3">
                     <input type="text" name="username" class="form-control" id="yourUsername" required>
                 </div>
             </div>
 
             <div class="row mb-3">
-                <label for="full_name" class="col-md-4 col-lg-3 col-form-label">Nom complet</label>
+                <label for="full_name" class="col-md-4 col-lg-3 col-form-label">Nom complet <span style="color: red;">*</span></label>
                 <div class="col-md-3">
                     <input type="text" name="full_name" class="form-control" id="full_name" required>
                 </div>
             </div>
 
             <div class="row mb-3">
-                <label for="yourPassword" class="col-md-4 col-lg-3 col-form-label">mot de passe</label>
+                <label for="yourPassword" class="col-md-4 col-lg-3 col-form-label">mot de passe <span style="color: red;">*</span></label>
                 <div class="col-md-3">
                     <input type="password" name="password" class="form-control" id="yourPassword" required>
                 </div>
             </div>
 
             <div class="row mb-3">
-                <label for="privilege" class="col-md-4 col-lg-3 col-form-label">Privilege</label>
+                <label for="privilege" class="col-md-4 col-lg-3 col-form-label">Privilege <span style="color: red;">*</span></label>
                 <div class="col-md-3">
                     <select class="form-control" id="privilege" name="privilege">
                         <option value="user">Agent</option>

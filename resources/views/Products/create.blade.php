@@ -47,13 +47,13 @@
         <form id="productForm" action="{{ route('products.store') }}" method="POST">
             @csrf
             <div class="row mb-3">
-                <label for="name" class="col-md-4 col-lg-3 col-form-label">Nom du produit</label>
+                <label for="name" class="col-md-4 col-lg-3 col-form-label">Nom du produit <span style="color: red;">*</span></label>
                 <div class="col-md-5">
                     <input name="name" type="text" class="form-control" id="name">
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="category" class="col-md-4 col-lg-3 col-form-label">Catégorie</label>
+                <label for="category" class="col-md-4 col-lg-3 col-form-label">Catégorie <span style="color: red;">*</span></label>
                 <div class="col-md-3">
                     <select name="category_id" class="form-control" id="category">
                         <option value="">---</option>
@@ -64,28 +64,28 @@
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="purchase_price" class="col-md-4 col-lg-3 col-form-label">Prix d'achat</label>
+                <label for="purchase_price" class="col-md-4 col-lg-3 col-form-label">Prix d'achat <span style="color: red;">*</span></label>
                 <div class="col-md-3">
                     <input name="purchase_price" type="number" step="0.01" min="0" class="form-control"
                         id="purchase_price">
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="price" class="col-md-4 col-lg-3 col-form-label">Prix</label>
+                <label for="price" class="col-md-4 col-lg-3 col-form-label">Prix <span style="color: red;">*</span></label>
                 <div class="col-md-3">
                     <input name="price" type="number" step="0.01" min="0" class="form-control"
                         id="price">
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="current_stock" class="col-md-4 col-lg-3 col-form-label">Stock actuel</label>
+                <label for="current_stock" class="col-md-4 col-lg-3 col-form-label">Stock actuel <span style="color: red;">*</span></label>
                 <div class="col-md-3">
                     <input name="current_stock" value="0" type="number" min="0" class="form-control"
                         id="current_stock">
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="minimum_stock" class="col-md-4 col-lg-3 col-form-label">Stock minimum</label>
+                <label for="minimum_stock" class="col-md-4 col-lg-3 col-form-label">Stock minimum <span style="color: red;">*</span></label>
                 <div class="col-md-3">
                     <input name="minimum_stock" value="0" type="number" min="0" class="form-control"
                         id="minimum_stock">

@@ -47,19 +47,19 @@
             <p >Informations Personnelles :</p>
             <div class="row g-3">
                 <div class="col-md-6">
-                    <label for="lastName" class="form-label">Nom</label>
+                    <label for="lastName" class="form-label">Nom <span style="color: red;">*</span></label>
                     <input name="lastName" type="text" class="form-control" id="lastName">
                 </div>
                 <div class="col-md-6">
-                    <label for="name" class="form-label">Prenom</label>
+                    <label for="name" class="form-label">Prenom <span style="color: red;">*</span></label>
                     <input name="name" type="text" class="form-control" id="name">
                 </div>
                 <div class="col-md-6">
-                    <label for="email" class="form-label">Email</label>
+                    <label for="email" class="form-label">Email <span style="color: red;">*</span></label>
                     <input name="email" type="email" class="form-control" id="email">
                 </div>
                 <div class="col-md-6">
-                    <label for="phone" class="form-label">Numéro de téléphone</label>
+                    <label for="phone" class="form-label">Numéro de téléphone <span style="color: red;">*</span></label>
                     <input name="phone" type="tel" class="form-control" id="phone">
                 </div>
             </div>
