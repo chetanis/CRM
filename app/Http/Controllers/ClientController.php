@@ -146,7 +146,7 @@ class ClientController extends Controller
             'lastName' => 'required|string',
             'name' => 'required|string',
             'email' => 'required|email',
-            'phone' => 'nullable|string',
+            'phone' => 'required|string',
             'company' => 'nullable|string',
             'job' => 'nullable|string',
             'industry' => 'nullable|string',
