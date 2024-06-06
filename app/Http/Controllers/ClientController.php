@@ -8,7 +8,9 @@ use App\Models\Client;
 use App\Models\Command;
 use Illuminate\Http\Request;
 use App\Models\PersonalNotif;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class ClientController extends Controller
 {
@@ -16,10 +18,10 @@ class ClientController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {   
+    {
         //get the clients that the user can access
         $clients = Client::getAccessibleClients()->paginate(10);
-        
+
         return view('Client.index', [
             'clients' => $clients
         ]);
@@ -38,56 +40,70 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the form data
-        $request->validate([
-            'lastName' => 'required|string',
-            'name' => 'required|string',
-            'email' => 'required|email',
-            'phone' => 'nullable|string',
-            'company' => 'nullable|string',
-            'job' => 'nullable|string',
-            'industry' => 'nullable|string',
-            'address' => 'nullable|string',
-            'facebook' => 'nullable|string',
-            'linkedin' => 'nullable|string',
-            'x' => 'nullable|string',
-            'other' => 'nullable|string',
-            'lead' => 'nullable|string',
-            'notes' => 'nullable|string',
-            'code_fiscal' => 'nullable|string',
-        ]);
+        try {
 
-        // Create a new client instance
-        $client = new Client();
+            //check if the email and phone number are unique
+            $phoneRule = Rule::unique('clients', 'phone_number');
+            $emailRule = Rule::unique('clients', 'email');
 
-        // Assign form data to the client instance
-        $client->last_name = $request->input('lastName');
-        $client->first_name = $request->input('name');
-        $client->email = $request->input('email');
-        $client->phone_number = $request->input('phone');
-        $client->company_name = $request->input('company');
-        $client->job_title = $request->input('job');
-        $client->industry = $request->input('industry');
-        $client->address = $request->input('address');
-        $client->social_media_profiles = [
-            'facebook' => $request->input('facebook'),
-            'linkedin' => $request->input('linkedin'),
-            'x' => $request->input('x'),
-            'other' => $request->input('other'),
-        ];
-        $client->lead_source = $request->input('lead');
-        $client->notes = $request->input('notes');
-        $client->code_fiscal = $request->input('code_fiscal');
-        $client->assigned_to = Auth::id();
+            // Validate the form data
+            $request->validate([
+                'lastName' => 'required|string',
+                'name' => 'required|string',
+                'email' => ['required', 'email', $emailRule],
+                'phone' => ['required', 'string', $phoneRule],
+                'company' => 'nullable|string',
+                'job' => 'nullable|string',
+                'industry' => 'nullable|string',
+                'address' => 'nullable|string',
+                'facebook' => 'nullable|string',
+                'linkedin' => 'nullable|string',
+                'x' => 'nullable|string',
+                'other' => 'nullable|string',
+                'lead' => 'nullable|string',
+                'notes' => 'nullable|string',
+                'code_fiscal' => 'nullable|string',
+            ]);
 
-        // Save the client to the database
-        $client->save();
+            // Create a new client instance
+            $client = new Client();
 
-        //create log
-        Log::CreateLog('Créer client', 'Client cree: ' . $client->first_name . ' ' . $client->last_name);
+            // Assign form data to the client instance
+            $client->last_name = $request->input('lastName');
+            $client->first_name = $request->input('name');
+            $client->email = $request->input('email');
+            $client->phone_number = $request->input('phone');
+            $client->company_name = $request->input('company');
+            $client->job_title = $request->input('job');
+            $client->industry = $request->input('industry');
+            $client->address = $request->input('address');
+            $client->social_media_profiles = [
+                'facebook' => $request->input('facebook'),
+                'linkedin' => $request->input('linkedin'),
+                'x' => $request->input('x'),
+                'other' => $request->input('other'),
+            ];
+            $client->lead_source = $request->input('lead');
+            $client->notes = $request->input('notes');
+            $client->code_fiscal = $request->input('code_fiscal');
+            $client->assigned_to = Auth::id();
 
-        // Redirect back with a success message
-        return redirect()->back()->with('success', 'Client ajouter!');
+            // Save the client to the database
+            $client->save();
+
+            //create log
+            Log::CreateLog('Créer client', 'Client cree: ' . $client->first_name . ' ' . $client->last_name);
+
+            Session::flash('success', 'Client ajoutée avec succès');
+
+            // Redirect back with a success message
+            return redirect()->back()->with('success', 'Client ajouter!');
+        } catch (\Throwable $th) {
+            Session::flash('fail', "erreur lors de l'ajout du client");
+
+            // Redirect back with a fail message
+            return redirect()->back()->with('fail', "erreur lors de l'ajout du client");
+        }
     }
 
     /**
@@ -232,7 +248,7 @@ class ClientController extends Controller
         $personalNotif->user_id = $request->input('assigned_to');
         $personalNotif->message = 'Un nouveau client vous a été attribué: ' . $client->first_name . ' ' . $client->last_name;
         $personalNotif->save();
-        
+
 
         session()->flash('success', 'user modifié avec succès');
         return redirect()->back();
