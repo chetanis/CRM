@@ -159,6 +159,7 @@ function updateClientCard(filter) {
                 percentageDiffElement.classList.remove('text-success');
                 percentageDiffElement.classList.add('text-danger');
 
+                percentageDiffSideElement.textContent = '';
                 percentageDiffSideElement.classList.remove('text-success');
                 percentageDiffSideElement.classList.add('text-danger');
             }
