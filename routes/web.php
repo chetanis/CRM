@@ -131,6 +131,11 @@ Route::middleware(['auth'])->group(function () {
     //search for a client
     Route::get('/search-client', [ClientController::class, 'search'])->name('search-client');
 
+    //serach by phone number
+    //formul of serach: /phone?search={phone_number}
+    
+    Route::get('/phone', [ClientController::class, 'searchByPhone']);
+
     //delete a client
     Route::delete('/clients/{client}', [ClientController::class, 'destroy']);
 

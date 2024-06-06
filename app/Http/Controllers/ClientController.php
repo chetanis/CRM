@@ -223,6 +223,24 @@ class ClientController extends Controller
         ]);
     }
 
+    //search by phone number
+    public function searchByPhone(Request $request)
+    {
+        $search = $request->input('search');
+
+        //get the clients that the user can access
+        $clients = Client::getAccessibleClients();
+
+        // Search by name, email, or phone number
+        $clients->where(function ($query) use ($search) {
+            $query->where('phone_number', 'LIKE', "%{$search}%");
+        });
+        $clients = $clients->paginate(10);
+        return view('Client.index', [
+            'clients' => $clients
+        ]);
+    }
+
     /**
      * Remove the specified resource from storage.
      */
