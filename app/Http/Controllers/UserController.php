@@ -67,7 +67,7 @@ class UserController extends Controller
 
         //check if the current user has reached his quota
         $current_user = User::find(Auth::user()->id);
-        if ($current_user->current_quota >= $current_user->quota) {
+        if ($current_user->privilege=='admin' && $current_user->current_quota >= $current_user->quota) {
             return redirect()->back()->with('error', 'Vous avez atteint votre quota d\'utilisateurs');
         }
 

@@ -59,32 +59,49 @@
         <form id="productForm" action="{{ route('create-user') }}" method="POST">
             @csrf
             <div class="row mb-3">
-                <label for="yourUsername" class="col-md-4 col-lg-3 col-form-label">Nom d'utilisateur <span style="color: red;">*</span></label>
+                <label for="yourUsername" class="col-md-4 col-lg-3 col-form-label">Nom d'utilisateur <span
+                        style="color: red;">*</span></label>
                 <div class="col-md-3">
                     <input type="text" name="username" class="form-control" id="yourUsername" required>
                 </div>
             </div>
 
             <div class="row mb-3">
-                <label for="full_name" class="col-md-4 col-lg-3 col-form-label">Nom complet <span style="color: red;">*</span></label>
+                <label for="full_name" class="col-md-4 col-lg-3 col-form-label">Nom complet <span
+                        style="color: red;">*</span></label>
                 <div class="col-md-3">
                     <input type="text" name="full_name" class="form-control" id="full_name" required>
                 </div>
             </div>
 
             <div class="row mb-3">
-                <label for="yourPassword" class="col-md-4 col-lg-3 col-form-label">mot de passe <span style="color: red;">*</span></label>
+                <label for="yourPassword" class="col-md-4 col-lg-3 col-form-label">mot de passe <span
+                        style="color: red;">*</span></label>
                 <div class="col-md-3">
                     <input type="password" name="password" class="form-control" id="yourPassword" required>
                 </div>
             </div>
+            @if (auth()->user()->privilege === 'master')
+                <div class="row mb-3">
+                    <label for="quota" class="col-md-4 col-lg-3 col-form-label">Quota <span
+                            style="color: red;">*</span></label>
+                    <div class="col-md-3">
+                        <input type="number" name="quota" class="form-control" id="quota" required>
+                    </div>
+                </div>
+            @endif
 
             <div class="row mb-3">
-                <label for="privilege" class="col-md-4 col-lg-3 col-form-label">Privilege <span style="color: red;">*</span></label>
+                <label for="privilege" class="col-md-4 col-lg-3 col-form-label">Privilege <span
+                        style="color: red;">*</span></label>
                 <div class="col-md-3">
                     <select class="form-control" id="privilege" name="privilege">
-                        <option value="user">Agent</option>
-                        <option value="superuser">Manager</option>
+                        @if (auth()->user()->privilege === 'master')
+                            <option value="admin">Administrateur</option>
+                        @else
+                            <option value="user">Agent</option>
+                            <option value="superuser">Manager</option>
+                        @endif
                     </select>
                 </div>
             </div>
