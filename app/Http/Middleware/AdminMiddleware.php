@@ -15,7 +15,7 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->check() && auth()->user()->privilege === 'admin') {
+        if ((auth()->check() && auth()->user()->privilege === 'admin') || (auth()->check() && auth()->user()->privilege === 'master')){
             return $next($request);
         }
         return redirect()->route('dashboard');

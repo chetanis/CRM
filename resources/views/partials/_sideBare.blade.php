@@ -3,14 +3,16 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
         <div class="top-nav">
-            <li class="nav-item">
-                <a class="nav-link " href="{{ route('dashboard') }}">
-                    <i class="bi bi-grid"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li><!-- End Dashboard Nav -->
+            @if (auth()->user()->privilege !== 'master')
+                <li class="nav-item">
+                    <a class="nav-link " href="{{ route('dashboard') }}">
+                        <i class="bi bi-grid"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li><!-- End Dashboard Nav -->
+            @endif
             @auth
-                @if (auth()->user()->privilege === 'admin')
+                @if (auth()->user()->privilege === 'admin' || auth()->user()->privilege === 'master')
                     <li class="nav-item">
                         <a class="nav-link collapsed" data-bs-target="#users-nav" data-bs-toggle="collapse" href="#">
                             <i class="bi bi-person"></i><span>Gestion d'utilisateur</span><i
@@ -70,94 +72,105 @@
                     </li><!-- End Produits Nav -->
                 @endif
             @endauth
-            <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#clients-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-layout-text-window-reverse"></i><span>Gestion des clients</span><i
-                        class="bi bi-chevron-down ms-auto"></i>
-                </a>
-                <ul id="clients-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                    <li>
-                        <a href="{{ route('clients.create') }}">
-                            <i class="bi bi-circle"></i><span>Ajouter un client</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('clients.index') }}">
-                            <i class="bi bi-circle"></i><span>Afficher les clients</span>
-                        </a>
-                    </li>
-                </ul>
-            </li><!-- End Clients Nav -->
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#commands-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-bar-chart"></i><span>Gestion des commandes</span><i
-                        class="bi bi-chevron-down ms-auto"></i>
-                </a>
-                <ul id="commands-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                    <li>
-                        <a href="{{ route('commands.create') }}">
-                            <i class="bi bi-circle"></i><span>Ajouter commande</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('commands.index') }}">
-                            <i class="bi bi-circle"></i><span>Afficher les commandes</span>
-                        </a>
-                    </li>
-                </ul>
-            </li><!-- End Commandes Nav -->
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#appointments-nav" data-bs-toggle="collapse"
-                    href="#">
-                    <i class="bi bi-calendar-week"></i><span>Gestion des rendez-vous</span><i
-                        class="bi bi-chevron-down ms-auto"></i>
-                </a>
-                <ul id="appointments-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                    <li>
-                        <a href="{{ route('appointments.create') }}">
-                            <i class="bi bi-circle"></i><span>Ajouter rendez-vous</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('appointments.index') }}">
-                            <i class="bi bi-circle"></i><span>Afficher les rendez-vous</span>
-                        </a>
-                    </li>
-                </ul>
-            </li><!-- End Appointments Nav -->
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-gem"></i><span>Reporting</span><i class="bi bi-chevron-down ms-auto"></i>
-                </a>
-                <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                    <li>
-                        <a href="{{ route('clients-report') }}">
-                            <i class="bi bi-circle"></i><span>Clients</span>
-                        </a>
-                    </li>
-                    @if (auth()->user()->privilege === 'admin')
+            @if (auth()->user()->privilege !== 'master')
+                <li class="nav-item">
+                    <a class="nav-link collapsed" data-bs-target="#clients-nav" data-bs-toggle="collapse"
+                        href="#">
+                        <i class="bi bi-layout-text-window-reverse"></i><span>Gestion des clients</span><i
+                            class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <ul id="clients-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                         <li>
-                            <a href="{{ route('users-report') }}">
-                                <i class="bi bi-circle"></i><span>Users</span>
+                            <a href="{{ route('clients.create') }}">
+                                <i class="bi bi-circle"></i><span>Ajouter un client</span>
                             </a>
                         </li>
-                    @endif
-                    <li>
-                        @if (auth()->user()->privilege === 'admin' || auth()->user()->privilege === 'superuser')
-                            <a href="{{ route('commands-report') }}">
-                                <i class="bi bi-circle"></i><span>commande et produit</span>
+                        <li>
+                            <a href="{{ route('clients.index') }}">
+                                <i class="bi bi-circle"></i><span>Afficher les clients</span>
                             </a>
-                        @else
-                            <a href="{{ route('commands-report') }}">
-                                <i class="bi bi-circle"></i><span>commande</span>
+                        </li>
+                    </ul>
+                </li><!-- End Clients Nav -->
+            @endif
+
+            @if (auth()->user()->privilege !== 'master')
+                <li class="nav-item">
+                    <a class="nav-link collapsed" data-bs-target="#commands-nav" data-bs-toggle="collapse"
+                        href="#">
+                        <i class="bi bi-bar-chart"></i><span>Gestion des commandes</span><i
+                            class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <ul id="commands-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                        <li>
+                            <a href="{{ route('commands.create') }}">
+                                <i class="bi bi-circle"></i><span>Ajouter commande</span>
                             </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('commands.index') }}">
+                                <i class="bi bi-circle"></i><span>Afficher les commandes</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li><!-- End Commandes Nav -->
+            @endif
+
+            @if (auth()->user()->privilege !== 'master')
+                <li class="nav-item">
+                    <a class="nav-link collapsed" data-bs-target="#appointments-nav" data-bs-toggle="collapse"
+                        href="#">
+                        <i class="bi bi-calendar-week"></i><span>Gestion des rendez-vous</span><i
+                            class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <ul id="appointments-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                        <li>
+                            <a href="{{ route('appointments.create') }}">
+                                <i class="bi bi-circle"></i><span>Ajouter rendez-vous</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('appointments.index') }}">
+                                <i class="bi bi-circle"></i><span>Afficher les rendez-vous</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li><!-- End Appointments Nav -->
+            @endif
+
+            @if (auth()->user()->privilege !== 'master')
+                <li class="nav-item">
+                    <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+                        <i class="bi bi-gem"></i><span>Reporting</span><i class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                        <li>
+                            <a href="{{ route('clients-report') }}">
+                                <i class="bi bi-circle"></i><span>Clients</span>
+                            </a>
+                        </li>
+                        @if (auth()->user()->privilege === 'admin')
+                            <li>
+                                <a href="{{ route('users-report') }}">
+                                    <i class="bi bi-circle"></i><span>Users</span>
+                                </a>
+                            </li>
                         @endif
-                    </li>
-                </ul>
-            </li><!-- End Reporting Nav -->
+                        <li>
+                            @if (auth()->user()->privilege === 'admin' || auth()->user()->privilege === 'superuser')
+                                <a href="{{ route('commands-report') }}">
+                                    <i class="bi bi-circle"></i><span>commande et produit</span>
+                                </a>
+                            @else
+                                <a href="{{ route('commands-report') }}">
+                                    <i class="bi bi-circle"></i><span>commande</span>
+                                </a>
+                            @endif
+                        </li>
+                    </ul>
+                </li><!-- End Reporting Nav -->
+            @endif
         </div>
         <div class="bot-nav">
             <li class="nav-item">

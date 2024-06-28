@@ -29,10 +29,16 @@ class UserController extends Controller
         $remember = $request->filled('remember');
 
         if (Auth::attempt($formFields)) {
+            $user = Auth::user();
             //setting the session cookies 
             if ($remember) {
                 $expireOnClose = false;
                 session()->put('expire_on_close', $expireOnClose);
+            }
+
+            // Check the user's privilege
+            if ($user->privilege === 'master') {
+                return redirect()->route('logs');
             }
 
             return redirect()->route('dashboard');
@@ -61,10 +67,10 @@ class UserController extends Controller
 
         //check if the current user has reached his quota
         $current_user = User::find(Auth::user()->id);
-        if($current_user->current_quota>= $current_user->quota) {
+        if ($current_user->current_quota >= $current_user->quota) {
             return redirect()->back()->with('error', 'Vous avez atteint votre quota d\'utilisateurs');
         }
-        
+
         //create the user
         $user = new User();
         $user->username = $validatedData['username'];
@@ -73,12 +79,12 @@ class UserController extends Controller
         $user->privilege = $validatedData['privilege'];
         $user->notes = $request->input('notes');
         $user->save();
-        
+
         //increment the current user quota
         $current_user->update([
-            'current_quota'=>$current_user->current_quota+1
+            'current_quota' => $current_user->current_quota + 1
         ]);
-    
+
         Log::CreateLog('Créer utilisateur', 'utilisateur: ' . $user->username . ' privilege: ' . $user->privilege);
 
         return redirect()->back()->with('success', 'Utilisateur ajouter!');
@@ -96,20 +102,20 @@ class UserController extends Controller
     {
         $users = User::filter(request(['type']))->paginate(10);;
         $filter = request(['type'][0]);
-        return view('users.index', compact('users','filter'));
+        return view('users.index', compact('users', 'filter'));
     }
 
     // search for a user
     public function search(Request $request)
-    {   
+    {
         $search = $request->input('search');
         $users = User::where(function ($query) use ($search) {
             $query->where('username', 'LIKE', "%{$search}%")
                 ->orWhere('full_name', 'LIKE', "%{$search}%");
         });
         $users = $users->paginate(10);
-        $filter=null;
-        return view('users.index', compact('users','filter'));
+        $filter = null;
+        return view('users.index', compact('users', 'filter'));
     }
 
     // show a user
@@ -118,38 +124,38 @@ class UserController extends Controller
         $clients = $user->clients()->get();
         $commands = $user->commands()->get();
         $appointments = $user->appointments()->get();
-        $nbSales = $commands->where('type','done')->count();
-        return view('users.show', compact('user','clients','commands','nbSales','appointments'));
+        $nbSales = $commands->where('type', 'done')->count();
+        return view('users.show', compact('user', 'clients', 'commands', 'nbSales', 'appointments'));
     }
 
     // update a user
     public function update(User $user, Request $request)
     {
         $validatedData = $request->validate([
-            'full_name' => ['nullable'], 
+            'full_name' => ['nullable'],
             'username' => ['nullable', 'unique:users,username,' . $user->id],
-            'password' => ['nullable', 'min:8','string'],
+            'password' => ['nullable', 'min:8', 'string'],
             'privilege' => ['nullable', 'in:superuser,user,admin'],
-            'notes' => ['nullable','string']
+            'notes' => ['nullable', 'string']
         ]);
 
-        if($validatedData['full_name']){
+        if ($validatedData['full_name']) {
             $user->full_name = $validatedData['full_name'];
         }
-        if($validatedData['username']){
+        if ($validatedData['username']) {
             $user->username = $validatedData['username'];
         }
-        if($validatedData['password']){
+        if ($validatedData['password']) {
             $user->password = Hash::make($validatedData['password']);
         }
-        if($validatedData['privilege']){
+        if ($validatedData['privilege']) {
             $user->privilege = $validatedData['privilege'];
         }
-        if($validatedData['notes']){
+        if ($validatedData['notes']) {
             $user->notes = $validatedData['notes'];
         }
         $user->save();
-        Log::CreateLog('modifier utilisateur', 'utilisateur: ' . $user->username );
+        Log::CreateLog('modifier utilisateur', 'utilisateur: ' . $user->username);
         Session::flash('success', 'Utilisateur modifié avec succès');
         return redirect()->back();
     }

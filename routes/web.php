@@ -231,5 +231,8 @@ Route::middleware(['auth'])->group(function () {
 
 // Catch-all route to redirect to the home page
 Route::get('/{any}', function () {
+    if((auth()->check() && auth()->user()->privilege === 'master')){
+        return redirect('/logs');
+    }
     return redirect('/dashboard');
 })->where('any', '.*');
