@@ -38,6 +38,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
+        @if (Session::has('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ Session::get('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
         <div class="pagetitle">
             <h1>Ajouter un nouveau utilisateur</h1>
@@ -79,7 +85,6 @@
                     <select class="form-control" id="privilege" name="privilege">
                         <option value="user">Agent</option>
                         <option value="superuser">Manager</option>
-                        <option value="admin">Administrateur</option>
                     </select>
                 </div>
             </div>

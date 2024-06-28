@@ -58,6 +58,14 @@ class UserController extends Controller
             'full_name' => ['required'],
             'privilege' => ['required', 'in:superuser,user,admin'],
         ]);
+
+        //check if the current user has reached his quota
+        $current_user = User::find(Auth::user()->id);
+        if($current_user->current_quota>= $current_user->quota) {
+            return redirect()->back()->with('error', 'Vous avez atteint votre quota d\'utilisateurs');
+        }
+        
+        //create the user
         $user = new User();
         $user->username = $validatedData['username'];
         $user->full_name = $validatedData['full_name'];
@@ -65,6 +73,12 @@ class UserController extends Controller
         $user->privilege = $validatedData['privilege'];
         $user->notes = $request->input('notes');
         $user->save();
+        
+        //increment the current user quota
+        $current_user->update([
+            'current_quota'=>$current_user->current_quota+1
+        ]);
+    
         Log::CreateLog('Créer utilisateur', 'utilisateur: ' . $user->username . ' privilege: ' . $user->privilege);
 
         return redirect()->back()->with('success', 'Utilisateur ajouter!');
