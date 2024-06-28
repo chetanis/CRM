@@ -97,7 +97,6 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label ">Privilege</div>
-                                        {{-- <div class="col-lg-9 col-md-8">{{ $user->privilege }}</div> --}}
                                         @if ($user->privilege == 'admin')
                                             <div class="col-lg-9 col-md-8">Administrateur</div>
                                         @elseif ($user->privilege == 'user')
@@ -106,6 +105,17 @@
                                             <div class="col-lg-9 col-md-8">Manger</div>
                                         @endif
                                     </div>
+                                    @if ($user->privilege == 'admin')
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label">Quota</div>
+                                        <div class="col-lg-9 col-md-8">{{ $user->quota }}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label">nembre d'utilisateurs cree</div>
+                                        <div class="col-lg-9 col-md-8">{{ $user->current_quota }}</div>
+                                    </div>
+                                    @endif
+
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">Date de début</div>
                                         <div class="col-lg-9 col-md-8">{{ $user->created_at->format('d-m-Y') }}</div>
@@ -129,13 +139,6 @@
                                             <p>N° des vents: <span class="text-success">{{ $nbSales }}</span></p>
                                         </div>
                                     </div>
-                                    {{-- <div class="col-lg-9 mt-5 col-md-8 d-flex justify-content-center">
-                                        <form method="POST" action="/clients/{{ $client->id }}">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">Supprimer le client</button>
-                                        </form>
-                                    </div> --}}
 
                                 </div>
                                 {{-- client details ends --}}
