@@ -62,11 +62,12 @@
                                     <button class="nav-link active" data-bs-toggle="tab"
                                         data-bs-target="#profile-overview">Aperçu</button>
                                 </li>
-
-                                <li class="nav-item">
-                                    <button class="nav-link " data-bs-toggle="tab"
-                                        data-bs-target="#profile-edit">Modifier profil</button>
-                                </li>
+                                @if (auth()->user()->privilege == 'master')
+                                    <li class="nav-item">
+                                        <button class="nav-link " data-bs-toggle="tab"
+                                            data-bs-target="#profile-edit">Modifier profil</button>
+                                    </li>
+                                @endif
 
                                 <li class="nav-item">
                                     <button class="nav-link " data-bs-toggle="tab"
@@ -106,14 +107,14 @@
                                         @endif
                                     </div>
                                     @if ($user->privilege == 'admin')
-                                    <div class="row">
-                                        <div class="col-lg-3 col-md-4 label">Quota</div>
-                                        <div class="col-lg-9 col-md-8">{{ $user->quota }}</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-3 col-md-4 label">nembre d'utilisateurs cree</div>
-                                        <div class="col-lg-9 col-md-8">{{ $user->current_quota }}</div>
-                                    </div>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-4 label">Quota</div>
+                                            <div class="col-lg-9 col-md-8">{{ $user->quota }}</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-4 label">nembre d'utilisateurs cree</div>
+                                            <div class="col-lg-9 col-md-8">{{ $user->current_quota }}</div>
+                                        </div>
                                     @endif
 
                                     <div class="row">
@@ -143,69 +144,75 @@
                                 </div>
                                 {{-- client details ends --}}
 
-                                {{-- Edit client --}}
-                                <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+                                @if (auth()->user()->privilege == 'master')
+                                    {{-- Edit client --}}
+                                    <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
-                                    <!-- Profile Edit Form -->
-                                    <form method="POST" action="/users/{{ $user->id }}">
-                                        @csrf
-                                        @method('PUT')
-                                        <div class="row mb-3">
-                                            <label for="full_name" class="col-md-4 col-lg-3 col-form-label">Nom
-                                                complet</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <input name="full_name" type="text"
-                                                    value="{{ $user->full_name }}" class="form-control"
-                                                    id="full_name">
+                                        <!-- Profile Edit Form -->
+                                        <form method="POST" action="/users/{{ $user->id }}">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="row mb-3">
+                                                <label for="full_name" class="col-md-4 col-lg-3 col-form-label">Nom
+                                                    complet</label>
+                                                <div class="col-md-8 col-lg-9">
+                                                    <input name="full_name" type="text"
+                                                        value="{{ $user->full_name }}" class="form-control"
+                                                        id="full_name">
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <label for="username" class="col-md-4 col-lg-3 col-form-label">Nom
-                                                d'utilisateur</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <input name="username" type="text" value="{{ $user->username }}"
-                                                    class="form-control" id="username">
+                                            <div class="row mb-3">
+                                                <label for="username" class="col-md-4 col-lg-3 col-form-label">Nom
+                                                    d'utilisateur</label>
+                                                <div class="col-md-8 col-lg-9">
+                                                    <input name="username" type="text"
+                                                        value="{{ $user->username }}" class="form-control"
+                                                        id="username">
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <label for="privilege"
-                                                class="col-md-4 col-lg-3 col-form-label">Privilege</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <select name="privilege" id="privilege" class="form-select">
-                                                    <option value="admin"
-                                                        @if ($user->privilege == 'admin') selected @endif>Administrateur</option>
-                                                    <option value="superuser"
-                                                        @if ($user->privilege == 'superuser') selected @endif>Manager
-                                                    </option>
-                                                    <option value="user"
-                                                        @if ($user->privilege == 'user') selected @endif>Agent</option>
-                                                </select>
+                                            <div class="row mb-3">
+                                                <label for="privilege"
+                                                    class="col-md-4 col-lg-3 col-form-label">Privilege</label>
+                                                <div class="col-md-8 col-lg-9">
+                                                    <select name="privilege" id="privilege" class="form-select">
+                                                        <option value="admin"
+                                                            @if ($user->privilege == 'admin') selected @endif>
+                                                            Administrateur</option>
+                                                        <option value="superuser"
+                                                            @if ($user->privilege == 'superuser') selected @endif>Manager
+                                                        </option>
+                                                        <option value="user"
+                                                            @if ($user->privilege == 'user') selected @endif>Agent
+                                                        </option>
+                                                    </select>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <label for="password" class="col-md-4 col-lg-3 col-form-label">Nouveau mot
-                                                de passe</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <input name="password" type="text" value=""
-                                                    class="form-control" id="password">
+                                            <div class="row mb-3">
+                                                <label for="password" class="col-md-4 col-lg-3 col-form-label">Nouveau
+                                                    mot
+                                                    de passe</label>
+                                                <div class="col-md-8 col-lg-9">
+                                                    <input name="password" type="text" value=""
+                                                        class="form-control" id="password">
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div class="row mb-3">
-                                            <label for="notes"
-                                                class="col-md-4 col-lg-3 col-form-label">Notes</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <textarea name="notes" id="notes" class="form-control" style="height: 100px">{{ $user->notes }}</textarea>
+                                            <div class="row mb-3">
+                                                <label for="notes"
+                                                    class="col-md-4 col-lg-3 col-form-label">Notes</label>
+                                                <div class="col-md-8 col-lg-9">
+                                                    <textarea name="notes" id="notes" class="form-control" style="height: 100px">{{ $user->notes }}</textarea>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div class="text-center">
-                                            <button type="submit" class="btn btn-primary">Save Changes</button>
-                                        </div>
-                                    </form>
+                                            <div class="text-center">
+                                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                                            </div>
+                                        </form>
 
-                                </div>
-                                {{-- Edit client ends --}}
+                                    </div>
+                                    {{-- Edit client ends --}}
+                                @endif
 
                                 {{-- Show user's clietns --}}
 
