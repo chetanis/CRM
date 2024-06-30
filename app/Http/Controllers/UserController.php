@@ -153,6 +153,7 @@ class UserController extends Controller
             'username' => ['nullable', 'unique:users,username,' . $user->id],
             'password' => ['nullable', 'min:8', 'string'],
             'privilege' => ['nullable', 'in:superuser,user,admin'],
+            'quota' => ['nullable','int'],
             'notes' => ['nullable', 'string']
         ]);
 
@@ -167,6 +168,9 @@ class UserController extends Controller
         }
         if ($validatedData['privilege']) {
             $user->privilege = $validatedData['privilege'];
+        }
+        if ($validatedData['quota']) {
+            $user->quota = $validatedData['quota'];
         }
         if ($validatedData['notes']) {
             $user->notes = $validatedData['notes'];

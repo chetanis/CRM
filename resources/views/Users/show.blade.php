@@ -187,6 +187,17 @@
                                                     </select>
                                                 </div>
                                             </div>
+                                            {{-- change quota --}}
+                                            @if ($user->privilege == 'admin')
+                                                <div class="row mb-3">
+                                                    <label for="quota"
+                                                        class="col-md-4 col-lg-3 col-form-label">Quota</label>
+                                                    <div class="col-md-8 col-lg-9">
+                                                        <input name="quota" type="number" value="{{ $user->quota }}"
+                                                            class="form-control" id="quota">
+                                                    </div>
+                                                </div>
+                                            @endif
                                             <div class="row mb-3">
                                                 <label for="password" class="col-md-4 col-lg-3 col-form-label">Nouveau
                                                     mot
