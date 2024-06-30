@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Log;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class LogController extends Controller
@@ -23,8 +24,10 @@ class LogController extends Controller
         // Filter logs based on search criteria
         $query = Log::query();
 
-        if ($request->filled('user_id')) {
-            $query->where('user_id', $request->user_id);
+        if ($request->filled('username')) {
+            //find the user with that username
+            $user = User::where('username', $request->username)->first();
+            $query->where('user_id', $user->id);
         }
 
         if ($request->filled('table')) {

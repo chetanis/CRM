@@ -51,9 +51,9 @@
         <form method="GET" action="{{ route('logs') }}" class="mb-4">
             <div class="form-row row">
                 <div class="form-group col-md-2">
-                    <label for="user_id">Nom d'utilisateur</label>
-                    <input type="text" class="form-control" id="user_id" name="user_id"
-                        value="{{ request('user_id') }}">
+                    <label for="username">Nom d'utilisateur</label>
+                    <input type="text" class="form-control" id="username" name="username"
+                        value="{{ request('username') }}">
                 </div>
                 <div class="form-group col-md-2">
                     <label for="table">Table</label>
