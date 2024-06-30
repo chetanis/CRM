@@ -57,7 +57,8 @@
                 </div>
             </div>
         </div>
-
+        
+        @if (auth()->user()->privilege !== 'master')
         <div class="col mb-3 ms-2">
 
             @if (!$filter)
@@ -81,6 +82,7 @@
                 <a href="/users?type=user" class="btn btn-outline-warning btn-sm">Agent</a>
             @endif
         </div>
+        @endif
 
         <table class="table">
             <thead>

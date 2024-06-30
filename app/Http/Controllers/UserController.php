@@ -67,7 +67,7 @@ class UserController extends Controller
 
         //check if the current user has reached his quota
         $current_user = User::find(Auth::user()->id);
-        if ($current_user->privilege=='admin' && $current_user->current_quota >= $current_user->quota) {
+        if ($current_user->privilege == 'admin' && $current_user->current_quota >= $current_user->quota) {
             return redirect()->back()->with('error', 'Vous avez atteint votre quota d\'utilisateurs');
         }
 
@@ -100,6 +100,12 @@ class UserController extends Controller
     // show all users
     public function index()
     {
+        //check if the user is master => return only the admins
+        if (Auth::user()->privilege === 'master') {
+            $users = User::where('privilege', 'admin')->paginate(10);
+            $filter = null;
+            return view('users.index', compact('users', 'filter'));
+        }
         $users = User::filter(request(['type']))->paginate(10);;
         $filter = request(['type'][0]);
         return view('users.index', compact('users', 'filter'));
@@ -108,6 +114,17 @@ class UserController extends Controller
     // search for a user
     public function search(Request $request)
     {
+        if (Auth::user()->privilege === 'master') {
+            $search = $request->input('search');
+            //get the admin users that match the search
+            $users = User::where('privilege', 'admin')->where(function ($query) use ($search) {
+                $query->where('username', 'LIKE', "%{$search}%")
+                    ->orWhere('full_name', 'LIKE', "%{$search}%");
+            });
+            $users = $users->paginate(10);
+            $filter = null;
+            return view('users.index', compact('users', 'filter'));
+        }
         $search = $request->input('search');
         $users = User::where(function ($query) use ($search) {
             $query->where('username', 'LIKE', "%{$search}%")
