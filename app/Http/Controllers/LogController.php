@@ -27,7 +27,10 @@ class LogController extends Controller
         if ($request->filled('username')) {
             //find the user with that username
             $user = User::where('username', $request->username)->first();
-            $query->where('user_id', $user->id);
+            //if the user is found, filter the logs based on the user_id
+            if ($user){
+                $query->where('user_id', $user->id);
+            }
         }
 
         if ($request->filled('table')) {
